@@ -128,7 +128,7 @@ text{font-family:var(--mono)}
       <div class="n" style="color:var(--miss)">75 / 100</div>
       <div class="t">marks had no training data</div>
       <div class="s">Train ships 5–30 s clips with one event. D2 and D3 are 4–10 minute videos with
-        several. We synthesised 360 of them.</div>
+        several. We synthesised 235, and deleted 125 more whose timestamps we could not verify.</div>
     </div>
     <div class="card">
       <div class="n" style="color:var(--hit)">5.5×</div>
@@ -138,9 +138,9 @@ text{font-family:var(--mono)}
     </div>
     <div class="card">
       <div class="n">4B</div>
-      <div class="t">parameters, one GPU</div>
-      <div class="s">The 8B is statistically indistinguishable on this test, so we ship the smaller
-        one. Nothing hosted is in the runtime path.</div>
+      <div class="t">or 8B — both self-hosted</div>
+      <div class="s">Indistinguishable on the practice set (3 videos of 24, p = 0.25). On the private
+        eval pack the 8B produced our best submission. Nothing hosted is in the runtime path.</div>
     </div>
   </div>
 
