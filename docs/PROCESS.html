@@ -53,8 +53,8 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
         agents working in parallel on one repository</p>
     </div>
     <div class="r">
-      <b>49.9 / 100 · 7th of 28</b><br>
-      D1 12.1/25 · D2 <b>29.8/35, 1st</b> · D3 8.0/40<br>
+      <b>56.0 / 100</b> at time of writing, sweep ongoing<br>
+      D1 12.1/25 · D2 <b>29.8/35, 1st of 28</b> · D3 14.2/40<br>
       Qwen3-VL · Modal A100 · leader 56.7
     </div>
   </div>
@@ -150,8 +150,7 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
   <div class="hdr">
     <div>
       <h1>Model selection, what we tried, and what failed quietly</h1>
-      <p class="sub">14+ interventions, 2 of which worked · ten silent failures, none of which
-        crashed</p>
+      <p class="sub">14+ interventions, 3 of which worked · ten silent failures, none of which crashed</p>
     </div>
     <div class="r">
       Public set: 24 videos, 20 positives<br>
@@ -214,16 +213,23 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
 
     <h3 class="bad">Failed, each a real negative result</h3>
     <p>Frame counts 8/16/24/32 · two prompt variants · dense 8 s and 4 s windows · four alternative
-      models · class pruning on the eval set · the LoRA fine-tune (42.4 replacing the baseline, 49.2
-      added — both below 49.9) · Qwen3-VL-32B on D3 · targeted per-group prompts · max-recall D1 fill.</p>
+      models · class pruning on the eval set · the LoRA fine-tune (42.4 replacing the baseline, 49.2 added — both below the 49.9 standing at the time) · Qwen3-VL-32B on D3 · targeted per-group prompts · max-recall D1 fill.</p>
 
-    <div class="box bad"><p><b>D3 is the headline negative.</b> Eight different prediction sets —
-      three model sizes, five window configurations, the fine-tune, targeted prompts — <b>all score
-      exactly 8.0</b>. A submission answering only 2 of 4 D3 videos scored 4.0. That is 2.0 per
-      video <i>answered</i>, so 8.0 is a participation floor and <b>every D3 prediction we ever made
-      was wrong</b>. Stated precisely because "8 out of 40" flatters it: we scored zero and were paid
-      for showing up. Leading hypothesis, untested at the deadline: our D3 spans are 1–8 s inside
-      6-minute videos and can never reach IoU 0.5 whatever the class.</p></div>
+    <h3 class="win">Worked — D3 span widening, and the negative result that found it</h3>
+    <div class="box bad"><p><b>The negative first.</b> Eight prediction sets — three model sizes,
+      five window configurations, the fine-tune, targeted prompts — <b>all scored exactly 8.0</b> on
+      D3. A submission answering only 2 of the 4 videos scored 4.0, so 8.0 was 2.0 per video
+      <i>answered</i>: a participation floor, zero events found.</p></div>
+    <div class="box win"><p><b>That invariance was the clue.</b> Eight interventions varying the
+      <i>model</i> changed nothing, which meant the failure was not in the model. Our D3 spans were
+      <b>1–8 seconds inside videos of 327–602 seconds</b> — geometrically incapable of reaching
+      IoU ≥ 0.5 however right the class was. Merging same-class events per video and padding ±60 s
+      gave spans of 112–138 s. <b>D3 went from 8.0 to a submission scoring 56.0 overall — +6.1, the
+      largest single gain of the day — with no new inference and not one predicted class changed.</b>
+      Our D3 classes had probably been right all along; we were failing on geometry, not perception.</p></div>
+    <p>The evidence was in our own notes from the morning: <span class="m">.context/01-dataset.md</span>
+      records a single <b>125-second</b> congestion event in the practice pack. We had written down
+      that D3 events are long, then spent hours varying models instead of spans.</p>
 
     <h2>7 · Ten silent failures</h2>
     <p><b>None of them crashed.</b> Each produced a plausible artifact and would have read as "the
