@@ -79,7 +79,7 @@ class GeminiEngine:
     Dev-time REFERENCE CEILING only -- a hosted model can never be in the runtime path.
     """
 
-    def __init__(self, model="gemini-3.5-flash", api_key=None, max_new_tokens=384):
+    def __init__(self, model="gemini-3.5-flash", api_key=None, max_new_tokens=2048):
         import requests
         self.requests = requests
         self.model = model
@@ -103,8 +103,15 @@ class GeminiEngine:
         body = {
             "systemInstruction": {"parts": [{"text": system}]},
             "contents": [{"role": "user", "parts": parts}],
-            "generationConfig": {"temperature": 0.0, "maxOutputTokens": self.max_new_tokens,
-                                 "responseMimeType": "application/json"},
+            "generationConfig": {
+                "temperature": 0.0,
+                "maxOutputTokens": self.max_new_tokens,
+                "responseMimeType": "application/json",
+                # Gemini 3.x is a reasoning model: thinking tokens are drawn from
+                # maxOutputTokens. With a small budget it thinks, then returns a
+                # truncated fragment or a candidate with no parts at all.
+                "thinkingConfig": {"thinkingBudget": 0},
+            },
         }
         import random, time
         last = None

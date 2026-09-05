@@ -93,7 +93,7 @@ def zeroshot(model: str = "Qwen/Qwen3-VL-4B-Instruct",
              manifest: str = "/root/data/manifest.json",
              out: str = "/vol/out/zeroshot",
              frames: int = 16, win: float = 20.0, hop: float = 10.0,
-             limit: int = 0, adapter: str = ""):
+             limit: int = 0, skip: int = 0, adapter: str = ""):
     import subprocess, sys, os
     os.makedirs(os.path.dirname(out), exist_ok=True)
     print(subprocess.run("nvidia-smi --query-gpu=name,memory.total --format=csv",
@@ -103,6 +103,8 @@ def zeroshot(model: str = "Qwen/Qwen3-VL-4B-Instruct",
            "--frames", str(frames), "--win", str(win), "--hop", str(hop)]
     if limit:
         cmd += ["--limit", str(limit)]
+    if skip:
+        cmd += ["--skip", str(skip)]
     if adapter:
         cmd += ["--adapter", adapter]
     print(" ".join(cmd), flush=True)
@@ -129,10 +131,11 @@ def ls(path: str = "/vol"):
 
 @app.local_entrypoint()
 def main(action: str = "zeroshot", limit: int = 0, frames: int = 16,
-         model: str = "Qwen/Qwen3-VL-4B-Instruct"):
+         model: str = "Qwen/Qwen3-VL-4B-Instruct", out: str = "/vol/out/zeroshot",
+         skip: int = 0):
     if action == "pull":
         print(pull_dataset.remote())
     elif action == "ls":
         print(ls.remote())
     else:
-        print(zeroshot.remote(model=model, frames=frames, limit=limit))
+        print(zeroshot.remote(model=model, frames=frames, limit=limit, out=out, skip=skip))

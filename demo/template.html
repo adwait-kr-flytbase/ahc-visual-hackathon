@@ -60,9 +60,9 @@ body{
 
 /* ---- stage ---- */
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
-.viewer{display:flex;gap:0;flex:1;min-height:0;border-bottom:1px solid var(--line)}
-.screen{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;background:#05070A;padding:12px}
-video{max-width:100%;max-height:100%;display:block;background:#000}
+.viewer{display:flex;gap:0;flex:1 1 auto;min-height:0;border-bottom:1px solid var(--line)}
+.screen{flex:1;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;background:#05070A;padding:12px}
+video{width:100%;height:100%;max-height:100%;object-fit:contain;display:block;background:#000}
 
 /* ---- detail ---- */
 .detail{
@@ -84,20 +84,22 @@ video{max-width:100%;max-height:100%;display:block;background:#000}
 .note.warn{border-left-color:var(--fa);color:var(--text)}
 
 /* ---- the field: two lanes on one axis ---- */
-.field{flex:0 0 auto;background:var(--panel);padding:12px 18px 16px;position:relative}
+.field{flex:0 0 auto;background:var(--panel);padding:14px 18px 24px;position:relative}
 .fieldhead{display:flex;align-items:baseline;gap:16px;margin-bottom:10px}
 .fieldhead .tc{font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums}
 .fieldhead .dur{font:11px/1 var(--mono);color:var(--dim)}
+.fieldhead .alarm{font:600 11px/1 var(--mono);letter-spacing:.02em;color:var(--fa)}
 .fieldhead .hint{margin-left:auto;font:10px/1 var(--mono);letter-spacing:.06em;color:var(--dim)}
 
 .axis{position:relative;display:grid;grid-template-columns:64px 1fr;gap:0 12px;align-items:center}
+.lane{contain:paint}
 .axis .tag{padding-bottom:2px;text-align:right}
-.lane{position:relative;height:26px;background:var(--raised);border-radius:3px;overflow:hidden}
-.ribbons{position:relative;height:44px}
+.lane{position:relative;height:32px;background:var(--raised);border-radius:3px;overflow:hidden}
+.ribbons{position:relative;height:66px}
 .ribbons svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ruler{position:relative;height:16px;margin-top:5px}
 .ruler .tick{position:absolute;top:0;border-left:1px solid var(--line);height:5px}
-.ruler .tick b{position:absolute;top:6px;left:3px;font:9px/1 var(--mono);color:var(--dim);font-weight:400;white-space:nowrap}
+.ruler .tick b{position:absolute;top:6px;left:3px;transform:translateX(var(--nudge,0));font:9px/1 var(--mono);color:var(--dim);font-weight:400;white-space:nowrap}
 
 .span{
   position:absolute;top:0;bottom:0;border-radius:2px;border:0;padding:0 5px;cursor:pointer;
@@ -172,6 +174,7 @@ video{max-width:100%;max-height:100%;display:block;background:#000}
       <div class="fieldhead">
         <span class="tc" id="clock">0:00.0</span>
         <span class="dur" id="dur"></span>
+        <span class="alarm" id="alarm" hidden></span>
         <span class="hint">space play &nbsp;·&nbsp; ←→ 5s &nbsp;·&nbsp; [ ] event &nbsp;·&nbsp; ↑↓ video</span>
       </div>
       <div class="axis">
@@ -262,7 +265,7 @@ function spanEl(item, lane, index) {
   el.style.background = "var(" + VERDICT[item.verdict] + ")";
   el.dataset.lane = lane;
   el.dataset.index = index;
-  el.innerHTML = "<b>" + item.class_name + "</b>";
+  el.dataset.label = item.class_name;
   el.title = item.class_name + "  " + LABEL[item.verdict] +
              (item.localised ? "  " + tc(item.start) + "–" + tc(item.end) : "  (class only)");
   el.addEventListener("click", e => { e.stopPropagation(); pick(lane, index); seek(item.start + .05); });
@@ -284,14 +287,25 @@ function drawLanes() {
       return;
     }
     items.forEach((item, i) => box.appendChild(spanEl(item, lane, i)));
+    fitLabels(box);
   });
 }
+
+function fitLabels(box) {
+  box.querySelectorAll(".span").forEach(el => {
+    el.innerHTML = el.getBoundingClientRect().width > 58 ? "<b>" + el.dataset.label + "</b>" : "";
+  });
+}
+window.addEventListener("resize", () => {
+  ["laneTruth", "laneModel"].forEach(id => fitLabels($(id)));
+  drawRibbons();
+});
 
 /* ---------- ribbons: truth-to-prediction, the shape is the timing error ---------- */
 function drawRibbons() {
   const svg = $("ribbons").querySelector("svg");
   svg.innerHTML = "";
-  svg.setAttribute("viewBox", "0 0 1000 44");
+  svg.setAttribute("viewBox", "0 0 1000 66");
   const X = t => clamp01(t / current.duration) * 1000;
   const add = (d, fill, opacity, dash) => {
     const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -303,7 +317,7 @@ function drawRibbons() {
 
   if (current.level === 1) {
     const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    t.setAttribute("x", 500); t.setAttribute("y", 26); t.setAttribute("text-anchor", "middle");
+    t.setAttribute("x", 500); t.setAttribute("y", 38); t.setAttribute("text-anchor", "middle");
     t.setAttribute("fill", "#4B5464");
     t.setAttribute("style", "font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em");
     t.textContent = "D1 — MATCHED ON CLASS, TIMING NOT SCORED";
@@ -314,19 +328,19 @@ function drawRibbons() {
   current.truth.forEach((g, i) => {
     if (g.pair === null || g.pair === undefined) {
       // Truth the model never reached: the ribbon runs out before it lands.
-      add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + ((X(g.start) + X(g.end)) / 2) + ",30 Z",
+      add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + ((X(g.start) + X(g.end)) / 2) + ",44 Z",
           HEX.miss, ".20", true);
       return;
     }
     const p = current.model[g.pair];
-    add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + X(p.end) + ",44 L" + X(p.start) + ",44 Z",
+    add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + X(p.end) + ",66 L" + X(p.start) + ",66 Z",
         HEX.hit, ".22");
   });
   current.model.forEach(p => {
     if (p.pair !== null && p.pair !== undefined) return;
     // A prediction with no truth above it: the ribbon starts from nothing.
-    add("M" + ((X(p.start) + X(p.end)) / 2) + ",14 L" + X(p.end) + ",44 L" + X(p.start) + ",44 Z",
-        HEX.false_alarm, ".20", true);
+    add("M" + ((X(p.start) + X(p.end)) / 2) + ",14 L" + X(p.end) + ",66 L" + X(p.start) + ",66 Z",
+        HEX.false_alarm, ".34", true);
   });
 }
 
@@ -338,6 +352,7 @@ function drawRuler() {
   for (let t = 0; t <= d + .001; t += step) {
     const el = document.createElement("div");
     el.className = "tick"; el.style.left = pct(t, d);
+    if (t / d > .97) el.style.setProperty("--nudge", "calc(-100% - 6px)");
     el.innerHTML = "<b>" + tcShort(t) + "</b>";
     r.appendChild(el);
   }
@@ -415,6 +430,10 @@ function select(id) {
   video.src = current.src;
   video.load();
   $("dur").textContent = "of " + tc(current.duration) + "  ·  D" + current.level;
+  const fa = current.tally.false_alarms;
+  const alarm = $("alarm");
+  alarm.hidden = !fa;
+  alarm.textContent = fa ? fa + (fa === 1 ? " false alarm" : " false alarms") + " on this video" : "";
   $("playhead").hidden = true;
   drawLanes(); drawRibbons(); drawRuler(); renderDetail();
 }
@@ -426,14 +445,16 @@ function seek(t) { video.currentTime = Math.max(0, Math.min(current.duration - .
 function onTime() {
   const t = video.currentTime;
   $("clock").textContent = tc(t);
+  // Rect maths throughout: the lanes sit in a positioned grid, so offsetTop is measured
+  // against .axis while the playhead is placed against .field. Mixing the two put it at 0.
   const head = $("playhead");
-  const lane = $("laneTruth"), field = document.querySelector(".field");
-  const x = lane.getBoundingClientRect().left - field.getBoundingClientRect().left
-          + clamp01(t / current.duration) * lane.clientWidth;
+  const top = $("laneTruth").getBoundingClientRect();
+  const bottom = $("laneModel").getBoundingClientRect();
+  const field = document.querySelector(".field").getBoundingClientRect();
   head.hidden = false;
-  head.style.left = x + "px";
-  head.style.top = (lane.offsetTop) + "px";
-  head.style.height = ($("laneModel").offsetTop + $("laneModel").offsetHeight - lane.offsetTop) + "px";
+  head.style.left = (top.left - field.left + clamp01(t / current.duration) * top.width) + "px";
+  head.style.top = (top.top - field.top) + "px";
+  head.style.height = (bottom.bottom - top.top) + "px";
   document.querySelectorAll(".span").forEach(el => {
     const item = current[el.dataset.lane][+el.dataset.index];
     el.classList.toggle("live", t >= item.start && t <= item.end);

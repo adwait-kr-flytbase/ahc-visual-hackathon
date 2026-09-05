@@ -29,6 +29,23 @@ from pathlib import Path
 
 # (width, height, fps) profiles observed in dataset/test. Weighted by how often each
 # appears across the 34 public videos.
+# Classes that are sustained STATES rather than instantaneous events. Several clips of one
+# of these can be chained into a single long event: 60 s of congestion really is congestion
+# throughout. An accident or a punch is not extensible that way -- it happens once.
+# This exists because a single source clip caps event length (train p50 is ~5 s) while the
+# public test set contains 20 s, 60 s and 125 s events. Without chaining, the model never
+# sees a long event and misses every one of them at tIoU >= 0.5.
+SUSTAINED_CLASSES = frozenset({
+    "traffic_congestion",
+    "waterlogging_or_flood",
+    "fire",
+    "smoke",
+    "stalled_or_broken_down_vehicle",
+    "vehicle_blocking_traffic",
+    "loitering_or_suspicious_presence",
+    "road_spill_or_debris",
+})
+
 TEST_PROFILES = [
     ((640, 640), 24.0, 11),
     ((720, 404), 30.0, 4),
@@ -244,7 +261,7 @@ def compose(
     pool: dict[str, list[dict]],
     rng: random.Random,
     *,
-    event_duration_range: tuple[float, float] = (4.0, 60.0),
+    event_duration_range: tuple[float, float] = (4.0, 130.0),
     filler_cut_range: tuple[float, float] = (8.0, 45.0),
     lead_in_prob: float = 1.0,
 ) -> Composition:
@@ -285,9 +302,21 @@ def compose(
 
     for name, want in planned:
         add_filler(per_gap)
-        clip = rng.choice(pool[name])
-        source_start, duration = _trim_window(clip, want, rng)
-        segments.extend(_event_segments(clip, source_start, duration, name, rng, lead_in_prob))
+        produced = 0.0
+        attempts = 0
+        # Chain clips of a sustained class until `want` is met. events() merges consecutive
+        # same-class segments, so the chain becomes ONE long event in the ground truth.
+        while True:
+            clip = rng.choice(pool[name])
+            source_start, duration = _trim_window(clip, want - produced, rng)
+            segments.extend(
+                _event_segments(clip, source_start, duration, name, rng,
+                                lead_in_prob if produced == 0.0 else 0.0)
+            )
+            produced += duration
+            attempts += 1
+            if name not in SUSTAINED_CLASSES or produced >= want - 1.0 or attempts >= 12:
+                break
     add_filler(per_gap)
 
     # Events are clamped to their source clip's real length, so the planned event budget

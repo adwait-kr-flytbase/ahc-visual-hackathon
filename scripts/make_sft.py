@@ -93,7 +93,13 @@ def rows_from_clips(dataset: Path, prefix: str) -> list[dict]:
 
 
 def _cut(job):
-    source, start, end, out_path = job
+    """Cut one training window.
+
+    Downscaled to fit MAX_EDGE. The model sees at most VIDEO_MAX_PIXELS (448x448), so
+    storing 720p windows wastes ~90% of the bytes -- and these files have to be uploaded
+    to a Modal Volume over a home connection before training can start.
+    """
+    source, start, end, out_path, max_edge, crf = job
     out_path = Path(out_path)
     if out_path.exists():
         return str(out_path), True
@@ -101,7 +107,9 @@ def _cut(job):
     cmd = [
         "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
         "-ss", f"{start}", "-t", f"{end - start}", "-i", str(source),
-        "-c:v", "libx264", "-preset", "ultrafast", "-crf", "30", "-an", str(out_path),
+        "-vf", f"scale='min({max_edge},iw)':'min({max_edge},ih)':"
+               f"force_original_aspect_ratio=decrease:force_divisible_by=2",
+        "-c:v", "libx264", "-preset", "ultrafast", "-crf", str(crf), "-an", str(out_path),
     ]
     try:
         result = subprocess.run(cmd, capture_output=True, timeout=300)
@@ -111,7 +119,7 @@ def _cut(job):
 
 
 def rows_from_synth(synth_dir: Path, out_dir: Path, win: float, hop: float,
-                    workers: int, prefix: str) -> list[dict]:
+                    workers: int, prefix: str, max_edge: int = 448, crf: int = 32) -> list[dict]:
     """Cut each synthetic long video into windows and label each one."""
     gt = load_ground_truth(synth_dir / "ground_truth.csv")
     manifest = load_manifest(synth_dir / "manifest.json")
@@ -124,7 +132,7 @@ def rows_from_synth(synth_dir: Path, out_dir: Path, win: float, hop: float,
             continue
         for index, window in enumerate(plan(info.duration_sec, win=win, hop=hop)):
             path = window_dir / video_id / f"w{index:04d}.mp4"
-            jobs.append((str(source), window[0], window[1], str(path)))
+            jobs.append((str(source), window[0], window[1], str(path), max_edge, crf))
             meta.append((video_id, window, path))
 
     print(f"  cutting {len(jobs)} windows with {workers} workers ...")
@@ -159,6 +167,9 @@ def main() -> int:
                         help="20 = non-overlapping; inference uses 10 but training needs fewer rows")
     parser.add_argument("--val-fraction", type=float, default=0.05)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--max-edge", type=int, default=448,
+                        help="window clips are downscaled to this; the model sees 448x448 at most")
+    parser.add_argument("--window-crf", type=int, default=32)
     parser.add_argument("--seed", type=int, default=20260905)
     parser.add_argument("--path-prefix", default="/vol",
                         help="container mount the video paths resolve under; \"\" for repo-relative")
@@ -173,7 +184,8 @@ def main() -> int:
     for synth_dir in args.synth:
         print(f"building rows from {synth_dir} ...")
         synth_rows = rows_from_synth(synth_dir, args.out, args.win, args.hop,
-                                     args.workers, args.path_prefix)
+                                     args.workers, args.path_prefix,
+                                     args.max_edge, args.window_crf)
         print(f"  {len(synth_rows)} rows")
         rows += synth_rows
 

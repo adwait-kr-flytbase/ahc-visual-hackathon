@@ -79,7 +79,10 @@ that has exactly one example in the public test set. Caught and fixed; data rege
 
 ## Silent failures caught today
 
-None of these crash. All four would have shown up as "the model just isn't very good."
+**Seven, across three agents, in seven hours. None of them crashed.** Every one would have read as
+"the model just isn't very good", and #7 was caused by the fix for #5. This is the deck's strongest
+line: in this build, every failure that mattered was silent, so we validated intermediate artifacts
+rather than outputs — and the diagnostics we added for one failure are what caught the next.
 
 1. **ffmpeg truncates `-ss/-t`** past a clip's real length without error — a 468s video rendered as
    241s and every subsequent timestamp was wrong.
@@ -87,3 +90,24 @@ None of these crash. All four would have shown up as "the model just isn't very 
 3. **Clip pool keyed on folder, not label** — would have poisoned `wrong_way_driving`.
 4. **Empty model output vs. correct "no events"** were indistinguishable in my own code — now every
    window that yields zero events records the model's raw text.
+5. **One malformed API response truncated a 34-video run to 6, and the process still exited 0.**
+   `GeminiEngine` assumed every response carries `content.parts`. A safety block or a MAX_TOKENS
+   finish returns a candidate without them → `KeyError` at video 7. The exception killed the run,
+   and the run reported success. Fixed: per-video `try/except`, failures collected and printed.
+6. **A 20-minute A100 job was invisible.** The Modal GPU function used
+   `subprocess.run(capture_output=True)`, which buffers child output until exit — no progress, no
+   errors, nothing, for the whole job. Fixed: streams line-by-line, commits partial results every 60s.
+7. **The fix for #5 turned a loud failure into a silent one.** The restarted Gemini run wrote 10 of
+   its first 14 videos as `"events": []` — ten exceptions recorded as ten confident predictions of
+   normal, including `fire` and `smoke`. Two compounding causes: `maxOutputTokens=384` with no
+   thinking budget starves a Gemini 3.x reasoning model, which returns a fragment (`{\n  `) or a
+   candidate with no parts; and `run.py`'s new handler collapses "this video failed" into the same
+   bytes as "this video is normal", with the failure list printed only at exit.
+
+   **Caught by the diagnostic added for #4.** A genuine "no events" answer records the model's raw
+   text in `empty_window_raw`; these ten had `windows: 0` *and* `empty_window_raw: []`, a shape only
+   the exception path can produce. Without that field the run would have looked like a real result:
+   34 well-formed rows, exit 0, and a precision/recall table clean enough to paste into a deck.
+
+   Found while building the demo page against the live output — ten videos in a row rendered as
+   "model predicted normal" against obvious fire and smoke ground truth.

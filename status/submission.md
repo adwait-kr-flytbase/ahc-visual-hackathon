@@ -41,8 +41,9 @@ held-out videos: they're the only honest D2/D3 signal we have.
 ## 2 · The host-judged submission — manual, and worth a lot
 
 ### a. Code repository — REQUIRED
-Public or host-accessible. **Nothing is committed yet.** This is the single biggest unforced risk on
-the board right now: one `rm` and a day's work is gone, and the repo itself is graded.
+Public or host-accessible. **Committed and pushed** to
+`github.com/adwait-kr-flytbase/ahc-visual-hackathon`, one agent owning all commits.
+**Still private** — the spec requires the hosts can read it, so this has to be flipped before hand-in.
 
 ### b. Exactly two slides — REQUIRED, "carries high weight in the final judging"
 Must cover: **what you built · approach and why · what you learned.**
@@ -63,18 +64,40 @@ you to call out anything that made it **faster, cheaper, more reliable, or lower
    gate for free out of the decoder — the "what we'd do next" slide.
 
 ### c. Anything else — optional
-A live demo is the obvious candidate if the clock allows.
+**Built: `demo/index.html`.** Plays any test video with the ground truth and the model's predictions
+on one time axis, and marks every span found / missed / false alarm live in the page. Rebuilds from
+any run in one command:
+
+```
+PYTHONPATH=src python3 demo/build.py --run <name>
+open demo/index.html
+```
+
+Why it is worth showing a judge rather than describing:
+- **It scores itself against the answer key on screen.** A false alarm is a magenta band under an
+  empty truth lane and a worded count next to the timecode. The system's worst failure mode is
+  visible in one second, self-diagnosed, on real output.
+- **A timing error is a shape.** Each matched truth event is joined to its prediction by a ribbon,
+  so a perfect match is a rectangle and a drifted one is a visible skew. That is the D2/D3
+  IoU >= 0.5 rule made legible without a formula.
+- **It cannot disagree with our scorer.** `build.py` imports `ahc_vad.scoring.match_events`; there
+  is no second matcher in `demo/`.
+- **It refuses to flatter the run.** A video with no prediction reads `not run`, never "predicted
+  normal", and is excluded from the tallies. Predictions the scorer rejects still appear, greyed,
+  with the reason. This is what surfaced silent failure #7.
 
 ---
 
 ## Checklist
 
+- [x] Commit and push the repo
+- [ ] **Make the repo public or host-accessible** ← required, still private
 - [ ] Upload the all-empty submission (floor ~13.5, zero risk) — **confirm this is done**
-- [ ] Commit and push the repo ← **blocked on user approval**
 - [ ] Fill in the portal profile (the leaderboard shows your real name)
-- [ ] Submit a real zero-shot run
+- [ ] Submit a real zero-shot run — blocked: the Gemini restart is writing failures as predictions
 - [ ] Submit a fine-tuned run
-- [ ] Write the two slides
+- [ ] Write the two slides — **still has no owner**
+- [x] Demo artifact (`demo/index.html`), verified on real output and on malformed input
 
 
 ## Two-slide deck — DRAFT ready

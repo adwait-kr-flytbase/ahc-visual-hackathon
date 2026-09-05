@@ -79,6 +79,7 @@ def main():
     ap.add_argument("--single-max", type=float, default=30.0)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--skip", type=int, default=0, help="skip the first N videos")
     ap.add_argument("--keep-raw", action="store_true", default=True,
                     help="record model text for windows that produced no events")
     args = ap.parse_args()
@@ -92,6 +93,8 @@ def main():
         engine = ServerEngine(args.model, base_url=args.base_url)
 
     vids = video_list(args.videos, args.manifest)
+    if args.skip:
+        vids = vids[args.skip:]
     if args.limit:
         vids = vids[: args.limit]
 
@@ -101,20 +104,28 @@ def main():
     failures = []
     for i, v in enumerate(vids, 1):
         timer = Timer()
+        failed = None
         try:
             raw, empties = run_video(v, engine, args, timer)
         except Exception as exc:           # never lose 33 videos to one bad response
-            failures.append((v["video_id"], f"{type(exc).__name__}: {exc}"))
+            failed = f"{type(exc).__name__}: {exc}"
+            failures.append((v["video_id"], failed))
             print(f"[{i}/{len(vids)}] {v['video_id']} FAILED {type(exc).__name__}: {exc}",
                   flush=True)
             raw, empties = [], []
         meta = timer.metadata()
-        fw.write(json.dumps({"video_id": v["video_id"], "duration": v["duration"],
-                             "level": v["level"], "windows": raw,
-                             "empty_window_raw": empties, "runtime": meta}) + "\n")
+        row = {"video_id": v["video_id"], "duration": v["duration"],
+               "level": v["level"], "windows": raw,
+               "empty_window_raw": empties, "runtime": meta}
+        if failed:
+            row["failed"] = failed          # a FAILED video must never look like a NORMAL one
+        fw.write(json.dumps(row) + "\n")
         fw.flush()
         events = merge(raw, v["duration"])
-        fe.write(json.dumps({"video_id": v["video_id"], "events": events, "runtime": meta}) + "\n")
+        erow = {"video_id": v["video_id"], "events": events, "runtime": meta}
+        if failed:
+            erow["failed"] = failed
+        fe.write(json.dumps(erow) + "\n")
         fe.flush()
         print(f"[{i}/{len(vids)}] {v['video_id']} L{v['level']} {v['duration']:.0f}s "
               f"{timer.chunks}w -> {len(raw)} raw -> {len(events)} events "
