@@ -29,7 +29,7 @@ CORE = BASE.pip_install(
 TRAIN_CORE = (
     CORE.pip_install("trl", "datasets", "av", "decord", "qwen-vl-utils")
         .pip_install("git+https://github.com/modelscope/ms-swift.git")
-        .pip_install("transformers==4.57.1", "accelerate", "peft")
+        .pip_install("transformers==4.57.1", "accelerate", "peft", "hf_transfer")
 )
 
 # add_local_* must come LAST in every image chain -- Modal forbids build steps after it.
