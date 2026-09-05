@@ -142,6 +142,24 @@ Share of train rows where `end−start` equals the clip duration (±0.5 s):
 → For 7 of 11 classes **train carries no within-clip boundary supervision at all** — the label is
 just "this clip is class X". Only 4 classes have genuine sub-spans.
 
+### 49 malformed ground-truth rows in train — silently poisonous
+**49 of the 2,200 localised rows in `dataset/train` have `end_time_sec <= start_time_sec`** —
+zero-length or inverted events. `dataset/test` has **zero**.
+
+| class | bad rows |
+|---|---|
+| `stalled_or_broken_down_vehicle` | 16 |
+| `traffic_accident` | 11 |
+| `wrong_way_driving` | 10 |
+| `vehicle_blocking_traffic` | 5 |
+| `road_spill_or_debris` | 3 |
+| `smoke` | 3 |
+| `traffic_congestion` | 1 |
+
+Anything parsing these CSVs directly produces **garbage spans rather than crashing** — the failure
+mode that poisons a training set instead of stopping it. `ahc_vad.groundtruth.load_ground_truth`
+skips them and counts into `load_ground_truth.skipped`; pass `strict=True` to raise instead.
+
 ### No audio anywhere
 Every video checked is **video-only, no audio stream**. Rules out audio-based cues entirely
 (XD-Violence-style fusion, audio onset for `fighting`/`fire`). Closed door — do not spend time here.

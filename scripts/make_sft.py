@@ -30,6 +30,24 @@ from vad.windows import plan
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def to_container_path(path: Path | str, prefix: str) -> str:
+    """Rewrite a local path to where the file will live inside the Modal container.
+
+    Everything lands under the volume mount, and `out/` is stripped because the volume
+    root holds `synth-train/`, `sft/` etc. directly rather than an `out/` level:
+        dataset/train/fire/videos/X.mp4      -> /vol/dataset/train/fire/videos/X.mp4
+        out/synth-train/videos/ST0001.mp4    -> /vol/synth-train/videos/ST0001.mp4
+        out/sft/windows/ST0001/w0000.mp4     -> /vol/sft/windows/ST0001/w0000.mp4
+    An empty prefix leaves paths repo-relative, for running locally.
+    """
+    relative = Path(path).resolve().relative_to(ROOT)
+    parts = relative.parts
+    if parts and parts[0] == "out":
+        parts = parts[1:]
+    joined = "/".join(parts)
+    return f"{prefix.rstrip('/')}/{joined}" if prefix else joined
+
+
 def clip_events_into(window: tuple[float, float], events, min_overlap: float = 0.5) -> list[dict]:
     """Re-clip absolute-time events into window-RELATIVE times, dropping slivers."""
     start, end = window
@@ -53,7 +71,7 @@ def clip_events_into(window: tuple[float, float], events, min_overlap: float = 0
     return out
 
 
-def rows_from_clips(dataset: Path) -> list[dict]:
+def rows_from_clips(dataset: Path, prefix: str) -> list[dict]:
     """One row per short training clip. The clip IS the window -- nothing to re-encode."""
     real = _load_real_durations(ROOT / ".context" / "artifacts" / "videometa.tsv")
     rows = []
@@ -68,7 +86,9 @@ def rows_from_clips(dataset: Path) -> list[dict]:
             if not path.exists() or duration is None:
                 continue
             window = (0.0, duration)
-            rows.append(build_sft_sample(str(path), clip_events_into(window, events), duration))
+            rows.append(build_sft_sample(
+                to_container_path(path, prefix), clip_events_into(window, events), duration
+            ))
     return rows
 
 
@@ -90,7 +110,8 @@ def _cut(job):
     return str(out_path), result.returncode == 0 and out_path.exists()
 
 
-def rows_from_synth(synth_dir: Path, out_dir: Path, win: float, hop: float, workers: int) -> list[dict]:
+def rows_from_synth(synth_dir: Path, out_dir: Path, win: float, hop: float,
+                    workers: int, prefix: str) -> list[dict]:
     """Cut each synthetic long video into windows and label each one."""
     gt = load_ground_truth(synth_dir / "ground_truth.csv")
     manifest = load_manifest(synth_dir / "manifest.json")
@@ -120,7 +141,9 @@ def rows_from_synth(synth_dir: Path, out_dir: Path, win: float, hop: float, work
         if str(path) not in ok_paths:
             continue
         events = clip_events_into(window, gt.get(video_id, []))
-        rows.append(build_sft_sample(str(path), events, window[1] - window[0]))
+        rows.append(build_sft_sample(
+            to_container_path(path, prefix), events, window[1] - window[0]
+        ))
     return rows
 
 
@@ -137,17 +160,20 @@ def main() -> int:
     parser.add_argument("--val-fraction", type=float, default=0.05)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--seed", type=int, default=20260905)
+    parser.add_argument("--path-prefix", default="/vol",
+                        help="container mount the video paths resolve under; \"\" for repo-relative")
     args = parser.parse_args()
 
     rows: list[dict] = []
     if args.clips:
         print("building rows from short train clips ...")
-        clip_rows = rows_from_clips(args.dataset)
+        clip_rows = rows_from_clips(args.dataset, args.path_prefix)
         print(f"  {len(clip_rows)} rows")
         rows += clip_rows
     for synth_dir in args.synth:
         print(f"building rows from {synth_dir} ...")
-        synth_rows = rows_from_synth(synth_dir, args.out, args.win, args.hop, args.workers)
+        synth_rows = rows_from_synth(synth_dir, args.out, args.win, args.hop,
+                                     args.workers, args.path_prefix)
         print(f"  {len(synth_rows)} rows")
         rows += synth_rows
 
@@ -167,6 +193,8 @@ def main() -> int:
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
         empties = sum(1 for r in subset if '"events": []' in r["messages"][2]["content"])
         print(f"wrote {path}: {len(subset)} rows, {empties} negatives ({100*empties/len(subset):.0f}%)")
+    sample = (train or val)[0]["videos"][0]
+    print(f"video paths resolve as: {sample}")
     return 0
 
 
