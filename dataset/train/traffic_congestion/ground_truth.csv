@@ -1,0 +1,269 @@
+video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+TR00630,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00631,true,traffic_congestion,0.000,10.900,Traffic is congested and vehicles move slowly or queue.
+TR00632,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00633,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00634,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00635,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00636,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00637,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00638,true,traffic_congestion,0.000,10.267,Traffic is congested and vehicles move slowly or queue.
+TR00639,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00640,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00641,true,traffic_congestion,0.000,5.625,Dense or queued traffic is visible from an aerial viewpoint.
+TR00642,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00643,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00644,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00645,true,traffic_congestion,0.000,12.500,Traffic is congested and vehicles move slowly or queue.
+TR00646,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00647,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00648,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00649,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00650,true,traffic_congestion,0.000,15.567,Traffic is congested and vehicles move slowly or queue.
+TR00651,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00652,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00653,true,traffic_congestion,0.000,11.167,Traffic is congested and vehicles move slowly or queue.
+TR00654,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00655,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00656,true,traffic_congestion,0.000,15.934,Traffic is congested and vehicles move slowly or queue.
+TR00657,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00658,true,traffic_congestion,0.000,14.134,Traffic is congested and vehicles move slowly or queue.
+TR00659,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00660,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00661,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00662,true,traffic_congestion,0.000,13.900,Traffic is congested and vehicles move slowly or queue.
+TR00663,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00664,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00665,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00666,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00667,true,traffic_congestion,0.000,11.500,Traffic is congested and vehicles move slowly or queue.
+TR00668,true,traffic_congestion,0.000,17.167,Traffic is congested and vehicles move slowly or queue.
+TR00669,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00670,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00671,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00672,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00673,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00674,true,traffic_congestion,0.000,5.400,Heavy highway traffic forms congestion.
+TR00675,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00676,true,traffic_congestion,3.000,8.000,"A motorcycle enters the frame and performs a lane-splitting maneuver through the heavily congested traffic on the left side of the highway. Moving at a higher velocity than the surrounding vehicles, the motorcyclist weaves through the narrow gaps between slow-moving cars and a large bus to bypass the stop-and-go congestion. This behavior is a tactical navigation of the available road space to maintain momentum while the primary flow of traffic remains stalled."
+TR00677,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00678,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00679,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00680,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00681,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00682,true,traffic_congestion,0.000,4.000,"A black car travels straight along the right side of the divided highway, maintaining a steady and consistent pace within its lane. The vehicle follows the general flow of light, uncongested traffic, adhering to the lane markings under the illumination of the streetlights without any deviations or interactions with other vehicles."
+TR00683,true,traffic_congestion,3.000,8.000,"A white van and a dark pickup truck enter the flow of traffic moving away from the camera, joining the existing queue of vehicles in the right and middle lanes respectively. These vehicles maintain their lanes and drive straight, contributing to the high-density, slow-moving traffic pattern characteristic of the bottleneck occurring in that direction of travel."
+TR00684,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00685,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00686,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00687,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00688,true,traffic_congestion,3.000,9.000,"A yellow car enters the frame from the top and drives straight toward the bottom of the frame, maintaining a steady speed and position within the left lanes. The vehicle follows the established flow of uncongested traffic, passing through the scene without interaction or obstruction from other drivers, demonstrating a standard transit through a free-flowing urban roadway."
+TR00689,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00690,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00691,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00692,true,traffic_congestion,0.000,14.834,Traffic is congested and vehicles move slowly or queue.
+TR00693,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00694,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00695,true,traffic_congestion,0.000,6.000,"A silver or light-colored SUV travels straight through the third lane from the left on a divided highway. The vehicle maintains a steady, slow pace consistent with the surrounding congested traffic flow, adhering to its lane markings and following the lead of the vehicles ahead as part of a typical nighttime commute."
+TR00696,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00697,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00698,true,traffic_congestion,0.000,15.800,Traffic is congested and vehicles move slowly or queue.
+TR00699,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00700,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00701,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00702,true,traffic_congestion,0.000,14.534,Traffic is congested and vehicles move slowly or queue.
+TR00703,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00704,true,traffic_congestion,0.000,13.900,Traffic is congested and vehicles move slowly or queue.
+TR00705,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00706,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00707,true,traffic_congestion,0.000,15.234,Traffic is congested and vehicles move slowly or queue.
+TR00708,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00709,true,traffic_congestion,0.000,15.234,Traffic is congested and vehicles move slowly or queue.
+TR00710,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00711,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00712,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00713,true,traffic_congestion,0.000,11.934,Traffic is congested and vehicles move slowly or queue.
+TR00714,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00715,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00716,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00717,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00718,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00719,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00720,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00721,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00722,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00723,true,traffic_congestion,0.000,5.625,Dense or queued traffic is visible from an aerial viewpoint.
+TR00724,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00725,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00726,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00727,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00728,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00729,true,traffic_congestion,0.000,5.400,Heavy highway traffic forms congestion.
+TR00730,true,traffic_congestion,0.000,14.467,Traffic is congested and vehicles move slowly or queue.
+TR00731,true,traffic_congestion,0.000,13.634,Traffic is congested and vehicles move slowly or queue.
+TR00732,true,traffic_congestion,0.000,12.167,Traffic is congested and vehicles move slowly or queue.
+TR00733,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00734,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00735,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00736,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00737,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00738,true,traffic_congestion,0.000,5.000,"A white car and a black car travel straight toward the camera on the left side of the road, while a yellow taxi moves straight away from the camera on the right side. The vehicles maintain consistent speeds and stay within their respective lanes on the wet highway, reflecting a period of smooth, uncongested traffic flow where drivers adhere to standard lane discipline."
+TR00739,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00740,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00741,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00742,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00743,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00744,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00745,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00746,true,traffic_congestion,0.000,14.800,Traffic is congested and vehicles move slowly or queue.
+TR00747,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00748,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00749,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00750,true,traffic_congestion,0.000,4.700,Heavy highway traffic forms congestion.
+TR00751,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00752,true,traffic_congestion,0.000,12.134,Traffic is congested and vehicles move slowly or queue.
+TR00753,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00754,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00755,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00756,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00757,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00758,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00759,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00760,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00761,true,traffic_congestion,0.000,14.567,Traffic is congested and vehicles move slowly or queue.
+TR00762,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00763,true,traffic_congestion,0.000,15.900,Traffic is congested and vehicles move slowly or queue.
+TR00764,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00765,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00766,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00767,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00768,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00769,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00770,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00771,true,traffic_congestion,0.000,16.534,Traffic is congested and vehicles move slowly or queue.
+TR00772,true,traffic_congestion,0.000,10.967,Traffic is congested and vehicles move slowly or queue.
+TR00773,true,traffic_congestion,3.000,8.000,"A motorcycle navigates through the congested right side of the highway by lane-splitting between the two leftmost lanes. Because the surrounding vehicles are caught in a stop-and-go traffic jam and moving at a very slow pace, the motorcyclist utilizes the gap between the lanes to bypass the stationary queue and maintain forward momentum, a common maneuver used to avoid delays in heavy urban or highway congestion."
+TR00774,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00775,true,traffic_congestion,3.000,5.900,"A blue truck traveling at a high rate of speed fails to stop for congested traffic, initiating a massive multi-vehicle pile-up. The truck first sideswipes a white SUV in lane 3 before veering into that lane and acting as a battering ram, rear-ending and deflecting a white hatchback, a white van, and a blue SUV. The truck then shifts into lane 2, where it strikes and displaces a white sedan before moving toward the bottom left of the frame. The root cause of the anomaly is the truck driver's failure to decelerate and maintain a safe following distance, resulting in a violent chain reaction that scatters several stationary vehicles across the roadway."
+TR00776,true,traffic_congestion,0.000,15.200,Traffic is congested and vehicles move slowly or queue.
+TR00777,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00778,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00779,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00780,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00781,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00782,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00783,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00784,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00785,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00786,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00787,true,traffic_congestion,0.000,16.900,Traffic is congested and vehicles move slowly or queue.
+TR00788,true,traffic_congestion,0.000,5.750,Dense or queued traffic is visible from an aerial viewpoint.
+TR00789,true,traffic_congestion,0.000,11.567,Traffic is congested and vehicles move slowly or queue.
+TR00790,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00791,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00792,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00793,true,traffic_congestion,0.000,12.567,Traffic is congested and vehicles move slowly or queue.
+TR00794,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00795,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00796,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00797,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00798,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00799,true,traffic_congestion,0.000,13.467,Traffic is congested and vehicles move slowly or queue.
+TR00800,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00801,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00802,true,traffic_congestion,3.000,8.000,"A motorcycle performs a lane-splitting maneuver, navigating through the narrow gaps between slow-moving vehicles on the right side of the highway. Because the surrounding cars are caught in heavy, stop-and-go congestion, the motorcycle utilizes the available space between lanes to bypass the traffic jam at a higher speed than the automobiles, effectively filtering through the congestion to maintain forward momentum."
+TR00803,true,traffic_congestion,0.000,10.500,Traffic is congested and vehicles move slowly or queue.
+TR00804,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00805,true,traffic_congestion,0.000,17.834,Traffic is congested and vehicles move slowly or queue.
+TR00806,true,traffic_congestion,0.000,11.134,Traffic is congested and vehicles move slowly or queue.
+TR00807,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00808,true,traffic_congestion,0.000,5.400,Heavy highway traffic forms congestion.
+TR00809,true,traffic_congestion,0.000,10.234,Traffic is congested and vehicles move slowly or queue.
+TR00810,true,traffic_congestion,0.000,15.467,Traffic is congested and vehicles move slowly or queue.
+TR00811,true,traffic_congestion,0.000,11.834,Traffic is congested and vehicles move slowly or queue.
+TR00812,true,traffic_congestion,0.000,11.534,Traffic is congested and vehicles move slowly or queue.
+TR00813,true,traffic_congestion,0.000,5.209,Dense or queued traffic is visible from an aerial viewpoint.
+TR00814,true,traffic_congestion,0.000,16.900,Traffic is congested and vehicles move slowly or queue.
+TR00815,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00816,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00817,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00818,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00819,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00820,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00821,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00822,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00823,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00824,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00825,true,traffic_congestion,0.000,16.200,Traffic is congested and vehicles move slowly or queue.
+TR00826,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00827,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00828,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00829,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00830,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00831,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00832,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00833,true,traffic_congestion,0.000,10.534,Traffic is congested and vehicles move slowly or queue.
+TR00834,true,traffic_congestion,0.000,17.567,Traffic is congested and vehicles move slowly or queue.
+TR00835,true,traffic_congestion,0.000,14.800,Traffic is congested and vehicles move slowly or queue.
+TR00836,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00837,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00838,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00839,true,traffic_congestion,0.000,12.500,Traffic is congested and vehicles move slowly or queue.
+TR00840,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00841,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00842,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00843,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00844,true,traffic_congestion,0.000,10.234,Traffic is congested and vehicles move slowly or queue.
+TR00845,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00846,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00847,true,traffic_congestion,0.000,12.467,Traffic is congested and vehicles move slowly or queue.
+TR00848,true,traffic_congestion,0.000,10.234,Traffic is congested and vehicles move slowly or queue.
+TR00849,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00850,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00851,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00852,true,traffic_congestion,0.000,5.200,Heavy highway traffic forms congestion.
+TR00853,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00854,true,traffic_congestion,0.000,5.100,Heavy highway traffic forms congestion.
+TR00855,true,traffic_congestion,0.000,5.792,Dense or queued traffic is visible from an aerial viewpoint.
+TR00856,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00857,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00858,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00859,true,traffic_congestion,0.000,10.500,Traffic is congested and vehicles move slowly or queue.
+TR00860,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00861,true,traffic_congestion,3.000,8.000,"A motorcycle performs a lane-splitting maneuver, traveling between the middle lane occupied by a black SUV and the rightmost lane occupied by a white car. The motorcycle utilizes the available space between these two slow-moving vehicles to bypass the congested traffic flow, maintaining a trajectory parallel to the lane markings to advance more quickly than the surrounding motorized traffic."
+TR00862,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00863,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00864,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00865,true,traffic_congestion,0.000,12.967,Traffic is congested and vehicles move slowly or queue.
+TR00866,true,traffic_congestion,0.000,5.400,Heavy highway traffic forms congestion.
+TR00867,true,traffic_congestion,0.000,10.567,Traffic is congested and vehicles move slowly or queue.
+TR00868,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00869,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00870,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00871,true,traffic_congestion,0.000,5.709,Dense or queued traffic is visible from an aerial viewpoint.
+TR00872,true,traffic_congestion,0.000,5.667,Dense or queued traffic is visible from an aerial viewpoint.
+TR00873,true,traffic_congestion,0.000,13.200,Traffic is congested and vehicles move slowly or queue.
+TR00874,true,traffic_congestion,0.000,13.300,Traffic is congested and vehicles move slowly or queue.
+TR00875,true,traffic_congestion,0.000,16.267,Traffic is congested and vehicles move slowly or queue.
+TR00876,true,traffic_congestion,3.000,8.000,"A large semi-truck with a brightly lit yellow cab and a white trailer enters the frame on the left side of the highway, moving slowly toward the bottom of the screen. The truck maintains a steady pace and stays within its lane, following the general flow of heavy, congested traffic as it moves forward in the middle lanes."
+TR00877,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00878,true,traffic_congestion,0.000,5.300,Heavy highway traffic forms congestion.
+TR00879,true,traffic_congestion,0.000,16.534,Traffic is congested and vehicles move slowly or queue.
+TR02756,true,traffic_congestion,5.000,10.000,"A white van and a dark pickup truck enter the flow of traffic moving away from the camera, joining the existing queue of vehicles in the right and middle lanes respectively. These vehicles maintain their lanes and drive straight, contributing to the high-density, slow-moving traffic pattern characteristic of the bottleneck occurring in that direction of travel."
+TR02766,true,traffic_congestion,9.000,14.000,"A white car that was previously stationary in the middle lane begins to accelerate and move forward, signaling the release of a localized traffic congestion. As the white car advances, it clears the path for trailing vehicles, allowing the flow of traffic in that specific lane to transition from a standstill to active movement in accordance with the easing of the bottleneck."
+TR02776,true,traffic_congestion,8.000,13.000,"A white sedan travels straight through the right lane of the left carriageway, maintaining a consistent highway speed and a steady trajectory. The vehicle adheres to lane discipline, remaining centered between the dashed white line on its left and the solid white edge line on its right, reflecting standard highway cruising behavior in the absence of traffic congestion or obstacles."
+TR02785,true,traffic_congestion,0.000,4.000,"A black car travels straight along the right side of the divided highway, maintaining a steady and consistent pace within its lane. The vehicle follows the general flow of light, uncongested traffic, adhering to the lane markings under the illumination of the streetlights without any deviations or interactions with other vehicles."
+TR02794,true,traffic_congestion,0.000,20.000,"A high volume of congested traffic moves slowly towards the camera on the left side of a divided highway, while a lower volume of vehicles travels at a faster, free-flowing pace away from the camera on the right side. The drivers on the left experience stop-and-go conditions, requiring them to maintain close spacing and occasional lane adjustments, whereas the drivers on the right maintain steady speeds with sparse distribution. This stark directional asymmetry in traffic density and speed is characteristic of nighttime highway travel where one direction experiences heavy congestion while the opposite remains clear."
+TR02802,true,traffic_congestion,4.600,7.650,"A multi-vehicle chain-reaction collision occurs in the fifth lane from the left. An orange SUV fails to stop in time and rear-ends a stopped blue hatchback, which is then propelled forward into another stopped orange SUV. Immediately following this, a black sedan traveling behind the group fails to brake and crashes into the rear of the first orange SUV. This pileup is caused by the drivers of the orange SUV and the black sedan failing to maintain a safe following distance and adjust their speed to the congested traffic ahead."
+TR02810,true,traffic_congestion,10.000,15.000,"A motorcycle performs a lane-splitting maneuver, navigating through the narrow gaps between slow-moving vehicles on the right side of the highway. Because the surrounding cars are caught in heavy, stop-and-go congestion, the motorcycle utilizes the available space between lanes to bypass the traffic jam at a higher speed than the automobiles, effectively filtering through the congestion to maintain forward momentum."
+TR02818,true,traffic_congestion,20.040,20.040,"A white car and a black car travel straight within the rightmost lane, gradually decelerating as they encounter increasing traffic congestion. This reduction in speed is a necessary response to the slow-moving queue ahead, ensuring the drivers maintain a safe following distance while adhering to the flow of the congested multi-lane roadway."
+TR02826,true,traffic_congestion,0.000,5.000,"A dark SUV police vehicle with active flashing blue lights moves slowly through heavy, congested traffic on the left side of the highway median. The vehicle maintains its position in the rightmost lane of the congested flow, pacing the other cars and SUVs in a slow, stop-and-go manner. This behavior indicates a monitoring or patrolling presence within the slow-moving traffic stream rather than an emergency response requiring a clear path."
+TR02833,true,traffic_congestion,0.000,5.000,"Multiple vehicles, including a white car, a black car, and a white SUV, maintain steady, straight-line trajectories within their respective lanes on a multi-lane highway. The traffic flows freely in both directions without interruption, as each driver adheres to lane markings and maintains consistent highway speeds, reflecting a standard state of uncongested traffic flow where right-of-way is naturally maintained by lane discipline."
+TR02840,true,traffic_congestion,5.000,11.000,"A yellow car enters the frame from the top and drives straight toward the bottom of the frame, maintaining a steady speed and position within the left lanes. The vehicle follows the established flow of uncongested traffic, passing through the scene without interaction or obstruction from other drivers, demonstrating a standard transit through a free-flowing urban roadway."
+TR02847,true,traffic_congestion,5.000,10.000,"A motorcycle navigates through the congested right side of the highway by lane-splitting between the two leftmost lanes. Because the surrounding vehicles are caught in a stop-and-go traffic jam and moving at a very slow pace, the motorcyclist utilizes the gap between the lanes to bypass the stationary queue and maintain forward momentum, a common maneuver used to avoid delays in heavy urban or highway congestion."
+TR02854,true,traffic_congestion,10.000,15.000,"A large semi-truck with a brightly lit yellow cab and a white trailer enters the frame on the left side of the highway, moving slowly toward the bottom of the screen. The truck maintains a steady pace and stays within its lane, following the general flow of heavy, congested traffic as it moves forward in the middle lanes."
+TR02861,true,traffic_congestion,7.000,12.000,"A motorcycle enters the frame and performs a lane-splitting maneuver through the heavily congested traffic on the left side of the highway. Moving at a higher velocity than the surrounding vehicles, the motorcyclist weaves through the narrow gaps between slow-moving cars and a large bus to bypass the stop-and-go congestion. This behavior is a tactical navigation of the available road space to maintain momentum while the primary flow of traffic remains stalled."
+TR02868,true,traffic_congestion,5.000,10.000,"A motorcycle performs a lane-splitting maneuver, traveling between the middle lane occupied by a black SUV and the rightmost lane occupied by a white car. The motorcycle utilizes the available space between these two slow-moving vehicles to bypass the congested traffic flow, maintaining a trajectory parallel to the lane markings to advance more quickly than the surrounding motorized traffic."
+TR02875,true,traffic_congestion,0.000,6.000,"A silver or light-colored SUV travels straight through the third lane from the left on a divided highway. The vehicle maintains a steady, slow pace consistent with the surrounding congested traffic flow, adhering to its lane markings and following the lead of the vehicles ahead as part of a typical nighttime commute."
+TR02882,true,traffic_congestion,0.000,5.000,"A white car and a black car travel straight toward the camera on the left side of the road, while a yellow taxi moves straight away from the camera on the right side. The vehicles maintain consistent speeds and stay within their respective lanes on the wet highway, reflecting a period of smooth, uncongested traffic flow where drivers adhere to standard lane discipline."
+TR02889,true,traffic_congestion,3.190,6.090,"A blue truck traveling at a high rate of speed fails to stop for congested traffic, initiating a massive multi-vehicle pile-up. The truck first sideswipes a white SUV in lane 3 before veering into that lane and acting as a battering ram, rear-ending and deflecting a white hatchback, a white van, and a blue SUV. The truck then shifts into lane 2, where it strikes and displaces a white sedan before moving toward the bottom left of the frame. The root cause of the anomaly is the truck driver's failure to decelerate and maintain a safe following distance, resulting in a violent chain reaction that scatters several stationary vehicles across the roadway."

@@ -1,0 +1,974 @@
+video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+TR01850,false,normal,,,Normal road traffic with no target anomaly.
+TR01851,false,normal,,,Routine aerial activity with no target anomaly.
+TR01852,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01853,false,normal,,,Routine aerial activity with no target anomaly.
+TR01854,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01855,false,normal,,,Routine aerial activity with no target anomaly.
+TR01856,false,normal,,,Routine aerial activity with no target anomaly.
+TR01857,false,normal,,,Routine activity with no target anomaly.
+TR01858,false,normal,,,Routine activity with no target anomaly.
+TR01859,false,normal,,,Routine activity with no target anomaly.
+TR01860,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR01861,false,normal,,,Routine aerial activity with no target anomaly.
+TR01862,false,normal,,,Routine activity with no target anomaly.
+TR01863,false,normal,,,Routine aerial activity with no target anomaly.
+TR01864,false,normal,,,Routine activity with no target anomaly.
+TR01865,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR01866,false,normal,,,Routine activity with no target anomaly.
+TR01867,false,normal,,,Routine activity with no target anomaly.
+TR01868,false,normal,,,Routine activity with no target anomaly.
+TR01869,false,normal,,,Routine activity with no target anomaly.
+TR01870,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01871,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01872,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01873,false,normal,,,Routine aerial activity with no target anomaly.
+TR01874,false,normal,,,Routine activity with no target anomaly.
+TR01875,false,normal,,,Routine activity with no target anomaly.
+TR01876,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01877,false,normal,,,Routine aerial activity with no target anomaly.
+TR01878,false,normal,,,Routine activity with no target anomaly.
+TR01879,false,normal,,,Routine activity with no target anomaly.
+TR01880,false,normal,,,Routine aerial activity with no target anomaly.
+TR01881,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR01882,false,normal,,,Routine activity with no target anomaly.
+TR01883,false,normal,,,Routine aerial activity with no target anomaly.
+TR01884,false,normal,,,Normal road traffic with no target anomaly.
+TR01885,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01886,false,normal,,,Normal road traffic with no target anomaly.
+TR01887,false,normal,,,Normal road traffic with no target anomaly.
+TR01888,false,normal,,,Routine aerial activity with no target anomaly.
+TR01889,false,normal,,,Routine activity with no target anomaly.
+TR01890,false,normal,,,Routine activity with no target anomaly.
+TR01891,false,normal,,,Routine activity with no target anomaly.
+TR01892,false,normal,,,Routine activity with no target anomaly.
+TR01893,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR01894,false,normal,,,Routine aerial activity with no target anomaly.
+TR01895,false,normal,,,Routine activity with no target anomaly.
+TR01896,false,normal,,,Routine aerial activity with no target anomaly.
+TR01897,false,normal,,,Routine aerial activity with no target anomaly.
+TR01898,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01899,false,normal,,,Normal road traffic with no target anomaly.
+TR01900,false,normal,,,Routine activity with no target anomaly.
+TR01901,false,normal,,,Routine activity with no target anomaly.
+TR01902,false,normal,,,Normal road traffic with no target anomaly.
+TR01903,false,normal,,,Routine activity with no target anomaly.
+TR01904,false,normal,,,Routine activity with no target anomaly.
+TR01905,false,normal,,,Routine activity with no target anomaly.
+TR01906,false,normal,,,Routine activity with no target anomaly.
+TR01907,false,normal,,,Routine activity with no target anomaly.
+TR01908,false,normal,,,Routine activity with no target anomaly.
+TR01909,false,normal,,,Routine aerial activity with no target anomaly.
+TR01910,false,normal,,,Routine aerial activity with no target anomaly.
+TR01911,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01912,false,normal,,,Normal road traffic with no target anomaly.
+TR01913,false,normal,,,Routine activity with no target anomaly.
+TR01914,false,normal,,,Routine activity with no target anomaly.
+TR01915,false,normal,,,Routine activity with no target anomaly.
+TR01916,false,normal,,,Routine aerial activity with no target anomaly.
+TR01917,false,normal,,,Routine activity with no target anomaly.
+TR01918,false,normal,,,Routine activity with no target anomaly.
+TR01919,false,normal,,,Routine aerial activity with no target anomaly.
+TR01920,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01921,false,normal,,,Routine aerial activity with no target anomaly.
+TR01922,false,normal,,,Routine activity with no target anomaly.
+TR01923,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01924,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01925,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01926,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01927,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01928,false,normal,,,Routine aerial activity with no target anomaly.
+TR01929,false,normal,,,Normal road traffic with no target anomaly.
+TR01930,false,normal,,,Routine aerial activity with no target anomaly.
+TR01931,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01932,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01933,false,normal,,,Routine aerial activity with no target anomaly.
+TR01934,false,normal,,,Routine aerial activity with no target anomaly.
+TR01935,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01936,false,normal,,,Routine aerial activity with no target anomaly.
+TR01937,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01938,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01939,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR01940,false,normal,,,Routine aerial activity with no target anomaly.
+TR01941,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01942,false,normal,,,Routine aerial activity with no target anomaly.
+TR01943,false,normal,,,Routine aerial activity with no target anomaly.
+TR01944,false,normal,,,Routine activity with no target anomaly.
+TR01945,false,normal,,,Routine aerial activity with no target anomaly.
+TR01946,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01947,false,normal,,,Routine activity with no target anomaly.
+TR01948,false,normal,,,Routine activity with no target anomaly.
+TR01949,false,normal,,,Routine aerial activity with no target anomaly.
+TR01950,false,normal,,,Routine activity with no target anomaly.
+TR01951,false,normal,,,Routine activity with no target anomaly.
+TR01952,false,normal,,,Routine aerial activity with no target anomaly.
+TR01953,false,normal,,,Routine activity with no target anomaly.
+TR01954,false,normal,,,Normal road traffic with no target anomaly.
+TR01955,false,normal,,,Routine activity with no target anomaly.
+TR01956,false,normal,,,Routine activity with no target anomaly.
+TR01957,false,normal,,,Routine activity with no target anomaly.
+TR01958,false,normal,,,Routine activity with no target anomaly.
+TR01959,false,normal,,,Routine activity with no target anomaly.
+TR01960,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01961,false,normal,,,Routine aerial activity with no target anomaly.
+TR01962,false,normal,,,Normal road traffic with no target anomaly.
+TR01963,false,normal,,,Routine activity with no target anomaly.
+TR01964,false,normal,,,Routine activity with no target anomaly.
+TR01965,false,normal,,,Routine activity with no target anomaly.
+TR01966,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01967,false,normal,,,Normal road traffic with no target anomaly.
+TR01968,false,normal,,,Routine aerial activity with no target anomaly.
+TR01969,false,normal,,,Routine aerial activity with no target anomaly.
+TR01970,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01971,false,normal,,,Normal road traffic with no target anomaly.
+TR01972,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01973,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01974,false,normal,,,Routine aerial activity with no target anomaly.
+TR01975,false,normal,,,Routine aerial activity with no target anomaly.
+TR01976,false,normal,,,Normal road traffic with no target anomaly.
+TR01977,false,normal,,,Routine aerial activity with no target anomaly.
+TR01978,false,normal,,,Routine activity with no target anomaly.
+TR01979,false,normal,,,Routine activity with no target anomaly.
+TR01980,false,normal,,,Routine aerial activity with no target anomaly.
+TR01981,false,normal,,,Routine aerial activity with no target anomaly.
+TR01982,false,normal,,,Routine aerial activity with no target anomaly.
+TR01983,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR01984,false,normal,,,Routine aerial activity with no target anomaly.
+TR01985,false,normal,,,Routine activity with no target anomaly.
+TR01986,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01987,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01988,false,normal,,,Routine aerial activity with no target anomaly.
+TR01989,false,normal,,,Routine activity with no target anomaly.
+TR01990,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01991,false,normal,,,Routine activity with no target anomaly.
+TR01992,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01993,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01994,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01995,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR01996,false,normal,,,Routine activity with no target anomaly.
+TR01997,false,normal,,,Routine activity with no target anomaly.
+TR01998,false,normal,,,Routine activity with no target anomaly.
+TR01999,false,normal,,,Routine aerial activity with no target anomaly.
+TR02000,false,normal,,,Normal road traffic with no target anomaly.
+TR02001,false,normal,,,Routine activity with no target anomaly.
+TR02002,false,normal,,,Routine activity with no target anomaly.
+TR02003,false,normal,,,Routine activity with no target anomaly.
+TR02004,false,normal,,,Routine aerial activity with no target anomaly.
+TR02005,false,normal,,,Routine aerial activity with no target anomaly.
+TR02006,false,normal,,,Routine activity with no target anomaly.
+TR02007,false,normal,,,Routine activity with no target anomaly.
+TR02008,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02009,false,normal,,,Routine aerial activity with no target anomaly.
+TR02010,false,normal,,,Normal road traffic with no target anomaly.
+TR02011,false,normal,,,Routine aerial activity with no target anomaly.
+TR02012,false,normal,,,Routine activity with no target anomaly.
+TR02013,false,normal,,,Routine activity with no target anomaly.
+TR02014,false,normal,,,Routine aerial activity with no target anomaly.
+TR02015,false,normal,,,Routine activity with no target anomaly.
+TR02016,false,normal,,,Routine aerial activity with no target anomaly.
+TR02017,false,normal,,,Routine aerial activity with no target anomaly.
+TR02018,false,normal,,,Routine activity with no target anomaly.
+TR02019,false,normal,,,Routine aerial activity with no target anomaly.
+TR02020,false,normal,,,Normal road traffic with no target anomaly.
+TR02021,false,normal,,,Routine activity with no target anomaly.
+TR02022,false,normal,,,Routine activity with no target anomaly.
+TR02023,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02024,false,normal,,,Routine activity with no target anomaly.
+TR02025,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02026,false,normal,,,Routine activity with no target anomaly.
+TR02027,false,normal,,,Routine activity with no target anomaly.
+TR02028,false,normal,,,Normal road traffic with no target anomaly.
+TR02029,false,normal,,,Routine aerial activity with no target anomaly.
+TR02030,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02031,false,normal,,,Routine aerial activity with no target anomaly.
+TR02032,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02033,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02034,false,normal,,,Routine activity with no target anomaly.
+TR02035,false,normal,,,Routine activity with no target anomaly.
+TR02036,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02037,false,normal,,,Routine aerial activity with no target anomaly.
+TR02038,false,normal,,,Routine activity with no target anomaly.
+TR02039,false,normal,,,Routine activity with no target anomaly.
+TR02040,false,normal,,,Routine activity with no target anomaly.
+TR02041,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02042,false,normal,,,Routine activity with no target anomaly.
+TR02043,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02044,false,normal,,,Routine aerial activity with no target anomaly.
+TR02045,false,normal,,,Routine activity with no target anomaly.
+TR02046,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02047,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02048,false,normal,,,Routine activity with no target anomaly.
+TR02049,false,normal,,,Routine aerial activity with no target anomaly.
+TR02050,false,normal,,,Normal road traffic with no target anomaly.
+TR02051,false,normal,,,Routine activity with no target anomaly.
+TR02052,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02053,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02054,false,normal,,,Routine aerial activity with no target anomaly.
+TR02055,false,normal,,,Normal road traffic with no target anomaly.
+TR02056,false,normal,,,Routine activity with no target anomaly.
+TR02057,false,normal,,,Routine activity with no target anomaly.
+TR02058,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02059,false,normal,,,Routine activity with no target anomaly.
+TR02060,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02061,false,normal,,,Routine activity with no target anomaly.
+TR02062,false,normal,,,Routine aerial activity with no target anomaly.
+TR02063,false,normal,,,Routine aerial activity with no target anomaly.
+TR02064,false,normal,,,Routine activity with no target anomaly.
+TR02065,false,normal,,,Routine aerial activity with no target anomaly.
+TR02066,false,normal,,,Routine activity with no target anomaly.
+TR02067,false,normal,,,Routine aerial activity with no target anomaly.
+TR02068,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02069,false,normal,,,Routine activity with no target anomaly.
+TR02070,false,normal,,,Routine activity with no target anomaly.
+TR02071,false,normal,,,Routine aerial activity with no target anomaly.
+TR02072,false,normal,,,Routine activity with no target anomaly.
+TR02073,false,normal,,,Routine activity with no target anomaly.
+TR02074,false,normal,,,Routine activity with no target anomaly.
+TR02075,false,normal,,,Routine aerial activity with no target anomaly.
+TR02076,false,normal,,,Routine activity with no target anomaly.
+TR02077,false,normal,,,Routine activity with no target anomaly.
+TR02078,false,normal,,,Routine activity with no target anomaly.
+TR02079,false,normal,,,Routine activity with no target anomaly.
+TR02080,false,normal,,,Routine activity with no target anomaly.
+TR02081,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02082,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02083,false,normal,,,Routine activity with no target anomaly.
+TR02084,false,normal,,,Routine activity with no target anomaly.
+TR02085,false,normal,,,Routine activity with no target anomaly.
+TR02086,false,normal,,,Routine aerial activity with no target anomaly.
+TR02087,false,normal,,,Routine aerial activity with no target anomaly.
+TR02088,false,normal,,,Normal road traffic with no target anomaly.
+TR02089,false,normal,,,Routine activity with no target anomaly.
+TR02090,false,normal,,,Routine activity with no target anomaly.
+TR02091,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02092,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02093,false,normal,,,Routine activity with no target anomaly.
+TR02094,false,normal,,,Routine activity with no target anomaly.
+TR02095,false,normal,,,Routine activity with no target anomaly.
+TR02096,false,normal,,,Routine activity with no target anomaly.
+TR02097,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02098,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02099,false,normal,,,Normal road traffic with no target anomaly.
+TR02100,false,normal,,,Routine activity with no target anomaly.
+TR02101,false,normal,,,Routine aerial activity with no target anomaly.
+TR02102,false,normal,,,Normal road traffic with no target anomaly.
+TR02103,false,normal,,,Normal road traffic with no target anomaly.
+TR02104,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02105,false,normal,,,Routine activity with no target anomaly.
+TR02106,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02107,false,normal,,,Routine activity with no target anomaly.
+TR02108,false,normal,,,Routine activity with no target anomaly.
+TR02109,false,normal,,,Routine activity with no target anomaly.
+TR02110,false,normal,,,Normal road traffic with no target anomaly.
+TR02111,false,normal,,,Routine activity with no target anomaly.
+TR02112,false,normal,,,Routine activity with no target anomaly.
+TR02113,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02114,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02115,false,normal,,,Routine aerial activity with no target anomaly.
+TR02116,false,normal,,,Routine aerial activity with no target anomaly.
+TR02117,false,normal,,,Routine activity with no target anomaly.
+TR02118,false,normal,,,Routine activity with no target anomaly.
+TR02119,false,normal,,,Routine activity with no target anomaly.
+TR02120,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02121,false,normal,,,Routine activity with no target anomaly.
+TR02122,false,normal,,,Routine activity with no target anomaly.
+TR02123,false,normal,,,Routine activity with no target anomaly.
+TR02124,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02125,false,normal,,,Routine activity with no target anomaly.
+TR02126,false,normal,,,Routine aerial activity with no target anomaly.
+TR02127,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02128,false,normal,,,Normal road traffic with no target anomaly.
+TR02129,false,normal,,,Routine aerial activity with no target anomaly.
+TR02130,false,normal,,,Routine activity with no target anomaly.
+TR02131,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02132,false,normal,,,Normal road traffic with no target anomaly.
+TR02133,false,normal,,,Routine activity with no target anomaly.
+TR02134,false,normal,,,Normal road traffic with no target anomaly.
+TR02135,false,normal,,,Routine activity with no target anomaly.
+TR02136,false,normal,,,Routine aerial activity with no target anomaly.
+TR02137,false,normal,,,Routine activity with no target anomaly.
+TR02138,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02139,false,normal,,,Routine aerial activity with no target anomaly.
+TR02140,false,normal,,,Routine aerial activity with no target anomaly.
+TR02141,false,normal,,,Routine activity with no target anomaly.
+TR02142,false,normal,,,Routine aerial activity with no target anomaly.
+TR02143,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02144,false,normal,,,Normal road traffic with no target anomaly.
+TR02145,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02146,false,normal,,,Routine activity with no target anomaly.
+TR02147,false,normal,,,Routine activity with no target anomaly.
+TR02148,false,normal,,,Routine activity with no target anomaly.
+TR02149,false,normal,,,Routine activity with no target anomaly.
+TR02150,false,normal,,,Routine activity with no target anomaly.
+TR02151,false,normal,,,Routine activity with no target anomaly.
+TR02152,false,normal,,,Routine aerial activity with no target anomaly.
+TR02153,false,normal,,,Routine activity with no target anomaly.
+TR02154,false,normal,,,Routine activity with no target anomaly.
+TR02155,false,normal,,,Routine activity with no target anomaly.
+TR02156,false,normal,,,Normal road traffic with no target anomaly.
+TR02157,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02158,false,normal,,,Routine aerial activity with no target anomaly.
+TR02159,false,normal,,,Routine aerial activity with no target anomaly.
+TR02160,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02161,false,normal,,,Routine activity with no target anomaly.
+TR02162,false,normal,,,Routine activity with no target anomaly.
+TR02163,false,normal,,,Routine activity with no target anomaly.
+TR02164,false,normal,,,Routine aerial activity with no target anomaly.
+TR02165,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02166,false,normal,,,Routine activity with no target anomaly.
+TR02167,false,normal,,,Routine activity with no target anomaly.
+TR02168,false,normal,,,Routine activity with no target anomaly.
+TR02169,false,normal,,,Routine activity with no target anomaly.
+TR02170,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02171,false,normal,,,Routine activity with no target anomaly.
+TR02172,false,normal,,,Routine aerial activity with no target anomaly.
+TR02173,false,normal,,,Routine activity with no target anomaly.
+TR02174,false,normal,,,Normal road traffic with no target anomaly.
+TR02175,false,normal,,,Routine activity with no target anomaly.
+TR02176,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02177,false,normal,,,Routine aerial activity with no target anomaly.
+TR02178,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02179,false,normal,,,Routine activity with no target anomaly.
+TR02180,false,normal,,,Normal road traffic with no target anomaly.
+TR02181,false,normal,,,Routine activity with no target anomaly.
+TR02182,false,normal,,,Routine aerial activity with no target anomaly.
+TR02183,false,normal,,,Normal road traffic with no target anomaly.
+TR02184,false,normal,,,Routine activity with no target anomaly.
+TR02185,false,normal,,,Routine activity with no target anomaly.
+TR02186,false,normal,,,Routine aerial activity with no target anomaly.
+TR02187,false,normal,,,Routine activity with no target anomaly.
+TR02188,false,normal,,,Routine aerial activity with no target anomaly.
+TR02189,false,normal,,,Routine aerial activity with no target anomaly.
+TR02190,false,normal,,,Routine aerial activity with no target anomaly.
+TR02191,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02192,false,normal,,,Routine aerial activity with no target anomaly.
+TR02193,false,normal,,,Routine activity with no target anomaly.
+TR02194,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02195,false,normal,,,Routine aerial activity with no target anomaly.
+TR02196,false,normal,,,Routine activity with no target anomaly.
+TR02197,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02198,false,normal,,,Routine activity with no target anomaly.
+TR02199,false,normal,,,Routine activity with no target anomaly.
+TR02200,false,normal,,,Routine aerial activity with no target anomaly.
+TR02201,false,normal,,,Routine activity with no target anomaly.
+TR02202,false,normal,,,Normal road traffic with no target anomaly.
+TR02203,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02204,false,normal,,,Routine activity with no target anomaly.
+TR02205,false,normal,,,Normal road traffic with no target anomaly.
+TR02206,false,normal,,,Routine activity with no target anomaly.
+TR02207,false,normal,,,Normal road traffic with no target anomaly.
+TR02208,false,normal,,,Normal road traffic with no target anomaly.
+TR02209,false,normal,,,Routine aerial activity with no target anomaly.
+TR02210,false,normal,,,Routine activity with no target anomaly.
+TR02211,false,normal,,,Routine aerial activity with no target anomaly.
+TR02212,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02213,false,normal,,,Routine aerial activity with no target anomaly.
+TR02214,false,normal,,,Routine activity with no target anomaly.
+TR02215,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02216,false,normal,,,Routine aerial activity with no target anomaly.
+TR02217,false,normal,,,Routine activity with no target anomaly.
+TR02218,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02219,false,normal,,,Routine activity with no target anomaly.
+TR02220,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02221,false,normal,,,Normal road traffic with no target anomaly.
+TR02222,false,normal,,,Routine aerial activity with no target anomaly.
+TR02223,false,normal,,,Routine activity with no target anomaly.
+TR02224,false,normal,,,Routine activity with no target anomaly.
+TR02225,false,normal,,,Routine activity with no target anomaly.
+TR02226,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02227,false,normal,,,Normal road traffic with no target anomaly.
+TR02228,false,normal,,,Routine aerial activity with no target anomaly.
+TR02229,false,normal,,,Routine activity with no target anomaly.
+TR02230,false,normal,,,Routine aerial activity with no target anomaly.
+TR02231,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02232,false,normal,,,Routine activity with no target anomaly.
+TR02233,false,normal,,,Routine activity with no target anomaly.
+TR02234,false,normal,,,Normal road traffic with no target anomaly.
+TR02235,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02236,false,normal,,,Routine activity with no target anomaly.
+TR02237,false,normal,,,Routine activity with no target anomaly.
+TR02238,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02239,false,normal,,,Routine activity with no target anomaly.
+TR02240,false,normal,,,Routine activity with no target anomaly.
+TR02241,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02242,false,normal,,,Routine activity with no target anomaly.
+TR02243,false,normal,,,Routine aerial activity with no target anomaly.
+TR02244,false,normal,,,Routine activity with no target anomaly.
+TR02245,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02246,false,normal,,,Routine aerial activity with no target anomaly.
+TR02247,false,normal,,,Routine activity with no target anomaly.
+TR02248,false,normal,,,Normal road traffic with no target anomaly.
+TR02249,false,normal,,,Routine activity with no target anomaly.
+TR02250,false,normal,,,Routine aerial activity with no target anomaly.
+TR02251,false,normal,,,Routine activity with no target anomaly.
+TR02252,false,normal,,,Routine aerial activity with no target anomaly.
+TR02253,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02254,false,normal,,,Routine aerial activity with no target anomaly.
+TR02255,false,normal,,,Routine activity with no target anomaly.
+TR02256,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02257,false,normal,,,Routine activity with no target anomaly.
+TR02258,false,normal,,,Routine activity with no target anomaly.
+TR02259,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02260,false,normal,,,Routine activity with no target anomaly.
+TR02261,false,normal,,,Routine aerial activity with no target anomaly.
+TR02262,false,normal,,,Routine aerial activity with no target anomaly.
+TR02263,false,normal,,,Routine aerial activity with no target anomaly.
+TR02264,false,normal,,,Routine aerial activity with no target anomaly.
+TR02265,false,normal,,,Routine activity with no target anomaly.
+TR02266,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02267,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02268,false,normal,,,Routine activity with no target anomaly.
+TR02269,false,normal,,,Routine aerial activity with no target anomaly.
+TR02270,false,normal,,,Routine aerial activity with no target anomaly.
+TR02271,false,normal,,,Routine aerial activity with no target anomaly.
+TR02272,false,normal,,,Routine activity with no target anomaly.
+TR02273,false,normal,,,Routine activity with no target anomaly.
+TR02274,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02275,false,normal,,,Routine aerial activity with no target anomaly.
+TR02276,false,normal,,,Routine activity with no target anomaly.
+TR02277,false,normal,,,Routine activity with no target anomaly.
+TR02278,false,normal,,,Routine activity with no target anomaly.
+TR02279,false,normal,,,Routine activity with no target anomaly.
+TR02280,false,normal,,,Normal road traffic with no target anomaly.
+TR02281,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02282,false,normal,,,Routine aerial activity with no target anomaly.
+TR02283,false,normal,,,Routine activity with no target anomaly.
+TR02284,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02285,false,normal,,,Routine activity with no target anomaly.
+TR02286,false,normal,,,Routine aerial activity with no target anomaly.
+TR02287,false,normal,,,Routine aerial activity with no target anomaly.
+TR02288,false,normal,,,Routine activity with no target anomaly.
+TR02289,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02290,false,normal,,,Routine aerial activity with no target anomaly.
+TR02291,false,normal,,,Routine aerial activity with no target anomaly.
+TR02292,false,normal,,,Routine activity with no target anomaly.
+TR02293,false,normal,,,Normal road traffic with no target anomaly.
+TR02294,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02295,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02296,false,normal,,,Routine activity with no target anomaly.
+TR02297,false,normal,,,Routine activity with no target anomaly.
+TR02298,false,normal,,,Routine aerial activity with no target anomaly.
+TR02299,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02300,false,normal,,,Routine aerial activity with no target anomaly.
+TR02301,false,normal,,,Routine aerial activity with no target anomaly.
+TR02302,false,normal,,,Routine activity with no target anomaly.
+TR02303,false,normal,,,Routine aerial activity with no target anomaly.
+TR02304,false,normal,,,Routine activity with no target anomaly.
+TR02305,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02306,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02307,false,normal,,,Routine aerial activity with no target anomaly.
+TR02308,false,normal,,,Routine aerial activity with no target anomaly.
+TR02309,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02310,false,normal,,,Routine activity with no target anomaly.
+TR02311,false,normal,,,Routine aerial activity with no target anomaly.
+TR02312,false,normal,,,Routine activity with no target anomaly.
+TR02313,false,normal,,,Routine activity with no target anomaly.
+TR02314,false,normal,,,Routine activity with no target anomaly.
+TR02315,false,normal,,,Normal road traffic with no target anomaly.
+TR02316,false,normal,,,Routine activity with no target anomaly.
+TR02317,false,normal,,,Routine activity with no target anomaly.
+TR02318,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02319,false,normal,,,Routine activity with no target anomaly.
+TR02320,false,normal,,,Routine activity with no target anomaly.
+TR02321,false,normal,,,Routine aerial activity with no target anomaly.
+TR02322,false,normal,,,Routine activity with no target anomaly.
+TR02323,false,normal,,,Routine activity with no target anomaly.
+TR02324,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02325,false,normal,,,Routine activity with no target anomaly.
+TR02326,false,normal,,,Normal road traffic with no target anomaly.
+TR02327,false,normal,,,Routine aerial activity with no target anomaly.
+TR02328,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02329,false,normal,,,Routine activity with no target anomaly.
+TR02330,false,normal,,,Routine aerial activity with no target anomaly.
+TR02331,false,normal,,,Routine activity with no target anomaly.
+TR02332,false,normal,,,Routine aerial activity with no target anomaly.
+TR02333,false,normal,,,Normal road traffic with no target anomaly.
+TR02334,false,normal,,,Routine aerial activity with no target anomaly.
+TR02335,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02336,false,normal,,,Routine activity with no target anomaly.
+TR02337,false,normal,,,Routine activity with no target anomaly.
+TR02338,false,normal,,,Normal road traffic with no target anomaly.
+TR02339,false,normal,,,Routine aerial activity with no target anomaly.
+TR02340,false,normal,,,Routine activity with no target anomaly.
+TR02341,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02342,false,normal,,,Routine activity with no target anomaly.
+TR02343,false,normal,,,Routine activity with no target anomaly.
+TR02344,false,normal,,,Routine activity with no target anomaly.
+TR02345,false,normal,,,Routine activity with no target anomaly.
+TR02346,false,normal,,,Normal road traffic with no target anomaly.
+TR02347,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02348,false,normal,,,Normal road traffic with no target anomaly.
+TR02349,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02350,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02351,false,normal,,,Routine activity with no target anomaly.
+TR02352,false,normal,,,Routine activity with no target anomaly.
+TR02353,false,normal,,,Normal road traffic with no target anomaly.
+TR02354,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02355,false,normal,,,Routine activity with no target anomaly.
+TR02356,false,normal,,,Routine activity with no target anomaly.
+TR02357,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02358,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02359,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02360,false,normal,,,Normal road traffic with no target anomaly.
+TR02361,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02362,false,normal,,,Routine aerial activity with no target anomaly.
+TR02363,false,normal,,,Routine aerial activity with no target anomaly.
+TR02364,false,normal,,,Normal road traffic with no target anomaly.
+TR02365,false,normal,,,Routine aerial activity with no target anomaly.
+TR02366,false,normal,,,Routine activity with no target anomaly.
+TR02367,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02368,false,normal,,,Routine aerial activity with no target anomaly.
+TR02369,false,normal,,,Routine aerial activity with no target anomaly.
+TR02370,false,normal,,,Routine activity with no target anomaly.
+TR02371,false,normal,,,Normal road traffic with no target anomaly.
+TR02372,false,normal,,,Routine activity with no target anomaly.
+TR02373,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02374,false,normal,,,Routine activity with no target anomaly.
+TR02375,false,normal,,,Routine activity with no target anomaly.
+TR02376,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02377,false,normal,,,Routine activity with no target anomaly.
+TR02378,false,normal,,,Routine activity with no target anomaly.
+TR02379,false,normal,,,Routine aerial activity with no target anomaly.
+TR02380,false,normal,,,Routine activity with no target anomaly.
+TR02381,false,normal,,,Routine activity with no target anomaly.
+TR02382,false,normal,,,Normal road traffic with no target anomaly.
+TR02383,false,normal,,,Routine activity with no target anomaly.
+TR02384,false,normal,,,Routine aerial activity with no target anomaly.
+TR02385,false,normal,,,Routine activity with no target anomaly.
+TR02386,false,normal,,,Normal road traffic with no target anomaly.
+TR02387,false,normal,,,Routine aerial activity with no target anomaly.
+TR02388,false,normal,,,Routine activity with no target anomaly.
+TR02389,false,normal,,,Routine activity with no target anomaly.
+TR02390,false,normal,,,Routine activity with no target anomaly.
+TR02391,false,normal,,,Routine activity with no target anomaly.
+TR02392,false,normal,,,Routine activity with no target anomaly.
+TR02393,false,normal,,,Routine activity with no target anomaly.
+TR02394,false,normal,,,Routine aerial activity with no target anomaly.
+TR02395,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02396,false,normal,,,Routine aerial activity with no target anomaly.
+TR02397,false,normal,,,Normal road traffic with no target anomaly.
+TR02398,false,normal,,,Routine aerial activity with no target anomaly.
+TR02399,false,normal,,,Routine aerial activity with no target anomaly.
+TR02400,false,normal,,,Routine activity with no target anomaly.
+TR02401,false,normal,,,Routine aerial activity with no target anomaly.
+TR02402,false,normal,,,Routine activity with no target anomaly.
+TR02403,false,normal,,,Normal road traffic with no target anomaly.
+TR02404,false,normal,,,Routine activity with no target anomaly.
+TR02405,false,normal,,,Routine aerial activity with no target anomaly.
+TR02406,false,normal,,,Routine activity with no target anomaly.
+TR02407,false,normal,,,Routine activity with no target anomaly.
+TR02408,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02409,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02410,false,normal,,,Routine activity with no target anomaly.
+TR02411,false,normal,,,Routine activity with no target anomaly.
+TR02412,false,normal,,,Routine activity with no target anomaly.
+TR02413,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02414,false,normal,,,Routine activity with no target anomaly.
+TR02415,false,normal,,,Normal road traffic with no target anomaly.
+TR02416,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02417,false,normal,,,Routine activity with no target anomaly.
+TR02418,false,normal,,,Routine activity with no target anomaly.
+TR02419,false,normal,,,Routine aerial activity with no target anomaly.
+TR02420,false,normal,,,Routine activity with no target anomaly.
+TR02421,false,normal,,,Routine activity with no target anomaly.
+TR02422,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02423,false,normal,,,Routine aerial activity with no target anomaly.
+TR02424,false,normal,,,Normal road traffic with no target anomaly.
+TR02425,false,normal,,,Routine activity with no target anomaly.
+TR02426,false,normal,,,Normal road traffic with no target anomaly.
+TR02427,false,normal,,,Routine activity with no target anomaly.
+TR02428,false,normal,,,Routine activity with no target anomaly.
+TR02429,false,normal,,,Routine activity with no target anomaly.
+TR02430,false,normal,,,Routine activity with no target anomaly.
+TR02431,false,normal,,,Routine activity with no target anomaly.
+TR02432,false,normal,,,Routine activity with no target anomaly.
+TR02433,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02434,false,normal,,,Routine activity with no target anomaly.
+TR02435,false,normal,,,Routine aerial activity with no target anomaly.
+TR02436,false,normal,,,Routine activity with no target anomaly.
+TR02437,false,normal,,,Routine aerial activity with no target anomaly.
+TR02438,false,normal,,,Routine aerial activity with no target anomaly.
+TR02439,false,normal,,,Routine aerial activity with no target anomaly.
+TR02440,false,normal,,,Routine aerial activity with no target anomaly.
+TR02441,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02442,false,normal,,,Routine aerial activity with no target anomaly.
+TR02443,false,normal,,,Routine activity with no target anomaly.
+TR02444,false,normal,,,Normal road traffic with no target anomaly.
+TR02445,false,normal,,,Routine activity with no target anomaly.
+TR02446,false,normal,,,Routine aerial activity with no target anomaly.
+TR02447,false,normal,,,Routine activity with no target anomaly.
+TR02448,false,normal,,,Routine activity with no target anomaly.
+TR02449,false,normal,,,Normal road traffic with no target anomaly.
+TR02450,false,normal,,,Routine activity with no target anomaly.
+TR02451,false,normal,,,Routine aerial activity with no target anomaly.
+TR02452,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02453,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02454,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02455,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02456,false,normal,,,Normal road traffic with no target anomaly.
+TR02457,false,normal,,,Normal road traffic with no target anomaly.
+TR02458,false,normal,,,Routine activity with no target anomaly.
+TR02459,false,normal,,,Routine activity with no target anomaly.
+TR02460,false,normal,,,Routine activity with no target anomaly.
+TR02461,false,normal,,,Routine aerial activity with no target anomaly.
+TR02462,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02463,false,normal,,,Routine activity with no target anomaly.
+TR02464,false,normal,,,Routine activity with no target anomaly.
+TR02465,false,normal,,,Routine activity with no target anomaly.
+TR02466,false,normal,,,Routine aerial activity with no target anomaly.
+TR02467,false,normal,,,Routine activity with no target anomaly.
+TR02468,false,normal,,,Routine activity with no target anomaly.
+TR02469,false,normal,,,Routine activity with no target anomaly.
+TR02470,false,normal,,,Routine aerial activity with no target anomaly.
+TR02471,false,normal,,,Routine activity with no target anomaly.
+TR02472,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02473,false,normal,,,Routine activity with no target anomaly.
+TR02474,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02475,false,normal,,,Routine activity with no target anomaly.
+TR02476,false,normal,,,Routine activity with no target anomaly.
+TR02477,false,normal,,,Routine aerial activity with no target anomaly.
+TR02478,false,normal,,,Routine activity with no target anomaly.
+TR02479,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02480,false,normal,,,Routine activity with no target anomaly.
+TR02481,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02482,false,normal,,,Routine activity with no target anomaly.
+TR02483,false,normal,,,Routine activity with no target anomaly.
+TR02484,false,normal,,,Routine aerial activity with no target anomaly.
+TR02485,false,normal,,,Routine activity with no target anomaly.
+TR02486,false,normal,,,Routine activity with no target anomaly.
+TR02487,false,normal,,,Routine activity with no target anomaly.
+TR02488,false,normal,,,Routine activity with no target anomaly.
+TR02489,false,normal,,,Routine aerial activity with no target anomaly.
+TR02490,false,normal,,,Normal road traffic with no target anomaly.
+TR02491,false,normal,,,Routine activity with no target anomaly.
+TR02492,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02493,false,normal,,,Routine aerial activity with no target anomaly.
+TR02494,false,normal,,,Routine activity with no target anomaly.
+TR02495,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02496,false,normal,,,Normal road traffic with no target anomaly.
+TR02497,false,normal,,,Routine aerial activity with no target anomaly.
+TR02498,false,normal,,,Routine activity with no target anomaly.
+TR02499,false,normal,,,Routine activity with no target anomaly.
+TR02500,false,normal,,,Routine activity with no target anomaly.
+TR02501,false,normal,,,Routine activity with no target anomaly.
+TR02502,false,normal,,,Routine activity with no target anomaly.
+TR02503,false,normal,,,Routine activity with no target anomaly.
+TR02504,false,normal,,,Normal road traffic with no target anomaly.
+TR02505,false,normal,,,Routine activity with no target anomaly.
+TR02506,false,normal,,,Routine aerial activity with no target anomaly.
+TR02507,false,normal,,,Routine activity with no target anomaly.
+TR02508,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02509,false,normal,,,Normal road traffic with no target anomaly.
+TR02510,false,normal,,,Routine activity with no target anomaly.
+TR02511,false,normal,,,Routine activity with no target anomaly.
+TR02512,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02513,false,normal,,,Routine aerial activity with no target anomaly.
+TR02514,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02515,false,normal,,,Normal road traffic with no target anomaly.
+TR02516,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02517,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02518,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02519,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02520,false,normal,,,Routine activity with no target anomaly.
+TR02521,false,normal,,,Routine activity with no target anomaly.
+TR02522,false,normal,,,Routine activity with no target anomaly.
+TR02523,false,normal,,,Routine aerial activity with no target anomaly.
+TR02524,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02525,false,normal,,,Routine activity with no target anomaly.
+TR02526,false,normal,,,Normal road traffic with no target anomaly.
+TR02527,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02528,false,normal,,,Routine aerial activity with no target anomaly.
+TR02529,false,normal,,,Routine activity with no target anomaly.
+TR02530,false,normal,,,Routine activity with no target anomaly.
+TR02531,false,normal,,,Routine aerial activity with no target anomaly.
+TR02532,false,normal,,,Routine activity with no target anomaly.
+TR02533,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02534,false,normal,,,Routine aerial activity with no target anomaly.
+TR02535,false,normal,,,Normal road traffic with no target anomaly.
+TR02536,false,normal,,,Routine aerial activity with no target anomaly.
+TR02537,false,normal,,,Routine activity with no target anomaly.
+TR02538,false,normal,,,Routine activity with no target anomaly.
+TR02539,false,normal,,,Normal road traffic with no target anomaly.
+TR02540,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02541,false,normal,,,Routine aerial activity with no target anomaly.
+TR02542,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02543,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02544,false,normal,,,Normal road traffic with no target anomaly.
+TR02545,false,normal,,,Routine activity with no target anomaly.
+TR02546,false,normal,,,Routine aerial activity with no target anomaly.
+TR02547,false,normal,,,Routine aerial activity with no target anomaly.
+TR02548,false,normal,,,Routine aerial activity with no target anomaly.
+TR02549,false,normal,,,Routine activity with no target anomaly.
+TR02550,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02551,false,normal,,,Routine activity with no target anomaly.
+TR02552,false,normal,,,Routine aerial activity with no target anomaly.
+TR02553,false,normal,,,Routine activity with no target anomaly.
+TR02554,false,normal,,,Routine activity with no target anomaly.
+TR02555,false,normal,,,Routine activity with no target anomaly.
+TR02556,false,normal,,,Normal road traffic with no target anomaly.
+TR02557,false,normal,,,Routine activity with no target anomaly.
+TR02558,false,normal,,,Routine activity with no target anomaly.
+TR02559,false,normal,,,Routine activity with no target anomaly.
+TR02560,false,normal,,,Routine activity with no target anomaly.
+TR02561,false,normal,,,Routine activity with no target anomaly.
+TR02562,false,normal,,,Routine aerial activity with no target anomaly.
+TR02563,false,normal,,,Routine activity with no target anomaly.
+TR02564,false,normal,,,Routine aerial activity with no target anomaly.
+TR02565,false,normal,,,Routine aerial activity with no target anomaly.
+TR02566,false,normal,,,Routine aerial activity with no target anomaly.
+TR02567,false,normal,,,Routine activity with no target anomaly.
+TR02568,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02569,false,normal,,,Routine activity with no target anomaly.
+TR02570,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02571,false,normal,,,Routine activity with no target anomaly.
+TR02572,false,normal,,,Routine activity with no target anomaly.
+TR02573,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02574,false,normal,,,Routine activity with no target anomaly.
+TR02575,false,normal,,,Routine aerial activity with no target anomaly.
+TR02576,false,normal,,,Routine aerial activity with no target anomaly.
+TR02577,false,normal,,,Routine activity with no target anomaly.
+TR02578,false,normal,,,Routine activity with no target anomaly.
+TR02579,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02580,false,normal,,,Routine activity with no target anomaly.
+TR02581,false,normal,,,Routine activity with no target anomaly.
+TR02582,false,normal,,,Routine aerial activity with no target anomaly.
+TR02583,false,normal,,,Routine activity with no target anomaly.
+TR02584,false,normal,,,Routine aerial activity with no target anomaly.
+TR02585,false,normal,,,Routine activity with no target anomaly.
+TR02586,false,normal,,,Routine aerial activity with no target anomaly.
+TR02587,false,normal,,,Routine aerial activity with no target anomaly.
+TR02588,false,normal,,,Routine aerial activity with no target anomaly.
+TR02589,false,normal,,,Routine activity with no target anomaly.
+TR02590,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02591,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02592,false,normal,,,Routine aerial activity with no target anomaly.
+TR02593,false,normal,,,Routine aerial activity with no target anomaly.
+TR02594,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02595,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02596,false,normal,,,Routine activity with no target anomaly.
+TR02597,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02598,false,normal,,,Routine activity with no target anomaly.
+TR02599,false,normal,,,Routine activity with no target anomaly.
+TR02600,false,normal,,,Routine activity with no target anomaly.
+TR02601,false,normal,,,Normal road traffic with no target anomaly.
+TR02602,false,normal,,,Routine aerial activity with no target anomaly.
+TR02603,false,normal,,,Routine activity with no target anomaly.
+TR02604,false,normal,,,Routine aerial activity with no target anomaly.
+TR02605,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02606,false,normal,,,Routine activity with no target anomaly.
+TR02607,false,normal,,,Normal road traffic with no target anomaly.
+TR02608,false,normal,,,Routine aerial activity with no target anomaly.
+TR02609,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02610,false,normal,,,Routine aerial activity with no target anomaly.
+TR02611,false,normal,,,Routine activity with no target anomaly.
+TR02612,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02613,false,normal,,,Routine activity with no target anomaly.
+TR02614,false,normal,,,Routine activity with no target anomaly.
+TR02615,false,normal,,,Routine activity with no target anomaly.
+TR02616,false,normal,,,Routine aerial activity with no target anomaly.
+TR02617,false,normal,,,Routine activity with no target anomaly.
+TR02618,false,normal,,,Routine activity with no target anomaly.
+TR02619,false,normal,,,Routine activity with no target anomaly.
+TR02620,false,normal,,,Routine activity with no target anomaly.
+TR02621,false,normal,,,Routine aerial activity with no target anomaly.
+TR02622,false,normal,,,Routine aerial activity with no target anomaly.
+TR02623,false,normal,,,Routine activity with no target anomaly.
+TR02624,false,normal,,,Normal road traffic with no target anomaly.
+TR02625,false,normal,,,Routine activity with no target anomaly.
+TR02626,false,normal,,,Routine aerial activity with no target anomaly.
+TR02627,false,normal,,,Routine activity with no target anomaly.
+TR02628,false,normal,,,Routine activity with no target anomaly.
+TR02629,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02630,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02631,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02632,false,normal,,,Routine activity with no target anomaly.
+TR02633,false,normal,,,Routine aerial activity with no target anomaly.
+TR02634,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02635,false,normal,,,Normal road traffic with no target anomaly.
+TR02636,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02637,false,normal,,,Routine activity with no target anomaly.
+TR02638,false,normal,,,Routine aerial activity with no target anomaly.
+TR02639,false,normal,,,Routine aerial activity with no target anomaly.
+TR02640,false,normal,,,Routine activity with no target anomaly.
+TR02641,false,normal,,,Routine activity with no target anomaly.
+TR02642,false,normal,,,Routine aerial activity with no target anomaly.
+TR02643,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02644,false,normal,,,Routine aerial activity with no target anomaly.
+TR02645,false,normal,,,Routine activity with no target anomaly.
+TR02646,false,normal,,,Routine aerial activity with no target anomaly.
+TR02647,false,normal,,,Routine activity with no target anomaly.
+TR02648,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02649,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02650,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02651,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02652,false,normal,,,Routine activity with no target anomaly.
+TR02653,false,normal,,,Normal road traffic with no target anomaly.
+TR02654,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02655,false,normal,,,Routine activity with no target anomaly.
+TR02656,false,normal,,,Routine aerial activity with no target anomaly.
+TR02657,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02658,false,normal,,,Routine aerial activity with no target anomaly.
+TR02659,false,normal,,,Routine aerial activity with no target anomaly.
+TR02660,false,normal,,,Routine activity with no target anomaly.
+TR02661,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02662,false,normal,,,Routine aerial activity with no target anomaly.
+TR02663,false,normal,,,Routine activity with no target anomaly.
+TR02664,false,normal,,,Routine activity with no target anomaly.
+TR02665,false,normal,,,Routine activity with no target anomaly.
+TR02666,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02667,false,normal,,,Routine aerial activity with no target anomaly.
+TR02668,false,normal,,,Routine aerial activity with no target anomaly.
+TR02669,false,normal,,,Routine activity with no target anomaly.
+TR02670,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02671,false,normal,,,Normal road traffic with no target anomaly.
+TR02672,false,normal,,,Normal road traffic with no target anomaly.
+TR02673,false,normal,,,Routine aerial activity with no target anomaly.
+TR02674,false,normal,,,Routine activity with no target anomaly.
+TR02675,false,normal,,,Routine aerial activity with no target anomaly.
+TR02676,false,normal,,,Routine activity with no target anomaly.
+TR02677,false,normal,,,Routine aerial activity with no target anomaly.
+TR02678,false,normal,,,Routine activity with no target anomaly.
+TR02679,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02680,false,normal,,,Routine activity with no target anomaly.
+TR02681,false,normal,,,Routine aerial activity with no target anomaly.
+TR02682,false,normal,,,Routine aerial activity with no target anomaly.
+TR02683,false,normal,,,Routine activity with no target anomaly.
+TR02684,false,normal,,,Routine activity with no target anomaly.
+TR02685,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02686,false,normal,,,Routine activity with no target anomaly.
+TR02687,false,normal,,,Routine activity with no target anomaly.
+TR02688,false,normal,,,Routine activity with no target anomaly.
+TR02689,false,normal,,,Routine activity with no target anomaly.
+TR02690,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02691,false,normal,,,Routine activity with no target anomaly.
+TR02692,false,normal,,,Routine activity with no target anomaly.
+TR02693,false,normal,,,Routine activity with no target anomaly.
+TR02694,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02695,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02696,false,normal,,,Normal road traffic with no target anomaly.
+TR02697,false,normal,,,Routine activity with no target anomaly.
+TR02698,false,normal,,,Routine aerial activity with no target anomaly.
+TR02699,false,normal,,,Normal road traffic with no target anomaly.
+TR02700,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02701,false,normal,,,Routine aerial activity with no target anomaly.
+TR02702,false,normal,,,Routine activity with no target anomaly.
+TR02703,false,normal,,,"Routine aerial road, vehicle, and pedestrian activity."
+TR02704,false,normal,,,Normal road traffic with no target anomaly.
+TR02705,false,normal,,,Routine activity with no target anomaly.
+TR02706,false,normal,,,Routine aerial activity with no target anomaly.
+TR02707,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02708,false,normal,,,Normal road traffic with no target anomaly.
+TR02709,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02710,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02711,false,normal,,,Routine activity with no target anomaly.
+TR02712,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02713,false,normal,,,Routine activity with no target anomaly.
+TR02714,false,normal,,,Routine aerial activity with no target anomaly.
+TR02715,false,normal,,,Routine aerial activity with no target anomaly.
+TR02716,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02717,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02718,false,normal,,,Routine activity with no target anomaly.
+TR02719,false,normal,,,Routine activity with no target anomaly.
+TR02720,false,normal,,,Routine activity with no target anomaly.
+TR02721,false,normal,,,Normal road traffic with no target anomaly.
+TR02722,false,normal,,,Routine activity with no target anomaly.
+TR02723,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02724,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02725,false,normal,,,Routine aerial activity with no target anomaly.
+TR02726,false,normal,,,Routine aerial activity with no target anomaly.
+TR02727,false,normal,,,Routine aerial activity with no target anomaly.
+TR02728,false,normal,,,Routine activity with no target anomaly.
+TR02729,false,normal,,,Routine aerial activity with no target anomaly.
+TR02730,false,normal,,,Routine activity with no target anomaly.
+TR02731,false,normal,,,Routine activity with no target anomaly.
+TR02732,false,normal,,,Normal road traffic with no target anomaly.
+TR02733,false,normal,,,Normal road traffic with no target anomaly.
+TR02734,false,normal,,,Routine activity with no target anomaly.
+TR02735,false,normal,,,Normal road traffic with no target anomaly.
+TR02736,false,normal,,,Routine activity with no target anomaly.
+TR02737,false,normal,,,Routine activity with no target anomaly.
+TR02738,false,normal,,,Routine aerial activity with no target anomaly.
+TR02739,false,normal,,,Routine aerial activity with no target anomaly.
+TR02740,false,normal,,,Routine activity with no target anomaly.
+TR02741,false,normal,,,Routine aerial activity with no target anomaly.
+TR02742,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02743,false,normal,,,Routine aerial activity with no target anomaly.
+TR02744,false,normal,,,Routine aerial activity with no target anomaly.
+TR02745,false,normal,,,Normal road traffic with no target anomaly.
+TR02746,false,normal,,,Routine aerial activity with no target anomaly.
+TR02747,false,normal,,,Normal traffic flows through a fixed CCTV scene.
+TR02748,false,normal,,,Routine moving-drone footage with no labeled target anomaly.
+TR02749,false,normal,,,Routine activity with no target anomaly.
+TR02759,false,normal,,,Normal road traffic with no target anomaly.
+TR02769,false,normal,,,Routine activity with no target anomaly.
+TR02779,false,normal,,,Routine activity with no target anomaly.
+TR02788,false,normal,,,Normal road traffic with no target anomaly.
+TR02796,false,normal,,,Routine activity with no target anomaly.
+TR02804,false,normal,,,Routine activity with no target anomaly.
+TR02812,false,normal,,,Routine activity with no target anomaly.
+TR02820,false,normal,,,Routine activity with no target anomaly.
+TR02828,false,normal,,,Routine activity with no target anomaly.
+TR02835,false,normal,,,Routine activity with no target anomaly.
+TR02842,false,normal,,,Routine activity with no target anomaly.
+TR02849,false,normal,,,Routine activity with no target anomaly.
+TR02856,false,normal,,,Routine activity with no target anomaly.
+TR02863,false,normal,,,Routine activity with no target anomaly.
+TR02870,false,normal,,,Routine activity with no target anomaly.
+TR02877,false,normal,,,Routine activity with no target anomaly.
+TR02884,false,normal,,,Routine activity with no target anomaly.
+TR02891,false,normal,,,Routine activity with no target anomaly.
+TR02897,false,normal,,,Routine activity with no target anomaly.
+TR02903,false,normal,,,Routine activity with no target anomaly.
+TR02909,false,normal,,,Routine activity with no target anomaly.
+TR02915,false,normal,,,Routine activity with no target anomaly.
+TR02921,false,normal,,,Routine activity with no target anomaly.
+TR02927,false,normal,,,Routine activity with no target anomaly.
+TR02933,false,normal,,,Routine activity with no target anomaly.
+TR02939,false,normal,,,Routine activity with no target anomaly.
+TR02945,false,normal,,,Routine activity with no target anomaly.
+TR02951,false,normal,,,Routine activity with no target anomaly.
+TR02957,false,normal,,,Routine activity with no target anomaly.
+TR02963,false,normal,,,Routine activity with no target anomaly.
+TR02969,false,normal,,,Routine activity with no target anomaly.
+TR02975,false,normal,,,Routine activity with no target anomaly.
+TR02981,false,normal,,,Normal road traffic with no target anomaly.
+TR02987,false,normal,,,Routine activity with no target anomaly.
+TR02993,false,normal,,,Normal road traffic with no target anomaly.
+TR02999,false,normal,,,Routine activity with no target anomaly.
+TR03005,false,normal,,,Routine activity with no target anomaly.
+TR03011,false,normal,,,Routine activity with no target anomaly.
+TR03017,false,normal,,,Routine activity with no target anomaly.
+TR03023,false,normal,,,Routine activity with no target anomaly.
+TR03029,false,normal,,,Routine activity with no target anomaly.
+TR03035,false,normal,,,Normal road traffic with no target anomaly.
+TR03041,false,normal,,,Normal road traffic with no target anomaly.
+TR03047,false,normal,,,Routine activity with no target anomaly.
+TR03053,false,normal,,,Normal road traffic with no target anomaly.
+TR03059,false,normal,,,Routine activity with no target anomaly.
+TR03065,false,normal,,,Routine activity with no target anomaly.
+TR03071,false,normal,,,Normal road traffic with no target anomaly.
+TR03077,false,normal,,,Routine activity with no target anomaly.
+TR03083,false,normal,,,Routine activity with no target anomaly.
+TR03089,false,normal,,,Routine activity with no target anomaly.
+TR03095,false,normal,,,Routine activity with no target anomaly.
+TR03101,false,normal,,,Routine activity with no target anomaly.
+TR03107,false,normal,,,Routine activity with no target anomaly.
+TR03113,false,normal,,,Normal road traffic with no target anomaly.
+TR03119,false,normal,,,Normal road traffic with no target anomaly.
+TR03125,false,normal,,,Routine activity with no target anomaly.
+TR03131,false,normal,,,Routine activity with no target anomaly.
+TR03137,false,normal,,,Routine activity with no target anomaly.
+TR03143,false,normal,,,Routine activity with no target anomaly.
+TR03149,false,normal,,,Routine activity with no target anomaly.
+TR03155,false,normal,,,Routine activity with no target anomaly.
+TR03161,false,normal,,,Routine activity with no target anomaly.
+TR03167,false,normal,,,Routine activity with no target anomaly.
+TR03173,false,normal,,,Routine activity with no target anomaly.
+TR03179,false,normal,,,Routine activity with no target anomaly.
+TR03185,false,normal,,,Routine activity with no target anomaly.
+TR03191,false,normal,,,Routine activity with no target anomaly.
+TR03197,false,normal,,,Routine activity with no target anomaly.
+TR03202,false,normal,,,Routine activity with no target anomaly.
+TR03207,false,normal,,,Routine activity with no target anomaly.
+TR03212,false,normal,,,Routine activity with no target anomaly.
+TR03217,false,normal,,,Routine activity with no target anomaly.

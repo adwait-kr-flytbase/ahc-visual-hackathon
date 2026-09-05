@@ -1,0 +1,566 @@
+video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+TR01350,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01351,true,traffic_accident,0.000,5.792,A traffic collision is visible from an aerial viewpoint.
+TR01352,true,traffic_accident,0.400,2.000,"A motorcycle carrying two riders enters the frame and collides directly with the rear of a dark-colored pickup truck parked stationary in lane 4. The force of the impact violently throws both riders from the vehicle onto the road surface, where they remain motionless. The cause of the accident is the motorcycle rider's failure to maintain a proper lookout and react to the stationary obstacle ahead, resulting in a high-impact rear-end collision."
+TR01353,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01354,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01355,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01356,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01357,true,traffic_accident,3.000,4.340,A dark-colored sedan traveling in the third lane fails to stop in time and rear-ends a light-colored sedan that had slowed down in front of it. The force of the impact is sufficient to push the light-colored sedan forward and straight out of the frame. This collision was caused by the driver of the dark-colored sedan failing to maintain a safe following distance or react appropriately to the slowing vehicle ahead.
+TR01358,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01359,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01360,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01361,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01362,true,traffic_accident,3.000,9.000,"A motorcycle carrying two people collides with the rear of a parked maroon scooter on the left side of the street, causing the motorcycle to lose balance and tip over. The rider and passenger both fall to the ground upon impact, while the parked scooter is bumped forward slightly but remains upright. The accident is caused by the motorcycle rider's failure to maintain a safe trajectory or brake in time to avoid the stationary object, indicating a misjudgment of space in the narrow roadway."
+TR01363,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01364,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01365,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01366,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01367,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01368,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01369,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01370,true,traffic_accident,3.000,15.600,"A pedestrian in a light top and dark pants jaywalks across a multi-lane road from left to right, walking directly into the path of oncoming traffic. This forced a gray car in the first lane to come to a full stop at 00:21.46 and a gray sedan in the second lane to stop at 00:24.46 to avoid a collision. The root cause of the anomaly is the pedestrian's failure to use a designated crosswalk and their disregard for the right-of-way of the moving vehicles, resulting in a dangerous near-miss."
+TR01371,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01372,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01373,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01374,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01375,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01376,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01377,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01378,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01379,true,traffic_accident,2.840,4.580,"A white sedan traveling from right to left collides with a white van moving from the bottom of the frame, resulting in a violent T-bone collision in the middle of the intersection. The impact deflects the white van toward the left and sends the white sedan careening toward the right, where it flips upside down behind the curb. This anomaly was caused by a severe failure to yield the right-of-way, as both vehicles attempted to cross the intersection straight simultaneously, with the high speed of the sedan contributing to the severity of the crash."
+TR01380,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01381,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01382,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01383,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01384,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01385,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01386,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01387,true,traffic_accident,0.000,5.667,A traffic collision is visible from an aerial viewpoint.
+TR01388,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01389,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01390,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01391,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01392,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01393,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01394,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01395,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01396,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01397,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01398,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01399,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01400,true,traffic_accident,3.000,5.330,"A white hatchback traveling at high speed collides in a T-bone impact with a black motorcycle that is stopped at a median opening. The force of the collision violently throws the rider, who is wearing a black shirt, onto the pavement and deflects the motorcycle into an active traffic lane. The hatchback fails to stop and continues driving straight, leaving the scene. The accident was caused by the white hatchback overspeeding and the driver's failure to avoid the stationary motorcyclist."
+TR01401,true,traffic_accident,0.340,1.540,"A black SUV entering from a side street on the right fails to yield the right-of-way and turns right directly into the path of an oncoming motorcycle carrying two riders. This results in a T-bone collision in lane 2, where the motorcycle strikes the front driver's side of the SUV. The force of the impact violently ejects both riders from the motorcycle, throwing them onto lane 1, while the SUV is brought to an abrupt halt."
+TR01402,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01403,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01404,true,traffic_accident,0.000,5.792,A traffic collision is visible from an aerial viewpoint.
+TR01405,true,traffic_accident,3.000,4.610,"A red truck traveling straight through the intersection collides with the passenger side of a black sedan in a T-bone collision. The black sedan had entered the intersection from the right, failing to yield the right of way to the oncoming truck. Due to the failure to yield and the wet, reflective road conditions that likely increased the truck's stopping distance, the truck strikes the sedan, pushing it toward the bottom of the frame and bringing both vehicles to a halt."
+TR01406,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01407,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01408,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01409,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01410,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01411,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01412,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01413,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01415,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01416,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01417,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01418,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01419,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01420,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01421,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01422,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01423,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01424,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01425,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01426,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01427,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01428,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01429,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01430,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01431,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01433,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01434,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01435,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01436,true,traffic_accident,3.000,7.260,"A silver sedan enters the intersection from the left, traveling straight in lane 2, but fails to maintain its trajectory and suffers a head-on collision with a traffic light pole at the center of the frame. The violent impact causes the vehicle to rotate out of control before it finally comes to a complete stop at 00:20.26. The accident is caused by the driver's lack of spatial awareness and failure to maintain lane control, which led to the direct impact with the stationary infrastructure."
+TR01437,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01438,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01440,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01441,true,traffic_accident,3.000,5.780,"A white van traveling straight through an intersection collides with a motorcycle that is attempting to make a left turn. The force of the impact knocks the rider down, and the van continues its forward momentum, dragging the motorcycle and rider across the asphalt toward the bottom of the frame while generating a bright trail of sparks. The collision is caused by the van driver's failure to maintain a safe following distance and speed, resulting in an inability to brake or yield as the motorcyclist slowed to execute the turn."
+TR01442,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01443,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01444,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01445,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01446,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01447,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01448,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01449,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01450,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01451,true,traffic_accident,3.000,3.670,"A white van and a white SUV collide in a T-bone impact in the middle of the intersection. The collision is caused by a failure to yield the right-of-way as the vehicles enter the intersection from different directions. Following the impact, the white SUV continues moving toward the bottom of the frame, while the white van begins to take a left turn."
+TR01452,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01453,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01454,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01455,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01456,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01457,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01458,true,traffic_accident,3.000,5.540,"A truck traveling in the right lane attempts an unsafe lane change to the left, colliding with a car that is already established and driving straight in the adjacent lane. The impact occurs at 02:20.93, causing both the truck and the car to deflect toward the left side of the frame. The collision is caused by the truck driver's failure to yield the right-of-way to the car during the lane change maneuver."
+TR01459,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01460,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01461,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01463,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01464,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01465,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01466,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01467,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01468,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01469,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01470,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01471,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01472,true,traffic_accident,0.000,8.350,"A black car traveling in lane 1 suddenly loses control and veers into the pedestrian lane, where it collides head-on with the side railing. The force of this initial impact causes the car to flip back into the active roadway, leading to a secondary T-bone collision with a gray bus traveling behind it in lane 1. After the impact, the gray bus swerves into lane 2 to continue its journey, while the black car spins and rotates multiple times across the lane before coming to a halt. The root cause of the anomaly is the black car driver's loss of vehicle control, which created an unpredictable hazard and an unavoidable collision for the following bus."
+TR01473,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01474,true,traffic_accident,3.000,4.260,"A black car traveling straight fails to yield at a marked crosswalk, resulting in a severe head-on collision with two pedestrians. The force of the initial impact throws one of the pedestrians into the roadway, where they are immediately struck by an oncoming white car and become trapped underneath the vehicle near the roadside. This chain of events was caused by the black car driver's failure to stop for pedestrians legally using the designated crossing."
+TR01475,true,traffic_accident,0.660,2.730,"A white SUV traveling straight through an uncontrolled intersection is T-boned by a grey SUV crossing from the left. The force of this initial impact propels the white SUV to the right, where it immediately suffers a secondary head-on collision with another grey SUV approaching from the right. This chain of events is caused by a mutual failure to yield the right-of-way, as both the white SUV and the first grey SUV entered the intersection simultaneously without slowing down."
+TR01476,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01477,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01478,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01479,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01480,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01481,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01482,true,traffic_accident,3.000,5.240,"A red SUV traveling straight from right to left collides with a motorcycle moving from the bottom to the top of the frame in a severe T-bone collision in the middle of the intersection. The accident is caused by the motorcycle rider running a red traffic signal, which forced the rider into the direct path of the red SUV that had the right-of-way. The force of the impact throws the rider onto the wet pavement and disrupts the surrounding traffic flow."
+TR01483,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01484,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01485,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01486,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01487,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01488,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01489,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01490,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01491,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01492,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01493,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01494,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01495,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01496,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01497,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01498,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01499,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01501,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01502,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01503,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01504,true,traffic_accident,1.440,2.930,"A white SUV collides head-on with an oncoming white truck across lanes 1 and 2, resulting in a high-force impact that crushes the SUV's front end. Following the collision, the SUV skids and spins before coming to a stop. The incident was caused by the white SUV's failure to maintain its lane, as it had previously swerved from lane 3 into lane 2, directly intersecting the path of the oncoming truck and violating its right-of-way."
+TR01505,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01506,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01507,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01508,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01509,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01510,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01511,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01512,true,traffic_accident,1.720,5.010,"A high-speed white van rear-ends a blue truck traveling in lane 5, causing the van to deflect into lane 6 before spinning out of control across lane 5 and lane 4. The van ultimately crashes into the center median and comes to a complete stop. The anomaly was caused by the van driver's excessive speed and failure to maintain a safe following distance, which was further exacerbated by hazardous fog and wet road conditions that reduced visibility and traction."
+TR01513,true,traffic_accident,0.000,5.584,A traffic collision is visible from an aerial viewpoint.
+TR01514,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01515,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01516,true,traffic_accident,3.000,6.070,"A white SUV traveling at an excessive speed crashes head-on into a pole near a toll booth. The force of the impact is so severe that a male passenger, wearing a white shirt and black pants, is violently ejected from the vehicle and thrown onto the ground. The root cause of the accident is the driver's overspeeding and failure to navigate into a proper toll lane, resulting in a catastrophic collision with the stationary infrastructure."
+TR01517,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01518,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01519,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01520,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01521,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01522,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01523,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01524,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01525,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01526,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01527,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01528,true,traffic_accident,0.540,2.540,"A white hatchback traveling in the left lane strikes a white structure protruding from the tunnel wall, causing the vehicle to lose control and spin across the roadway. As it spins, the hatchback collides head-on with a white sedan that is moving forward in the same lane. The accident is caused by the hatchback driver's failure to maintain their lane, which led to the initial impact with the tunnel wall and the subsequent unavoidable collision with the oncoming sedan."
+TR01529,true,traffic_accident,0.120,2.930,"A black car traveling in the second lane from the left suddenly swerves to its right without indicating, crossing into the leftmost lane and leaving the paved roadway. This abrupt maneuver leads the vehicle to crash head-on into a gray pole at the bottom left corner of the frame. The collision is caused by the driver's loss of vehicle control or an unsafe lane change, resulting in a severe single-vehicle accident."
+TR01530,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01531,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01532,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01533,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01534,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01535,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01536,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01537,true,traffic_accident,1.130,4.280,"A white SUV executing a left turn loses control and collides with a motorcycle moving straight in lane 2, knocking the rider to the ground. Following this initial impact, the white SUV deflects and strikes a stationary black SUV in lane 3, causing the white SUV to flip over and land on its back. The root cause of the anomaly is the white SUV driver's loss of vehicle control during the turn, which led to the violation of the motorcycle's right-of-way and the subsequent secondary collision."
+TR01538,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01539,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01540,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01541,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01542,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01543,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01544,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01545,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01546,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01547,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01548,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01549,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01550,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01551,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01552,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01553,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01554,true,traffic_accident,3.000,3.530,"A white sedan collides head-on with a pedestrian who is jaywalking across the road near the upper right side of the frame. The force of the impact knocks the pedestrian to the ground, where they remain for the duration of the video. The accident is caused by the pedestrian crossing the unregulated roadway without yielding to oncoming traffic, combined with the sedan driver's failure to maintain sufficient situational awareness to brake or swerve in time."
+TR01555,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01556,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01557,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01558,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01559,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01560,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01561,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01562,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01563,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01564,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01565,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01566,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01568,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01569,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01570,true,traffic_accident,3.000,14.800,"A pedestrian is observed running along the shoulder of a high-speed, 10-lane highway, moving parallel to the flow of traffic toward the left side of the frame. The individual remains in the walking lane and does not enter the active vehicle lanes, eventually exiting the view by 00:16.93. This activity is a significant safety violation and anomaly because the highway is a controlled-access roadway designed exclusively for vehicular traffic, making the pedestrian's presence extremely hazardous despite the lack of a collision."
+TR01571,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01572,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01573,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01574,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01575,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01576,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01577,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01578,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01579,true,traffic_accident,3.000,5.800,"A red truck traveling straight in its lane strikes the rear end of a black sedan that is attempting to make an illegal turn across the yellow-striped median. The forceful impact causes the black sedan to spin out of control across the roadway. The root cause of the collision is the sedan driver's unsafe and erratic maneuver, as the vehicle cut directly into the path of the truck, which had the right-of-way and insufficient time to avoid the impact."
+TR01580,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01581,true,traffic_accident,3.000,7.000,"A dark car traveling toward the camera collides with a scooter that is crossing the road perpendicularly, resulting in a T-bone impact that throws the rider into the air. Following the collision, the car veers sharply to the right and crashes into a roadside structure. The accident is caused by the scooter rider's right-of-way violation upon entering the main roadway, compounded by the driver's failure to brake in time to avoid the crossing vehicle."
+TR01582,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01583,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01584,true,traffic_accident,2.000,2.890,"A black SUV entering from the left fails to yield and strikes a white SUV traveling straight through the intersection, resulting in a T-bone collision in the middle of the frame. The impact forces the white SUV to veer slightly to the right as it is hit. The cause of the anomaly is the black SUV's failure to stop or yield to the white SUV, which had the right-of-way under a green traffic light."
+TR01585,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01586,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01587,true,traffic_accident,1.930,3.590,"A white SUV executes a sudden left turn at an intersection, crossing directly into the path of an oncoming motorcycle and causing a violent T-bone collision. The force of the impact severely damages the motorcycle and throws the rider from the vehicle onto the road surface. This accident is caused by the driver of the white SUV failing to yield the right-of-way to the oncoming motorcyclist, making the collision unavoidable."
+TR01588,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01589,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01590,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01591,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01592,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01593,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01594,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01595,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01596,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01597,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01598,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01599,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01600,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01601,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01602,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01603,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01604,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01605,true,traffic_accident,3.000,3.800,"A trailing truck in the second lane suddenly accelerates and crashes into the rear of the truck traveling ahead of it. The collision occurs toward the bottom right of the frame on a wet roadway, where the trailing driver's failure to maintain a safe following distance and a sudden increase in speed make the rear-end impact inevitable. This event disrupts the flow of traffic in the second lane, leaving the lead truck impacted as both vehicles navigate the hazardous, rainy conditions."
+TR01606,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01607,true,traffic_accident,0.610,1.780,"A white sedan crosses the intersection and fails to yield the right-of-way, resulting in a T-bone collision with a motorcycle traveling straight in the fifth lane. The motorcycle strikes the front-left side of the sedan with significant force, causing the rider to be ejected from the vehicle and cargo to scatter across the roadway. This accident was caused by the sedan driver's failure to ensure the intersection was clear before proceeding into the path of the oncoming motorcycle."
+TR01608,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01609,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01610,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01611,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01612,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01613,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01614,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01615,true,traffic_accident,0.000,6.060,"A gray pickup truck traveling in the left lane loses control and veers off the roadway, resulting in a head-on collision with the trees lining the left side of the road. The violent impact causes the truck to turn sideways and roll over, bringing down a large tree branch in the process. The overturned vehicle سپس slides and rotates once before coming to a complete stop in the lane with the tree branch draped over it, effectively blocking the roadway. The anomaly was caused by the driver's failure to maintain their lane, leading to an unavoidable collision with the roadside vegetation."
+TR01616,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01617,true,traffic_accident,3.000,3.670,An SUV traveling straight from the bottom of the frame strikes a black sedan in a severe T-bone collision at the center of the intersection. The collision occurs because the black sedan attempted a left turn without yielding the right-of-way to the oncoming SUV. The force of the impact causes the SUV to be pushed toward the right side of the frame while the sedan is violently deflected.
+TR01618,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01619,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01620,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01621,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01622,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01623,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01624,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01625,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01626,true,traffic_accident,0.600,7.470,"A silver sedan performs an illegal left lane change, causing a T-bone collision with a white truck traveling in the adjacent lane. The sedan continues to push the truck across multiple lanes until the truck violently strikes the central concrete median, flips over the barrier into the opposite-direction roadway, and slides to a halt. Simultaneously, the silver sedan loses control, is deflected off the median, swerves across the lanes, and eventually crashes head-on into the median barrier. The root cause of the anomaly is the sedan driver's failure to maintain their lane and yield the right-of-way, which left the truck driver with no time for evasive action."
+TR01628,true,traffic_accident,3.000,9.000,"A dark-colored car traveling down the street drifts out of its path and collides with the rear driver-side corner of a parked light-colored SUV. The striking vehicle delivers a glancing blow that causes the stationary SUV to jolt forward, but the driver fails to stop and continues driving away from the scene. The accident is caused by the driver's failure to maintain a proper lane trajectory, resulting in a hit-and-run collision."
+TR01629,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01630,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01631,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01632,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01633,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01634,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01635,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01636,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01637,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01638,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01639,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01640,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01641,true,traffic_accident,3.000,4.130,"A black pickup truck and a gray SUV collide in a severe T-bone collision at the center of the intersection. The accident is caused by both drivers failing to slow down or yield the right-of-way while entering the intersection under blinking yellow traffic lights, which required them to proceed with caution. The force of the impact is immediate and violent, initiating a sequence that leaves both vehicles overturned and severely damaged."
+TR01642,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01643,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01644,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01645,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01646,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01647,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01648,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01649,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01650,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01651,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01652,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01653,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01654,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01655,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01656,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01657,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01658,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01659,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01660,true,traffic_accident,3.000,6.000,"A large brown truck traveling down a narrow street loses its balance and topples over onto its right side. As the vehicle falls, it collides with and crushes a pedestrian who had moved into its path, coming to a complete rest on its side by 00:07.93. The incident was caused by the truck's sudden loss of stability, likely exacerbated by uneven road conditions from nearby construction, while the pedestrian's proximity to the moving heavy vehicle placed them directly in the line of fall."
+TR01661,true,traffic_accident,0.000,5.792,A traffic collision is visible from an aerial viewpoint.
+TR01662,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01663,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01664,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01665,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01666,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01667,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01668,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01669,true,traffic_accident,3.000,12.400,"A bicycle carrying two children, one in an orange shirt pedaling and another in a red shirt riding on the back, loses balance and falls over at the bottom center of the frame near a structural pillar and scattered shoes. The children crash to the ground as a result of the rider's failure to maintain control while navigating the residential entrance area. Both children remain on the ground for several seconds to recover before eventually standing up, while background traffic continues to flow unaffected."
+TR01670,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01671,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01672,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01673,true,traffic_accident,3.000,9.000,"A dark-colored car strikes a pedestrian who is walking in the middle of an active traffic lane, throwing the person onto the hood and windshield before they roll onto the road surface. The vehicle comes to a complete stop shortly after the impact. This collision is caused by the pedestrian's decision to walk in the roadway at night while wearing dark clothing, which, combined with the wet road conditions and limited visibility, prevented the driver from reacting in time to avoid the strike."
+TR01674,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01675,true,traffic_accident,3.000,6.130,"A silver SUV traveling straight in lane 5 collides head-on with a pedestrian who is jaywalking across the active highway. The force of the impact throws the pedestrian into the air, causing them to land in lane 4, while the silver SUV deflects to the right into lane 6. The collision is caused by the pedestrian's illegal decision to cross a high-speed multi-lane road without a designated crossing, leaving the driver unable to stop the vehicle in time."
+TR01676,true,traffic_accident,3.000,3.870,"A red car traveling straight in the middle lane collides head-on with a pedestrian who is jaywalking in the active highway lanes, propelling the person to the right side of the road. Immediately following this impact, the red car veers into the adjacent right lane and collides with a truck moving in the same direction. The incident is caused by the pedestrian's dangerous decision to walk in the middle of a high-speed highway and the red car's subsequent inability to avoid the obstacle, leading to a loss of control."
+TR01677,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01678,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01679,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01680,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01681,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01682,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01683,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01684,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01685,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01686,true,traffic_accident,3.000,3.930,"A fast-moving motorcycle entering from the left side of the intersection collides with another motorcycle proceeding straight from the top side, resulting in a T-bone collision. Both riders lose their balance and fall to the roadway, with their vehicles toppling and sliding a short distance before coming to a halt. The root cause of the anomaly is the rider from the left overspeeding and failing to yield the right-of-way, which left insufficient reaction time to avoid the crossing vehicle."
+TR01687,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01688,true,traffic_accident,3.000,5.850,"A white truck traveling in the right lane suddenly veers off course and collides head-on with the walkway crash barrier on the right side of the tunnel, causing the vehicle to overturn. The impact occurs as a bus in the adjacent left lane slows down in response to the accident. The root cause of the anomaly is the truck driver's failure to maintain their lane, leading to a complete loss of control and a violent collision with the stationary barrier."
+TR01689,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01690,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01691,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01692,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01693,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01694,true,traffic_accident,0.000,5.750,A traffic collision is visible from an aerial viewpoint.
+TR01695,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01696,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01697,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01698,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01699,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01700,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01701,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01702,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01703,true,traffic_accident,1.930,4.010,"A truck carrying four white boxes collides head-on with another truck moving straight from the right side of the intersection. The impact is violent, causing the truck with the white boxes to be deflected toward the left side of the frame while the other truck is severely damaged and falls onto its right side. This collision is caused by a severe traffic signal violation, as the truck carrying the boxes proceeded straight through the intersection despite the traffic lights facing its direction being clearly red."
+TR01704,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01705,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01706,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01707,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01708,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01709,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01710,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01711,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01712,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01713,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01715,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01716,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01717,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01718,true,traffic_accident,3.000,4.920,"A green truck traveling in lane 7 performs a sudden, aggressive lane change into lane 6 to avoid colliding with a white hatchback that has abruptly veered toward the right guardrail. During this evasive maneuver, the truck loses stability and overturns, crashing onto the grassy median. The accident is caused by the erratic driving of the white hatchback, which created an immediate hazard that forced the truck driver into a desperate and ultimately unsuccessful attempt to avoid a rear-end collision."
+TR01719,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01720,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01721,true,traffic_accident,1.440,5.060,"A black sedan traveling in the third lane of a highway loses control while navigating a curve, swerving into the second lane and then back into the third lane. This instability leads to a violent skid, resulting in the sedan crashing head-on into the central median barrier and flipping over before coming to a complete stop. The accident is caused by a sudden loss of vehicle control, likely due to excessive speed or driver error, which made the collision with the divider inevitable."
+TR01722,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01723,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01724,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01725,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01726,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01727,true,traffic_accident,3.000,14.600,"A blue cargo truck traveling along the roadway suddenly swerves to its left and crosses into the opposing lane, resulting in a forceful head-on collision with an oncoming motorcycle carrying two riders at 00:14.20. The impact ejects the riders onto the road and pushes the motorcycle toward the curb. After the collision, the truck loses control and skids across the roadway, mounting the curb on the right side of the frame and crashing into a parked red hatchback and a nearby building structure before coming to a complete halt. The accident was caused by the truck driver losing control of the vehicle, a situation likely aggravated by the wet and slippery road surface."
+TR01728,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01729,true,traffic_accident,2.030,7.790,"A black sedan enters a main road from a side street on the right without yielding, resulting in a violent T-bone collision with a straight-moving black SUV at 00:02.31. The force of the impact causes the SUV to lose control and roll over multiple times, during which a person is ejected from the vehicle and thrown onto the side of the road by 00:04.50. The SUV eventually comes to a complete stop resting upside down on its roof, while the sedan is spun around near the intersection. The root cause of the accident is the sedan driver's failure to yield the right-of-way, which created an unavoidable collision course for the SUV."
+TR01730,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01731,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01732,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01733,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01734,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01735,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01736,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01737,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01738,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01739,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01740,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01741,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01742,true,traffic_accident,3.000,5.000,"A black car recklessly overtakes a silver car that has stopped to yield to pedestrians, swerving into the marked crossing and colliding directly with a woman and a child. The force of the impact knocks both pedestrians to the ground, while the black car continues moving without stopping. The root cause of the anomaly is the driver's illegal decision to overtake a yielding vehicle at a pedestrian crossing, demonstrating a total disregard for traffic laws and the safety of the pedestrians."
+TR01743,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01744,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01745,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01746,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01747,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01748,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01749,true,traffic_accident,0.000,5.709,A traffic collision is visible from an aerial viewpoint.
+TR01750,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01751,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01752,true,traffic_accident,3.000,4.540,"A motorcycle rider skids and loses balance near a crosswalk, falling directly into the path of an oncoming red sedan. The rider's head strikes the front edge of the sedan, resulting in a head-on collision that brings the car to a complete stop by 00:10.00. This accident was caused by the rider losing control and slipping off the motorcycle, which, combined with the unstructured traffic environment and lack of lane markings, left the driver of the sedan with no time to avoid the impact."
+TR01753,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01754,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01755,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01756,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01757,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01758,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01759,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01760,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01761,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01762,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01763,true,traffic_accident,1.840,4.240,"A blue SUV executing a right turn collides with a dark-colored scooter traveling straight through the intersection on a marked crosswalk. The impact knocks the scooter and its rider onto their side, and the SUV continues its turn, pushing the fallen rider along the pavement. The collision is caused by the SUV driver's failure to yield the right-of-way to the straight-moving scooter, making the crash inevitable once the SUV committed to the turn."
+TR01764,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01765,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01766,true,traffic_accident,0.840,5.410,"A gray van traveling from top to bottom loses control and skids, veering sharply to its left and crashing through the planted center median. The vehicle continues its trajectory across the opposing lanes of traffic before colliding violently with the boundary on the far right side of the road. The root cause of the anomaly is the driver's loss of vehicle control, which led to the van skidding out of its designated lane and traversing the median, resulting in a severe single-vehicle collision."
+TR01767,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01768,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01769,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01770,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01771,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01772,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01773,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01774,true,traffic_accident,2.600,3.200,"A silver SUV and a black sedan are involved in a T-bone collision in the center of the intersection. The collision occurs because the driver of the silver SUV jumps a red traffic signal, entering the intersection illegally and violating the right-of-way of the black sedan."
+TR01775,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01776,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01777,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01778,true,traffic_accident,3.000,4.260,"A black motorcycle traveling in the wrong direction collides head-on with a white sedan that is moving straight in its designated lane. The collision occurs near the intersection in the second lane from the left, caused by the motorcyclist's failure to adhere to the directional flow of traffic while making an improper right turn across active lanes. The impact is severe enough to immediately deflect the motorcycle and disrupt the forward momentum of the sedan."
+TR01779,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01780,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01781,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01782,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01783,true,traffic_accident,2.840,5.760,"A black SUV and another car collide while navigating the roadway, causing both vehicles to lose control. The force of the impact sends the second car spinning toward the right side of the frame, while the black SUV slides forward and crashes violently into a pole in the median area, where it comes to a complete stop by 00:05.76. The accident was caused by a failure to yield or a misjudged turn during the vehicles' maneuvers, leading to a severe collision and subsequent impact with roadside infrastructure."
+TR01784,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01785,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01786,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01787,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01788,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01789,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01790,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01791,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01792,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01793,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01794,true,traffic_accident,3.000,6.000,"A motorcycle carrying two riders collides with the front left corner of a silver pickup truck on a narrow curve, resulting in both riders being violently ejected and thrown to the ground. The pickup truck rolls forward slightly before coming to a complete stop just past the point of impact. The collision was caused by the narrowness of the unmarked road and the truck's central positioning on the curve, which left neither vehicle enough space to safely pass one another."
+TR01795,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01796,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01797,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01798,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01799,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01800,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01801,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01802,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01803,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01804,true,traffic_accident,2.220,3.180,"A white van traveling straight from the bottom of the frame collides with a motorcycle crossing from the right in a T-bone collision. The impact violently ejects the rider from the motorcycle and sends the bike sliding across the intersection. The accident is caused by the motorcyclist's failure to yield the right-of-way, as the van was proceeding through the intersection under a blinking green traffic light."
+TR01805,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01806,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01807,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01808,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01809,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01810,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01811,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01812,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01813,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01814,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01815,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01816,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01817,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01818,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01819,true,traffic_accident,0.170,2.690,"A white SUV approaching from the bottom left corner of the frame fails to stop and rear-ends a white hatchback that is stationary just before the intersection. The force of the collision propels both vehicles forward from their initial positions into the intersection. The root cause of the anomaly is the SUV driver's failure to maintain a safe following distance and control their speed, making the impact with the stopped vehicle unavoidable."
+TR01820,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01821,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01822,true,traffic_accident,2.890,4.530,A black sedan traveling straight through the intersection and a silver sedan entering from the bottom right engage in a head-on collision. The impact is severe enough to deflect the silver sedan toward the left side of the frame. The accident was caused by the silver sedan's failure to yield the right of way to the black sedan at an intersection that lacks clear traffic signals or stop signs.
+TR01823,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01824,true,traffic_accident,3.000,6.070,"A white van enters the scene from the top-right corner, executing a left turn into lane 2 where it strikes a pedestrian crossing the intersection head-on. Rather than stopping after the impact, the van continues moving straight through lane 2, dragging the pedestrian underneath the vehicle until it exits the frame at the bottom-left. The anomaly was caused by the driver's failure to yield the right-of-way to the pedestrian already present in the roadway and a subsequent failure to stop after the collision."
+TR01825,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01826,true,traffic_accident,2.250,3.220,"A white van traveling from the top of the frame toward the left veers into the opposing lane and collides head-on with a silver sedan moving from the left to the right. The force of the impact pushes the silver sedan backward until it exits the frame to the left. This anomaly is caused by the white van's failure to maintain its lane, which resulted in a direct violation of the sedan's right-of-way."
+TR01827,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01828,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01829,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01830,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01831,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01832,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01833,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01834,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01835,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01836,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01837,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01838,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01839,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01840,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01841,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01842,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01843,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01844,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01845,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01846,true,traffic_accident,1.020,6.910,"A bus traveling from top to bottom in lane 3 crashes violently into the rear end of a car, pinning the vehicle against the central road divider. Following the heavy impact, the bus deflects off the crushed car and continues to move forward down the highway. The collision was caused by the bus driver's failure to maintain a safe following distance and speed, which left insufficient time to react or brake before striking the leading vehicle."
+TR01847,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR01848,true,traffic_accident,1.330,1.470,"A white SUV traveling at high speed moves illegally through the intersection, resulting in a T-bone collision with a white truck that is moving straight from left to right. The force of the impact deflects the SUV toward the top of the intersection while the truck is knocked off its path. The collision is caused by the SUV driver overspeeding and failing to obey traffic laws while the truck had the right-of-way."
+TR01849,true,traffic_accident,0.000,5.000,A traffic collision occurs.
+TR02758,true,traffic_accident,0.660,2.730,"A white SUV traveling straight through an uncontrolled intersection is T-boned by a grey SUV crossing from the left. The force of this initial impact propels the white SUV to the right, where it immediately suffers a secondary head-on collision with another grey SUV approaching from the right. This chain of events is caused by a mutual failure to yield the right-of-way, as both the white SUV and the first grey SUV entered the intersection simultaneously without slowing down."
+TR02768,true,traffic_accident,1.160,2.020,"A white sedan and a green truck are involved in a severe T-bone collision in the right side of the intersection. The front of the green truck strikes the white sedan, causing the sedan to violently deflect to its left and lose its rear bumper. The cause of the anomaly is a right-of-way violation, as one of the vehicles entered the intersection despite a visible red traffic light, leading to the unavoidable impact."
+TR02778,true,traffic_accident,8.000,15.000,"A dog runs across an active multi-lane roadway from right to left toward a group of pedestrians, resulting in a collision with a dark car traveling from the top left toward the bottom right. The car strikes the dog in the lane closest to the sidewalk, causing the animal to tumble across the wet road surface before it quickly recovers and reaches the safety of the pedestrians. The root cause of the event is the animal's sudden and unpredictable entry into the path of oncoming traffic, violating the right-of-way of the vehicle."
+TR02787,true,traffic_accident,2.060,3.000,"A white car initiates a U-turn from the first lane into the second, crossing directly into the path of an oncoming black car and resulting in a violent T-bone collision. The crash is caused by the white car's failure to yield the right-of-way to the black car, which was traveling straight through the lane. The force of the impact immediately deflects both vehicles from their original trajectories, beginning a sequence that sends them spinning toward the bottom of the frame."
+TR02795,true,traffic_accident,2.890,4.530,A black sedan traveling straight through the intersection and a silver sedan entering from the bottom right engage in a head-on collision. The impact is severe enough to deflect the silver sedan toward the left side of the frame. The accident was caused by the silver sedan's failure to yield the right of way to the black sedan at an intersection that lacks clear traffic signals or stop signs.
+TR02803,true,traffic_accident,1.860,2.390,"A yellow and blue sedan traveling straight from the bottom of the frame T-bones a bicycle carrying two riders as they cross the road via a marked crosswalk. The collision occurs because the sedan driver failed to yield the right-of-way to the cyclists despite a blinking yellow traffic signal requiring caution. The impact is severe, instantly launching the riders and the bicycle into the air."
+TR02811,true,traffic_accident,84.530,85.530,"A silver sedan moving straight from the bottom of the frame collides with a motorcycle traveling from the right, resulting in a T-bone collision at the center of the frame. The impact causes the motorcyclist to fall onto the road, and both the sedan and the motorcycle come to a halt shortly after the collision. The accident is caused by the failure of the two vehicles to yield or coordinate their paths at the point of intersection, making the T-bone impact inevitable."
+TR02819,true,traffic_accident,33.000,34.330,"A white sedan traveling at an excessive speed collides head-on with a pedestrian who is jaywalking in the center of lane 1. The impact is violent, causing the pedestrian to be deflected toward the top of the frame as the sedan loses control and veers toward the left. The root cause of the accident is the driver's high rate of speed in a confined urban area, which eliminated any possibility of avoiding the pedestrian."
+TR02827,true,traffic_accident,0.170,2.690,"A white SUV approaching from the bottom left corner of the frame fails to stop and rear-ends a white hatchback that is stationary just before the intersection. The force of the collision propels both vehicles forward from their initial positions into the intersection. The root cause of the anomaly is the SUV driver's failure to maintain a safe following distance and control their speed, making the impact with the stopped vehicle unavoidable."
+TR02834,true,traffic_accident,2.460,4.930,"A white van traveling from right to left collides with a white minivan moving from the bottom-right toward the top in a severe T-bone collision. The impact generates a visible cloud of dust and forcefully deflects the minivan to its left, causing it to crash into the curb of the central grassy median. The white van is deflected forward into the intersection before coming to a halt. This accident was caused by the minivan failing to slow down or yield at the T-junction, crossing directly into the path of the oncoming van."
+TR02841,true,traffic_accident,37.013,37.013,"A sedan traveling straight from the bottom lane towards the top right of the frame enters the intersection and suffers a T-bone collision with a blue sedan moving straight from the left to the right. Both vehicles are forced out of their paths upon impact and exit the frame. The collision is caused by a failure to yield the right-of-way at the intersection, resulting in the two vehicles entering the same spatial point simultaneously."
+TR02848,true,traffic_accident,1.480,3.750,"A truck traveling straight through the intersection from the left collides with a motorcyclist moving from the top of the frame in a T-bone collision. The impact occurs in the center of the junction, knocking the motorcyclist off balance and causing the bike to crash. This anomaly is caused by a right-of-way violation, as the motorcyclist failed to stop for the red traffic lights visible at the top of the frame, entering the intersection unlawfully and crossing directly into the truck's path."
+TR02855,true,traffic_accident,69.930,72.200,"A white sedan traveling at a high rate of speed enters the intersection from the right and strikes a pedestrian who has suddenly begun running across the road. The vehicle collides head-on with the person at the crosswalk but fails to stop, continuing its trajectory straight through the intersection and exiting the frame. The accident is caused by the combination of the driver's excessive speed and the pedestrian's abrupt movement into the active roadway, which left no time for either party to react."
+TR02862,true,traffic_accident,36.200,36.200,"A black sedan traveling at an excessive and unstable speed collides violently with a parked white car, triggering a multi-vehicle pile-up that includes a black SUV and another parked black sedan. The force of the impact is severe, resulting in significant damage to the stationary vehicles and causing a black SUV to overturn. The root cause of the anomaly is the black sedan driver's failure to maintain vehicle control and excessive speed, which led to the collision with legally parked vehicles."
+TR02869,true,traffic_accident,23.460,24.130,"A white van and a white SUV collide in a T-bone impact in the middle of the intersection. The collision is caused by a failure to yield the right-of-way as the vehicles enter the intersection from different directions. Following the impact, the white SUV continues moving toward the bottom of the frame, while the white van begins to take a left turn."
+TR02876,true,traffic_accident,61.068,61.068,"A motorcycle traveling from the left side of the intersection collides in a T-bone fashion with another motorcycle moving from the top right. The impact is severe, causing both riders to be thrown from their vehicles and onto the roadway. This collision occurred because both motorcycles entered the intersection on conflicting trajectories simultaneously, indicating that one rider likely violated a traffic signal or failed to yield the right-of-way."
+TR02883,true,traffic_accident,1.670,6.600,"A speeding truck enters from the bottom right and initiates a severe multi-vehicle pile-up by violently rear-ending a black SUV. The impact drags and rotates the SUV sideways, causing it to overturn toward the right side of the road. The truck continues its forward momentum to T-bone a reversing white tow truck and its towed vehicle, forcefully separating the towed truck from the tow truck before the speeding truck plows off the roadway and into the roadside bushes. The cause of the anomaly is the truck driver's failure to maintain a safe speed and proper lookout, resulting in an inability to brake or evade the vehicles ahead."
+TR02890,true,traffic_accident,0.120,2.930,"A black car traveling in the second lane from the left suddenly swerves to its right without indicating, crossing into the leftmost lane and leaving the paved roadway. This abrupt maneuver leads the vehicle to crash head-on into a gray pole at the bottom left corner of the frame. The collision is caused by the driver's loss of vehicle control or an unsafe lane change, resulting in a severe single-vehicle accident."
+TR02896,true,traffic_accident,33.563,33.563,"A white hatchback traveling at high speed drives straight from the right and strikes a group of four pedestrians standing on the residential road. The impact knocks several individuals to the ground, though one person narrowly avoids the collision by stepping aside at the last moment. The accident is caused by the driver's excessive speed in a residential area and a complete failure to observe or yield to the people gathered on the roadway."
+TR02902,true,traffic_accident,0.720,2.530,"A car traveling from the top of the frame toward the bottom collides with a truck in a severe T-bone collision near the middle of the second and third lanes. The impact is caused by a right-of-way violation at the intersection, where one vehicle failed to yield or disregarded control rules, crossing directly into the path of the other. This collision abruptly halts the forward momentum of both vehicles, leaving them damaged in the middle of the roadway."
+TR02908,true,traffic_accident,0.630,1.990,"An orange truck moving from the right collides with the passenger side of a black SUV moving straight in a violent T-bone collision. The impact generates a cloud of dust and pushes the SUV sideways across the intersection. This anomaly was caused by a failure to yield the right of way and a lack of situational awareness from both drivers, as neither vehicle slowed down or took evasive action before the impact."
+TR02914,true,traffic_accident,7.573,7.573,"A white sedan enters the frame from the left in the third lane and suddenly swerves sharply across multiple lanes toward the right side of the highway. This erratic maneuver forces a gray van in the fifth lane to brake hard and veer into the sixth lane to avoid a collision. The white sedan continues its uncontrolled trajectory and collides head-on with the concrete median next to the shoulder lane at 00:02:09, coming to a complete stop by 00:03:19. The anomaly was caused by the sedan driver losing control of the vehicle or attempting an unsafe, rapid lane change, which created an immediate hazard for other motorists."
+TR02920,true,traffic_accident,5.900,5.900,"A white sedan fails to slow down or yield as it enters the intersection from the left, crossing directly into the path of a black sedan traveling straight from the top of the frame. This results in a severe T-bone collision where the white sedan strikes the passenger side of the black sedan. The root cause of the anomaly is the white sedan driver's failure to yield the right-of-way despite the traffic rules at the intersection, making the high-speed impact unavoidable."
+TR02926,true,traffic_accident,12.000,18.000,"A dark-colored car strikes a pedestrian who is walking in the middle of an active traffic lane, throwing the person onto the hood and windshield before they roll onto the road surface. The vehicle comes to a complete stop shortly after the impact. This collision is caused by the pedestrian's decision to walk in the roadway at night while wearing dark clothing, which, combined with the wet road conditions and limited visibility, prevented the driver from reacting in time to avoid the strike."
+TR02932,true,traffic_accident,139.860,142.400,"A truck traveling in the right lane attempts an unsafe lane change to the left, colliding with a car that is already established and driving straight in the adjacent lane. The impact occurs at 02:20.93, causing both the truck and the car to deflect toward the left side of the frame. The collision is caused by the truck driver's failure to yield the right-of-way to the car during the lane change maneuver."
+TR02938,true,traffic_accident,5.800,6.670,"A red car traveling straight in the middle lane collides head-on with a pedestrian who is jaywalking in the active highway lanes, propelling the person to the right side of the road. Immediately following this impact, the red car veers into the adjacent right lane and collides with a truck moving in the same direction. The incident is caused by the pedestrian's dangerous decision to walk in the middle of a high-speed highway and the red car's subsequent inability to avoid the obstacle, leading to a loss of control."
+TR02944,true,traffic_accident,4.040,9.650,"An orange truck performing a lane change from the right to the left lane collides with a fast-approaching silver sedan. The force of the impact lifts the sedan off the ground, sending it violently into the left tunnel wall where it generates sparks and dust before dropping back onto the pavement. The accident is caused by the truck driver initiating an unsafe merge without ensuring the lane was clear, combined with the sedan's high rate of speed, which eliminated any opportunity for evasive action."
+TR02950,true,traffic_accident,120.000,126.000,"A silver car reverses out of its parking space and, due to the driver misjudging the required clearance for the turn, the front right bumper of the silver car swings into and collides with the front left bumper of a stationary dark SUV. The impact causes the parked SUV to jolt slightly on its suspension before the silver car comes to a stop and pulls forward. The collision was caused by the silver car driver's failure to adequately check their surroundings and monitor the swing of the front end during the reversing maneuver."
+TR02956,true,traffic_accident,12.000,18.000,"A motorcycle carrying two people collides with the rear of a parked maroon scooter on the left side of the street, causing the motorcycle to lose balance and tip over. The rider and passenger both fall to the ground upon impact, while the parked scooter is bumped forward slightly but remains upright. The accident is caused by the motorcycle rider's failure to maintain a safe trajectory or brake in time to avoid the stationary object, indicating a misjudgment of space in the narrow roadway."
+TR02962,true,traffic_accident,20.460,22.070,"A green bus traveling straight through the intersection commits a severe traffic signal violation by failing to stop at a red light, resulting in a T-bone collision with a white and blue bus crossing the intersection. The force of the impact causes the white and blue bus to drift and turn toward the top middle of the frame, while a nearby pedestrian is forced to jump back to avoid the sliding vehicles. The collision is primarily caused by the green bus driver's failure to yield to the right-of-way, a situation likely exacerbated by the heavy rain and slippery road conditions that reduced braking traction."
+TR02968,true,traffic_accident,2.580,3.010,"A white van traveling straight through the intersection strikes a pedestrian wearing a black and white outfit head-on while they are crossing within a marked pedestrian crosswalk. The force of the impact causes the pedestrian to tumble onto the roadway in the fourth lane from the left. The collision is caused by the van driver's failure to yield the right-of-way to the pedestrian, likely due to inattention or poor visibility at night."
+TR02974,true,traffic_accident,4.560,7.670,"A yellow sedan enters the frame from the top right and quickly loses control, crashing its front end into a parked silver sedan. The force of the head-on and rear-end impact throws a man wearing a green shirt, who had been leaning against the silver sedan, toward the bushes on the left side of the frame. The root cause of the anomaly is the yellow sedan driver's loss of vehicle control, which led to the violation of the parked vehicle's space and the subsequent collision."
+TR02980,true,traffic_accident,41.000,42.000,"A dark-colored sedan enters the intersection at an excessive rate of speed, resulting in a dangerous near-miss with a green and yellow auto-rickshaw. The sedan passes through the intersection immediately after the slower auto-rickshaw clears the center of the frame, narrowly avoiding a collision. This anomaly is caused by the sedan driver's reckless speed and failure to adjust for the slower flow of traffic and the presence of pedestrians in the active intersection."
+TR02986,true,traffic_accident,8.000,12.000,"A dark car traveling toward the camera collides with a scooter that is crossing the road perpendicularly, resulting in a T-bone impact that throws the rider into the air. Following the collision, the car veers sharply to the right and crashes into a roadside structure. The accident is caused by the scooter rider's right-of-way violation upon entering the main roadway, compounded by the driver's failure to brake in time to avoid the crossing vehicle."
+TR02992,true,traffic_accident,1.910,2.270,"A black SUV traveling from the bottom of the frame towards the intersection collides in a T-bone fashion with a motorcycle crossing from the left. The impact is severe enough to eject the rider, who is thrown through the air and lands on the ground near the crosswalk on the right side of the intersection. The crash is caused by the driver of the black SUV failing to yield the right-of-way to the motorcycle already traversing the junction, leading to an abrupt and unavoidable collision."
+TR02998,true,traffic_accident,1.450,6.830,"A white sedan drifts from the third lane into the second lane and collides head-on with a roadside object hazard near the first-lane boundary. The force of the impact causes the vehicle to deflect and jump into the air, leading it to violently roll over across the second lane before coming to a stop. The root cause of the accident is the driver's failure to maintain their designated travel lane and loss of vehicle control, which made the collision with the roadside hazard inevitable."
+TR03004,true,traffic_accident,16.600,17.530,"A fast-moving motorcycle entering from the left side of the intersection collides with another motorcycle proceeding straight from the top side, resulting in a T-bone collision. Both riders lose their balance and fall to the roadway, with their vehicles toppling and sliding a short distance before coming to a halt. The root cause of the anomaly is the rider from the left overspeeding and failing to yield the right-of-way, which left insufficient reaction time to avoid the crossing vehicle."
+TR03010,true,traffic_accident,0.000,6.060,"A gray pickup truck traveling in the left lane loses control and veers off the roadway, resulting in a head-on collision with the trees lining the left side of the road. The violent impact causes the truck to turn sideways and roll over, bringing down a large tree branch in the process. The overturned vehicle سپس slides and rotates once before coming to a complete stop in the lane with the tree branch draped over it, effectively blocking the roadway. The anomaly was caused by the driver's failure to maintain their lane, leading to an unavoidable collision with the roadside vegetation."
+TR03016,true,traffic_accident,107.230,107.230,"A red sedan runs a red traffic signal and enters the intersection, where it is violently T-boned by a silver sedan traveling lawfully from the right. The force of the impact causes both vehicles to deflect from their original paths. This collision was caused by the driver of the red sedan completely ignoring the red light, which resulted in an unlawful entry into the intersection and a violation of the silver sedan's right-of-way."
+TR03022,true,traffic_accident,0.000,8.750,"A black car loses control while traveling through a signalized intersection at night, violently crashing into the central metal divider. The force of the impact propels the vehicle over the divider and into the opposite lanes of traffic, where it eventually slides to a halt with heavy visible damage. The anomaly is caused by the driver's failure to maintain their lane despite having a green light, resulting in a severe single-vehicle collision with the road infrastructure."
+TR03028,true,traffic_accident,4.167,4.167,"A white box truck traveling straight collides with a railway overpass because the height of its trailer exceeds the bridge's clearance. The top front edge of the cargo box strikes the suspended warning beam and overpass structure, causing the roof of the truck to crumple and peel backward. This accident is caused by the driver's failure to heed the prominent 11 feet 8 inches low clearance warning signs and flashing yellow lights posted on the structure."
+TR03034,true,traffic_accident,17.600,19.930,"A white hatchback traveling at high speed collides in a T-bone impact with a black motorcycle that is stopped at a median opening. The force of the collision violently throws the rider, who is wearing a black shirt, onto the pavement and deflects the motorcycle into an active traffic lane. The hatchback fails to stop and continues driving straight, leaving the scene. The accident was caused by the white hatchback overspeeding and the driver's failure to avoid the stationary motorcyclist."
+TR03040,true,traffic_accident,3.530,5.030,"A red truck collides violently with the rear of a red hatchback as the smaller vehicle attempts to turn toward the bottom right corner of the intersection. The force of the rear-end impact causes the red hatchback to spin out of control and be pushed completely out of the frame, while the red truck continues driving forward through the intersection. The collision was caused by the truck driver's failure to decelerate and maintain a safe following distance after changing lanes, leaving them with insufficient reaction time to avoid the turning hatchback."
+TR03046,true,traffic_accident,28.000,29.870,"A motorcycle traveling straight through a road fails to yield to pedestrians who have the right-of-way on a marked crosswalk, resulting in a head-on collision with two people. The impact causes the pedestrians to be struck and fall to the ground, while the motorcyclist also loses control and falls, effectively disrupting the flow of traffic in the immediate area."
+TR03052,true,traffic_accident,2.080,3.580,"A motorcycle traveling from left to right across the intersection collides with a gray pickup truck moving straight from the bottom of the frame. The impact causes the motorcycle to deflect and flip over, throwing the rider to the ground. The collision was caused by the motorcyclist violating the right-of-way and crossing directly into the path of the pickup truck, which was traveling on a green light."
+TR03058,true,traffic_accident,96.201,96.201,"A white sedan traveling at an excessive speed enters the intersection and collides side-on with a white van. The force of the T-bone impact causes the white van to flip over onto its right side and slide toward the left side of the frame before coming to a halt. The collision is caused by the sedan driver's reckless overspeeding and failure to yield the right-of-way, compounded by the white van entering the intersection during a red light state."
+TR03064,true,traffic_accident,3.000,8.200,"A white and red bus moving straight across the intersection collides with the rear of a brown pickup truck, causing the truck to tilt and be propelled forward. As the truck continues moving in an unstable state, it strikes a pink cable car that is in the process of making a left turn. This chain of events is caused by the bus's failure to yield or maintain a safe distance while navigating the intersection under a red light, resulting in two separate collisions that leave all three vehicles immobilized."
+TR03070,true,traffic_accident,12.130,13.400,"A white SUV executing a left turn at high speed strikes the rear of a black motorcycle traveling straight through the intersection. The force of the impact causes the motorcycle and its rider to fall violently, with the SUV briefly dragging them further into the intersection before coming to a stop. The collision is caused by the SUV driver's excessive speed and failure to yield the right-of-way to the motorcycle already navigating the intersection."
+TR03076,true,traffic_accident,0.000,5.000,"A white sedan positioned in the right lane executes a lane change into the middle lane while the surrounding traffic remains stationary. This maneuver is performed safely because the vehicles at the distant intersection are currently queued and held by a red traffic signal, providing the driver with ample space to shift lanes without obstructing other motorists or risking a collision."
+TR03082,true,traffic_accident,30.530,31.800,"A white hatchback traveling straight through the intersection collides with another vehicle entering from the bottom-right in a T-bone collision. The impact causes the struck vehicle to deflect and topple over onto its side, while the white hatchback continues moving forward and exits the scene without stopping. The accident is caused by a failure to obey traffic signals, as the traffic lights were red for the intersecting lanes during the collision, leading both drivers to enter the intersection simultaneously."
+TR03088,true,traffic_accident,1.930,4.010,"A truck carrying four white boxes collides head-on with another truck moving straight from the right side of the intersection. The impact is violent, causing the truck with the white boxes to be deflected toward the left side of the frame while the other truck is severely damaged and falls onto its right side. This collision is caused by a severe traffic signal violation, as the truck carrying the boxes proceeded straight through the intersection despite the traffic lights facing its direction being clearly red."
+TR03094,true,traffic_accident,2.030,2.670,"A white SUV driving straight through the intersection collides with a pedestrian who is running across the crosswalk from right to left. The impact occurs in the middle of the intersection, knocking the pedestrian heavily to the ground. The root cause of the anomaly is the pedestrian's decision to run across the crosswalk while the traffic signal was green, granting the right-of-way to the oncoming vehicle and placing the pedestrian directly in the SUV's path."
+TR03100,true,traffic_accident,4.400,7.890,"A white concrete mixer truck traveling at a high rate of speed rear-ends a smaller red truck in the rightmost lane. The force of the impact violently pushes the red truck off the road and onto the shoulder, where it is crushed against a concrete retaining wall and topples over onto its side. The collision is caused by the concrete mixer truck driver's failure to maintain a safe following distance and speed relative to the slower vehicle ahead, making the impact unavoidable despite a last-second attempt to swerve."
+TR03106,true,traffic_accident,1.140,1.990,"A black sedan traveling straight from the bottom of the frame collides violently with a motorcycle crossing the intersection from right to left, resulting in a T-bone collision on the crosswalk. The force of the impact is so severe that it begins to throw the riders from the motorcycle onto the road surface. The anomaly is caused by a right-of-way violation at the signalized intersection, where one of the vehicles failed to obey the active traffic signals, leading to the unavoidable crash."
+TR03112,true,traffic_accident,66.117,66.117,"A white SUV executing a right turn at an urban intersection fails to yield the right-of-way to an oncoming motorcycle traveling straight, resulting in a T-bone collision near the center of the road. The impact is severe enough to throw the rider from the motorcycle and cause the vehicle to fall. This accident was caused by the SUV driver's failure to ensure the intersection was clear before completing the turn, intersecting the path of the high-speed motorcycle."
+TR03118,true,traffic_accident,1.440,5.060,"A black sedan traveling in the third lane of a highway loses control while navigating a curve, swerving into the second lane and then back into the third lane. This instability leads to a violent skid, resulting in the sedan crashing head-on into the central median barrier and flipping over before coming to a complete stop. The accident is caused by a sudden loss of vehicle control, likely due to excessive speed or driver error, which made the collision with the divider inevitable."
+TR03124,true,traffic_accident,1.030,1.990,"A white sedan traveling straight from the right side of the junction collides with a motorcycle carrying three riders entering from the bottom of the frame in a T-bone collision. The force of the impact throws the three riders from the motorcycle onto the road surface. This accident occurs because the paths of the two vehicles intersected in the middle of the junction, caused by one of the drivers failing to yield the right-of-way or disregarding a traffic signal."
+TR03130,true,traffic_accident,8.660,9.260,"A bicycle rider traversing the center of the intersection is struck by both a motorcycle and a black sedan entering from the top left, resulting in a dual T-bone collision. The combined impacts knock the bicycle rider to the ground. The anomaly is caused by the motorcycle and black sedan failing to yield the right-of-way to the bicycle already in the intersection, likely due to disregarding traffic signals or failing to observe the cyclist."
+TR03136,true,traffic_accident,8.660,15.270,"A grey sedan deviates from its designated lane while completing a left turn, driving over an elevated roadside mound-like structure before returning to the paved roadway to continue moving straight. This erratic maneuver is likely caused by the driver misjudging the turning radius or carrying excessive speed into the turn, resulting in a temporary loss of vehicle control. Although the car leaves the roadway, the driver successfully recovers the vehicle without colliding with any other traffic or infrastructure."
+TR03142,true,traffic_accident,0.600,7.470,"A silver sedan performs an illegal left lane change, causing a T-bone collision with a white truck traveling in the adjacent lane. The sedan continues to push the truck across multiple lanes until the truck violently strikes the central concrete median, flips over the barrier into the opposite-direction roadway, and slides to a halt. Simultaneously, the silver sedan loses control, is deflected off the median, swerves across the lanes, and eventually crashes head-on into the median barrier. The root cause of the anomaly is the sedan driver's failure to maintain their lane and yield the right-of-way, which left the truck driver with no time for evasive action."
+TR03148,true,traffic_accident,6.443,6.443,"A black SUV entering the fifth lane from the left collides with a woman who is walking across the designated crosswalk from left to right. The collision occurs because the driver of the SUV fails to yield the right-of-way to the pedestrian, either due to a lack of observation or a misjudgment of the distance while entering the lane."
+TR03154,true,traffic_accident,7.160,9.960,"A red truck traveling straight in its lane strikes the rear end of a black sedan that is attempting to make an illegal turn across the yellow-striped median. The forceful impact causes the black sedan to spin out of control across the roadway. The root cause of the collision is the sedan driver's unsafe and erratic maneuver, as the vehicle cut directly into the path of the truck, which had the right-of-way and insufficient time to avoid the impact."
+TR03160,true,traffic_accident,2.660,5.630,"A black sedan traveling from right to left and a green truck moving from top to bottom collide in a severe T-bone collision within the intersection. The impact is significant enough to disrupt the trajectories of both vehicles, as the black sedan is deflected to its left and the green truck is pushed toward the right. The anomaly was caused by the simultaneous arrival of both vehicles at the intersection during rainy conditions, where a failure to yield the right-of-way or a traffic signal violation, compounded by reduced traction on the wet road, made the collision inevitable."
+TR03166,true,traffic_accident,1.460,5.200,"A white hatchback making a left turn collides head-on with a black motorcycle that is traveling in the wrong direction toward the top of the frame. The force of the impact throws the motorcycle rider to the ground and causes the white hatchback to deflect to its right, lose balance, and overturn onto its side while sliding into the first lane from the left. The primary cause of the accident is the motorcycle rider's decision to drive against the established flow of traffic, which placed the vehicle directly in the path of the turning hatchback."
+TR03172,true,traffic_accident,3.500,4.650,"A blue sedan traveling straight through the intersection is struck by a white sedan that enters from the left, resulting in a severe T-bone collision. The force of the impact causes the blue sedan to flip over and begin sliding backward toward the bottom right of the frame, while the white sedan is deflected in the same general direction. The anomaly is caused by the white sedan's failure to yield the right-of-way to the blue sedan, a situation further complicated by wet, slippery road surfaces that increased the volatility of the crash."
+TR03178,true,traffic_accident,2.000,8.000,"A black car pulls out from an intersection to make a left turn, crossing directly into the path of an oncoming white car traveling straight on the main road. The white car is unable to avoid the conflict and strikes the passenger side of the black car in a T-bone collision, bringing both vehicles to an immediate stop in the middle of the intersection. The collision is caused by the black car's failure to yield the right-of-way, as the driver entered the main road unsafely while the white car had the legal right of way."
+TR03184,true,traffic_accident,16.000,20.260,"A silver sedan enters the intersection from the left, traveling straight in lane 2, but fails to maintain its trajectory and suffers a head-on collision with a traffic light pole at the center of the frame. The violent impact causes the vehicle to rotate out of control before it finally comes to a complete stop at 00:20.26. The accident is caused by the driver's lack of spatial awareness and failure to maintain lane control, which led to the direct impact with the stationary infrastructure."
+TR03190,true,traffic_accident,5.870,10.990,"A truck entering the intersection from the top performs an unsafe left turn, first colliding head-on with a motorcycle traveling straight from the left and then immediately striking a black SUV moving straight in lane 5. The truck's failure to yield the right-of-way to oncoming traffic causes a multi-vehicle accident that deflects the SUV and throws the motorcycle rider from their vehicle. The sequence of impacts creates significant disruption at the crosswalk and intersection, ending with the vehicles being pushed from their original paths of travel."
+TR03196,true,traffic_accident,0.000,8.510,"A black SUV speeding on a wet highway loses control due to hydroplaning in rainy conditions, leading to a series of violent collisions. The vehicle first skids across lanes and crashes into the right road barrier at 00:02.76, then deflects across the carriageway to strike the central road divider at 00:03.06. Upon the second impact, the SUV flips upside down, coming to a final rest against the divider by 00:08.51. The incident is caused by the driver's failure to adjust their speed to the hazardous weather, resulting in a complete loss of traction and vehicle control."
+TR03201,true,traffic_accident,0.780,1.130,"A black sedan traveling straight from the left of the frame enters an intersection and strikes a motorcycle rider moving toward the top of the frame in a T-bone collision. The force of the impact causes the rider to be thrown from the motorcycle, tumbling across the wet road surface toward the right side of the frame. This accident was caused by both parties entering the intersection simultaneously on perpendicular paths without yielding the right-of-way, making the collision inevitable."
+TR03206,true,traffic_accident,2.220,3.180,"A white van traveling straight from the bottom of the frame collides with a motorcycle crossing from the right in a T-bone collision. The impact violently ejects the rider from the motorcycle and sends the bike sliding across the intersection. The accident is caused by the motorcyclist's failure to yield the right-of-way, as the van was proceeding through the intersection under a blinking green traffic light."
+TR03211,true,traffic_accident,1.450,2.150,"A white van traveling from right to left and a black motorcycle moving from left to right collide violently within a four-way intersection. The force of the impact is severe enough to throw the motorcycle rider off their vehicle and onto the road. This collision was caused by both vehicles entering the uncontrolled intersection simultaneously, with wet road conditions likely hindering their ability to stop or yield in time."
+TR03216,true,traffic_accident,1.870,2.390,"A bus traveling straight through the intersection collides with a pedestrian who is walking from the bottom to the top of the frame, knocking the individual to the ground. The collision is caused by the bus driver's failure to obey the red traffic signals, resulting in the vehicle entering the intersection and striking the pedestrian who had the right-of-way."

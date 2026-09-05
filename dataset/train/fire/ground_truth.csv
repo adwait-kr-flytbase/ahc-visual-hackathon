@@ -1,0 +1,78 @@
+video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+TR00341,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00342,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00343,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00344,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00345,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00346,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00347,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00348,true,fire,1.600,6.870,"A fast-moving white pick-up truck violates a blinking red light and drives straight into the intersection, triggering a chain of violent collisions. The truck first T-bones a silver SUV and a silver sedan, causing the truck to deflect and collide head-on with a stationary white truck in lane 2. Simultaneously, the silver SUV is flipped by the impact, overturning onto a stationary black SUV and a black hatchback in lanes 3 and 4. The force of these collisions causes the black SUV to drift backward and rear-end a stationary white sedan, while the silver sedan sustains severe damage and catches fire. The root cause is the white pick-up truck driver's failure to stop for the blinking red signal, which created an unavoidable multi-vehicle pileup."
+TR00349,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00350,true,fire,0.000,15.034,A visible fire anomaly occurs in an urban scene.
+TR00351,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00352,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00353,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00354,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00355,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00356,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00357,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00358,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00359,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00360,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00361,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00362,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00363,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00364,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00365,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00366,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00367,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00368,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00369,true,fire,0.000,15.034,A visible fire anomaly occurs in an urban scene.
+TR00370,true,fire,3.000,5.400,"A blue sedan loses control and speeds into a gas station forecourt, striking a pedestrian in a yellow high-visibility outfit in a head-on collision before crashing directly into a fuel filling unit. The impact knocks over the pump and destroys it, causing an immediate and catastrophic fire to break out. The root cause of the incident is the driver's failure to maintain control of the vehicle and the decision to enter a pedestrian and fueling zone at an unsafe speed, making the collisions unavoidable."
+TR00371,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00372,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00373,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00374,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00375,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00376,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00377,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00378,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00379,true,fire,0.000,29.884,A fire or arson event is visible in an urban CCTV scene.
+TR00380,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00381,true,fire,0.000,15.034,A visible fire anomaly occurs in an urban scene.
+TR00382,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00383,true,fire,0.000,7.000,"A large red fire truck with flashing emergency lights travels straight along a lower roadway, following a white car that is positioned ahead of it. The fire truck maintains a steady pace in its lane, navigating the roadway toward the camera while its emergency beacons are active, although the surrounding traffic flow remains consistent and uninterrupted without any vehicles yielding or altering their course."
+TR00384,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00385,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00386,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00387,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00388,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00389,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00390,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00391,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00392,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00393,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00394,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00395,true,fire,0.000,15.034,A visible fire anomaly occurs in an urban scene.
+TR00396,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00397,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00398,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00399,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00400,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00401,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00402,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00403,true,fire,0.000,15.034,A visible fire anomaly occurs in an urban scene.
+TR00404,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00405,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00406,true,fire,0.000,24.614,A fire or arson event is visible in an urban CCTV scene.
+TR00407,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00408,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR00409,true,fire,3.000,7.000,"A red fire engine travels steadily in the left lane of the left carriageway while a white SUV moves in the right lane of the opposing carriageway. Both vehicles maintain a consistent highway speed and adhere to their respective lanes, contributing to the overall free-flowing traffic state of the highway during this interval."
+TR00410,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00411,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00412,true,fire,0.000,5.834,Active fire and flames are visible from an aerial viewpoint.
+TR00413,true,fire,0.000,5.792,Active fire and flames are visible from an aerial viewpoint.
+TR00414,true,fire,0.000,30.000,A fire or arson event is visible in an urban CCTV scene.
+TR02753,true,fire,0.000,7.000,"A large red fire truck with flashing emergency lights travels straight along a lower roadway, following a white car that is positioned ahead of it. The fire truck maintains a steady pace in its lane, navigating the roadway toward the camera while its emergency beacons are active, although the surrounding traffic flow remains consistent and uninterrupted without any vehicles yielding or altering their course."
+TR02763,true,fire,10.000,14.000,"A red fire engine travels steadily in the left lane of the left carriageway while a white SUV moves in the right lane of the opposing carriageway. Both vehicles maintain a consistent highway speed and adhere to their respective lanes, contributing to the overall free-flowing traffic state of the highway during this interval."
+TR02773,true,fire,12.000,14.400,"A blue sedan loses control and speeds into a gas station forecourt, striking a pedestrian in a yellow high-visibility outfit in a head-on collision before crashing directly into a fuel filling unit. The impact knocks over the pump and destroys it, causing an immediate and catastrophic fire to break out. The root cause of the incident is the driver's failure to maintain control of the vehicle and the decision to enter a pedestrian and fueling zone at an unsafe speed, making the collisions unavoidable."

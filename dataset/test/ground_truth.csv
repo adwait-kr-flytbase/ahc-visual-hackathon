@@ -1,0 +1,53 @@
+video_id,level,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+T001,1,false,normal,,,A basketball court surrounded by trees.
+T002,1,false,normal,,,A swimming pool filled with water next to two fireplaces.
+T003,1,false,normal,,,
+T004,1,false,normal,,,
+T005,1,true,traffic_accident,,,Crashed and burned cars and trucks while a civil-defense team examines the accident.
+T006,1,true,traffic_accident,,,
+T007,1,true,traffic_accident,,,
+T008,1,true,traffic_congestion,,,A road crowded with cars and surrounded by trees.
+T009,1,true,traffic_congestion,,,A bridge crowded with cars crosses a river surrounded by trees.
+T010,1,true,stalled_or_broken_down_vehicle,,,
+T011,1,true,vehicle_blocking_traffic,,,
+T012,1,true,fire,,,A huge fire burning among buildings.
+T013,1,true,fire,,,A fire burning between buildings with black smoke rising.
+T014,1,true,smoke,,,Thick white smoke rising over the scene.
+T015,1,true,smoke,,,Smoke rising from trees next to several houses.
+T016,1,true,waterlogging_or_flood,,,Streets in a residential neighborhood flooded with water.
+T017,1,true,waterlogging_or_flood,,,Green land and bushes submerged by excess water.
+T018,1,true,wrong_way_driving,,,
+T019,1,true,road_spill_or_debris,,,
+T020,1,true,road_spill_or_debris,,,
+T021,1,true,fighting_or_violence,,,
+T022,1,true,fighting_or_violence,,,
+T023,1,true,loitering_or_suspicious_presence,,,
+T024,1,true,loitering_or_suspicious_presence,,,
+T025,2,true,traffic_accident,20,40,First separated traffic accident.
+T025,2,true,traffic_accident,60,80,Second separated traffic accident.
+T025,2,true,traffic_accident,100,120,Third separated traffic accident.
+T025,2,true,traffic_accident,140,160,Fourth separated traffic accident.
+T025,2,true,traffic_accident,180,200,Fifth separated traffic accident.
+T025,2,true,traffic_accident,220,240,Sixth separated traffic accident.
+T026,2,true,traffic_accident,10,40.367,A road accident occurs.
+T026,2,true,vehicle_blocking_traffic,65,74.5,A vehicle illegally occupies the active road.
+T026,2,true,road_spill_or_debris,105,125.8,Road debris or a spill obstructs the drivable area.
+T026,2,true,fighting_or_violence,150,210,People fight in a public surveillance scene.
+T027,2,true,traffic_congestion,40,45,First heavy-traffic interval.
+T027,2,true,traffic_congestion,55,60,Second heavy-traffic interval.
+T027,2,true,traffic_congestion,65,125,Sustained heavy-traffic interval.
+T027,2,true,traffic_congestion,145,150,Fourth heavy-traffic interval.
+T028,2,true,traffic_accident,30,35,First Accident-Bench collision.
+T028,2,true,traffic_accident,90,95,Second Accident-Bench collision.
+T028,2,true,traffic_accident,150,155,Third Accident-Bench collision.
+T028,2,true,traffic_accident,210,215,Fourth Accident-Bench collision.
+T029,2,false,normal,,,
+T030,2,false,normal,,,
+T031,3,true,traffic_congestion,235,360,Traffic congestion develops and persists on a snowy highway segment.
+T032,3,true,loitering_or_suspicious_presence,29.3,66.9,A person remains beside an open suitcase by the roadside.
+T032,3,true,loitering_or_suspicious_presence,135.8,149.5,A person remains beside an open suitcase by the roadside.
+T032,3,true,loitering_or_suspicious_presence,194.8,197.4,A person remains beside an open suitcase by the roadside.
+T032,3,true,loitering_or_suspicious_presence,267.4,286.9,A person remains beside an open suitcase by the roadside.
+T033,3,true,traffic_accident,170,245,A collision occurs in a dashcam road scene and the vehicles stop after impact.
+T033,3,true,traffic_accident,490,535,A second dashcam collision occurs in a different road environment.
+T034,3,true,loitering_or_suspicious_presence,22.5,31.9,Several people linger on the sidewalk for an anomalously prolonged period.
