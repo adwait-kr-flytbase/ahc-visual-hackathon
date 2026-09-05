@@ -67,7 +67,7 @@ on this leaderboard — one entrant lost 26 of 35 marks at D2 to 94 of them.
 | Model | P | R | F1 |
 |---|---|---|---|
 | **Qwen3-VL-4B** | **0.77** | **0.50** | **0.61** |
-| Qwen3-VL-8B | 0.62 | 0.40 | 0.48 |
+| Qwen3-VL-8B | 0.62 | 0.40 | 0.48 | ← ties the 4B; they differ on 3 of 24 videos, p=0.25 |
 | Cosmos-Reason2-8B | 0.57 | 0.20 | 0.30 |
 | Qwen3-VL-2B | 0.30 | 0.15 | 0.20 |
 | Qwen2.5-VL-7B | 0.00 | 0.00 | 0.00 |

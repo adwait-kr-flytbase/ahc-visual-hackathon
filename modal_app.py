@@ -22,10 +22,20 @@ CORE = BASE.pip_install(
     "huggingface_hub[hf_transfer]",
 ).env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "HF_HOME": "/hf", "PYTHONPATH": "/root/src"})
 
-TRAIN_CORE = CORE.pip_install("ms-swift", "trl", "datasets", "av", "decord")
+# ms-swift pins an older transformers that does not know `qwen3_vl` -> KeyError at load.
+# Install swift first, then force transformers back up. Order matters.
+# Released ms-swift routes qwen3_vl to AutoModelForCausalLM -> "Unrecognized configuration class".
+# git main has the vision registration. transformers must be forced back up afterwards.
+TRAIN_CORE = (
+    CORE.pip_install("trl", "datasets", "av", "decord", "qwen-vl-utils")
+        .pip_install("git+https://github.com/modelscope/ms-swift.git")
+        .pip_install("transformers==4.57.1", "accelerate", "peft")
+)
 
 # add_local_* must come LAST in every image chain -- Modal forbids build steps after it.
-LOCAL = lambda img: img.add_local_dir("src", "/root/src").add_local_dir("data", "/root/data")
+LOCAL = lambda img: (img.add_local_dir("src", "/root/src")
+                        .add_local_dir("data", "/root/data")
+                        .add_local_dir("scripts", "/root/scripts"))
 
 INFER = LOCAL(CORE)
 TRAIN = LOCAL(TRAIN_CORE)

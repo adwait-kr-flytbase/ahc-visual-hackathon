@@ -14,136 +14,130 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{
-  margin:0;background:var(--ink);color:var(--text);font:14px/1.5 var(--sans);
-  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow:hidden;
-}
+body{margin:0;background:var(--ink);color:var(--text);font:14px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow:hidden}
 :focus-visible{outline:2px solid var(--text);outline-offset:2px;border-radius:2px}
-
-/* ---- micro-label: the page's one repeated typographic device ---- */
 .tag{font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.num{font:12px/1 var(--mono);font-variant-numeric:tabular-nums}
 
 /* ---- header ---- */
-.bar{
-  display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;
-  padding:11px 18px;border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto;
-}
+.bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:9px 18px;
+  border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto}
 .bar h1{margin:0;font:600 14px/1 var(--sans);letter-spacing:-.01em}
-.bar .run{font:600 12px/1 var(--mono);color:var(--text)}
+.bar .run{font:600 12px/1 var(--mono)}
 .bar .meta{font:11px/1 var(--mono);color:var(--muted)}
+.badge{font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 8px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.badge.replay{border-color:var(--miss);color:var(--miss)}
 .bar .spacer{flex:1}
-.legend{display:flex;gap:14px;align-items:center}
-.legend span{display:flex;align-items:center;gap:6px;font:11px/1 var(--mono);color:var(--muted)}
+.legend{display:flex;gap:13px;align-items:center}
+.legend span{display:flex;align-items:center;gap:5px;font:11px/1 var(--mono);color:var(--muted)}
 .legend i{width:9px;height:9px;border-radius:2px;display:block}
 
-/* ---- shell ---- */
 .shell{flex:1;display:flex;min-height:0}
 
 /* ---- roster ---- */
-.roster{
-  width:216px;flex:0 0 auto;border-right:1px solid var(--line);background:var(--panel);
-  overflow-y:auto;padding:8px 0 20px;
-}
-.roster .group{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:baseline}
-.roster .group .tag{color:var(--dim)}
-.roster button{
-  width:100%;display:flex;align-items:center;gap:8px;padding:6px 14px;background:none;border:0;
-  border-left:2px solid transparent;color:var(--muted);font:12px/1 var(--mono);cursor:pointer;text-align:left;
-}
+.roster{width:200px;flex:0 0 auto;border-right:1px solid var(--line);background:var(--panel);
+  overflow-y:auto;padding:6px 0 20px}
+.roster .group{padding:12px 14px 5px;display:flex;justify-content:space-between;align-items:baseline}
+.roster button{width:100%;display:flex;align-items:center;gap:8px;padding:6px 14px;background:none;
+  border:0;border-left:2px solid transparent;color:var(--muted);font:12px/1 var(--mono);
+  cursor:pointer;text-align:left}
 .roster button:hover{background:var(--raised);color:var(--text)}
 .roster button[aria-current="true"]{background:var(--raised);color:var(--text);border-left-color:var(--text)}
 .roster .id{width:38px;flex:0 0 auto}
 .roster .chips{display:flex;gap:3px;flex:1;flex-wrap:wrap}
 .roster .dot{width:6px;height:6px;border-radius:50%;display:block}
-.roster .unrun{font:10px/1 var(--mono);color:var(--dim);letter-spacing:.04em}
-.roster .broke{font:10px/1 var(--mono);color:var(--fa);letter-spacing:.04em;opacity:.75}
+.roster .unrun{font:10px/1 var(--mono);color:var(--dim)}
+.roster .broke{font:10px/1 var(--mono);color:var(--fa);opacity:.75}
 
 /* ---- stage ---- */
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
-.viewer{display:flex;gap:0;flex:1 1 auto;min-height:0;border-bottom:1px solid var(--line)}
-.screen{flex:1;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;background:#05070A;padding:12px}
-video{width:100%;height:100%;max-height:100%;object-fit:contain;display:block;background:#000}
+.viewer{display:flex;flex:1 1 auto;min-height:0;border-bottom:1px solid var(--line)}
+.screen{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;background:#05070A}
+.screen video{width:100%;flex:1;min-height:0;object-fit:contain;display:block;background:#000}
+.caption{padding:7px 14px;border-top:1px solid var(--line);background:var(--panel);
+  font:11px/1.45 var(--sans);color:var(--muted)}
+.caption b{color:var(--text);font-weight:600}
 
-/* ---- detail ---- */
-.detail{
-  width:308px;flex:0 0 auto;border-left:1px solid var(--line);background:var(--panel);
-  overflow-y:auto;padding:16px 16px 24px;
-}
-.detail h2{margin:0 0 3px;font:600 13px/1.3 var(--sans)}
-.detail .cls{font:600 13px/1.4 var(--mono);word-break:break-all;margin:0 0 2px}
-.detail .why{margin:10px 0 0;font-size:13px;line-height:1.55;color:var(--text)}
-.detail .placeholder{color:var(--dim);font-size:12px;line-height:1.6}
-.verdict{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:3px;
-  font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
-.facts{margin:14px 0 0;border-top:1px solid var(--line-soft)}
-.facts div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
-.facts dt{font:10px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.facts dd{margin:0;font:12px/1.6 var(--mono);font-variant-numeric:tabular-nums;text-align:right}
-.note{margin:14px 0 0;padding:9px 11px;background:var(--raised);border-left:2px solid var(--dim);
-  font-size:11.5px;line-height:1.5;color:var(--muted)}
-.note.warn{border-left-color:var(--fa);color:var(--text)}
+/* ---- alerts ---- */
+.alerts{width:330px;flex:0 0 auto;border-left:1px solid var(--line);background:var(--panel);
+  display:flex;flex-direction:column;min-height:0}
+.alerts .head{padding:11px 14px 9px;border-bottom:1px solid var(--line)}
+.alerts .head h2{margin:0 0 3px;font:600 12px/1 var(--sans)}
+.alerts .head p{margin:0;font:11px/1.45 var(--sans);color:var(--muted)}
+.alerts .feed{flex:1;overflow-y:auto;padding:10px 12px 20px;display:flex;flex-direction:column;gap:8px}
+.alerts .idle{color:var(--dim);font:11px/1.6 var(--mono);padding:6px 2px}
+.card{border:1px solid var(--line);border-left-width:3px;border-radius:4px;background:var(--raised);
+  padding:9px 11px;cursor:pointer;text-align:left;color:inherit;font:inherit;display:block;width:100%}
+.card:hover{border-color:var(--muted)}
+.card.fresh{animation:pop .45s ease}
+@keyframes pop{from{transform:translateY(-5px);opacity:0}to{transform:none;opacity:1}}
+.card .top{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.card .at{font:600 12px/1 var(--mono);font-variant-numeric:tabular-nums}
+.card .conf{margin-left:auto;font:11px/1 var(--mono);color:var(--muted)}
+.card .cls{font:600 12px/1.35 var(--mono);word-break:break-all;margin:0 0 5px}
+.card .why{margin:0;font:12px/1.5 var(--sans);color:var(--muted)}
+.card .verdict{display:inline-block;margin-top:7px;padding:2px 6px;border-radius:3px;
+  font:600 9px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#0B0E13}
+.card .lag{font:10px/1 var(--mono);color:var(--muted);margin-top:6px}
 
-/* ---- the field: two lanes on one axis ---- */
-.field{flex:0 0 auto;background:var(--panel);padding:14px 18px 24px;position:relative}
-.fieldhead{display:flex;align-items:baseline;gap:16px;margin-bottom:10px}
+/* ---- timeline ---- */
+.field{flex:0 0 auto;background:var(--panel);padding:11px 18px 18px;position:relative}
+.fieldhead{display:flex;align-items:baseline;gap:14px;margin-bottom:9px}
 .fieldhead .tc{font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums}
 .fieldhead .dur{font:11px/1 var(--mono);color:var(--dim)}
-.fieldhead .alarm{font:600 11px/1 var(--mono);letter-spacing:.02em;color:var(--fa)}
-.fieldhead .hint{margin-left:auto;font:10px/1 var(--mono);letter-spacing:.06em;color:var(--dim)}
-
-.axis{position:relative;display:grid;grid-template-columns:64px 1fr;gap:0 12px;align-items:center}
-.lane{contain:paint}
-.axis .tag{padding-bottom:2px;text-align:right}
-.lane{position:relative;height:32px;background:var(--raised);border-radius:3px;overflow:hidden}
-.ribbons{position:relative;height:66px}
+.fieldhead .alarm{font:600 11px/1 var(--mono);color:var(--fa)}
+.fieldhead .hint{margin-left:auto;font:10px/1 var(--mono);color:var(--dim)}
+.axis{position:relative;display:grid;grid-template-columns:118px 1fr;gap:3px 12px;align-items:center}
+.rowlabel{text-align:right;line-height:1.25}
+.rowlabel .tag{display:block}
+.rowlabel small{font:9px/1.3 var(--sans);color:var(--dim);display:block}
+.lane{position:relative;height:30px;background:var(--raised);border-radius:3px;overflow:hidden;contain:paint}
+.gridlane{position:relative;height:20px;border-radius:3px;overflow:hidden;background:var(--raised)}
+.ribbons{position:relative;height:56px}
 .ribbons svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.ruler{position:relative;height:16px;margin-top:5px}
+.ruler{position:relative;height:15px;margin-top:3px}
 .ruler .tick{position:absolute;top:0;border-left:1px solid var(--line);height:5px}
-.ruler .tick b{position:absolute;top:6px;left:3px;transform:translateX(var(--nudge,0));font:9px/1 var(--mono);color:var(--dim);font-weight:400;white-space:nowrap}
-
-.span{
-  position:absolute;top:0;bottom:0;border-radius:2px;border:0;padding:0 5px;cursor:pointer;
-  display:flex;align-items:center;overflow:hidden;font:10px/1 var(--mono);letter-spacing:.02em;
-  color:#0B0E13;min-width:3px;transition:filter .12s ease;
-}
+.ruler .tick b{position:absolute;top:5px;left:3px;transform:translateX(var(--nudge,0));
+  font:9px/1 var(--mono);color:var(--dim);font-weight:400;white-space:nowrap}
+.win{position:absolute;height:7px;border-radius:1px;background:#37425A}
+.win.lo{top:3px}
+.win.hi{top:11px}
+.win.done{background:#5A6D8C}
+.win.active{background:var(--text)}
+.span{position:absolute;top:0;bottom:0;border-radius:2px;border:0;padding:0 5px;cursor:pointer;
+  display:flex;align-items:center;overflow:hidden;font:10px/1 var(--mono);color:#0B0E13;
+  min-width:3px;transition:filter .12s ease,opacity .2s ease}
 .span:hover{filter:brightness(1.18)}
-.span.live{box-shadow:inset 0 0 0 2px var(--text)}
-.span.picked{box-shadow:inset 0 0 0 2px var(--text)}
-.span.classonly{
-  color:var(--muted);
-  background-image:repeating-linear-gradient(-45deg,transparent 0 5px,rgba(0,0,0,.22) 5px 10px);
-}
+.span.live,.span.picked{box-shadow:inset 0 0 0 2px var(--text)}
+.span.unseen{opacity:.13}
+.span.classonly{color:var(--muted);
+  background-image:repeating-linear-gradient(-45deg,transparent 0 5px,rgba(0,0,0,.22) 5px 10px)}
 .span.rejected{background:var(--dim)!important;color:var(--text)}
 .span b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
 .playhead{position:absolute;top:0;bottom:0;width:1px;background:var(--text);pointer-events:none;z-index:5}
 .playhead::before{content:"";position:absolute;top:-3px;left:-3px;width:7px;height:7px;
   background:var(--text);border-radius:50%}
 .scrub{position:absolute;inset:0;cursor:col-resize;z-index:4}
-
 .empty{position:absolute;inset:0;display:flex;align-items:center;padding-left:9px;
   font:10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
 
-/* ---- tally ---- */
+/* ---- footer ---- */
 .tally{flex:0 0 auto;display:flex;align-items:stretch;border-top:1px solid var(--line);
   background:var(--panel);overflow-x:auto}
-.tally .cell{padding:10px 18px;border-right:1px solid var(--line-soft);min-width:0;white-space:nowrap}
+.tally .cell{padding:9px 16px;border-right:1px solid var(--line-soft);white-space:nowrap}
 .tally .cell:last-child{border-right:0}
-.tally .head{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
-.tally .head .tag{color:var(--muted)}
+.tally .head{display:flex;align-items:baseline;gap:7px;margin-bottom:4px}
 .tally .head .of{font:10px/1 var(--mono);color:var(--dim)}
-.tally .row{display:flex;gap:16px}
+.tally .row{display:flex;gap:14px}
 .tally .stat{display:flex;flex-direction:column;gap:3px}
 .tally .stat .v{font:600 15px/1 var(--mono);font-variant-numeric:tabular-nums}
-.tally .stat .k{font:9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.tally .caveat{margin-left:auto;display:flex;align-items:center;padding:10px 18px;
-  font:11px/1.5 var(--mono);color:var(--muted);border-left:1px solid var(--line-soft);white-space:normal;max-width:340px}
-
+.tally .stat .k{font:9px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+.tally .caveat{margin-left:auto;display:flex;align-items:center;padding:9px 16px;
+  font:11px/1.45 var(--sans);color:var(--muted);border-left:1px solid var(--line-soft);
+  white-space:normal;max-width:330px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-@media (max-width:1080px){
-  .detail{width:250px}.roster{width:180px}
-}
+@media (max-width:1200px){.alerts{width:270px}.roster{width:170px}}
 </style>
 </head>
 <body>
@@ -152,6 +146,7 @@ video{width:100%;height:100%;max-height:100%;object-fit:contain;display:block;ba
 <header class="bar">
   <h1>Anomaly review</h1>
   <span class="run" id="runName"></span>
+  <span class="badge replay" title="Predictions were computed earlier on a GPU and are replayed here on the video's own clock.">Replay · not live inference</span>
   <span class="meta" id="runMeta"></span>
   <span class="spacer"></span>
   <div class="legend">
@@ -167,8 +162,17 @@ video{width:100%;height:100%;max-height:100%;object-fit:contain;display:block;ba
 
   <section class="stage">
     <div class="viewer">
-      <div class="screen"><video id="video" preload="metadata" controls playsinline></video></div>
-      <aside class="detail" id="detail"></aside>
+      <div class="screen">
+        <video id="video" preload="metadata" controls playsinline></video>
+        <div class="caption" id="caption"></div>
+      </div>
+      <aside class="alerts">
+        <div class="head">
+          <h2>Alerts</h2>
+          <p id="alertsIntro"></p>
+        </div>
+        <div class="feed" id="feed"></div>
+      </aside>
     </div>
 
     <div class="field">
@@ -176,14 +180,16 @@ video{width:100%;height:100%;max-height:100%;object-fit:contain;display:block;ba
         <span class="tc" id="clock">0:00.0</span>
         <span class="dur" id="dur"></span>
         <span class="alarm" id="alarm" hidden></span>
-        <span class="hint">space play &nbsp;·&nbsp; ←→ 5s &nbsp;·&nbsp; [ ] event &nbsp;·&nbsp; ↑↓ video</span>
+        <span class="hint">space play &nbsp;·&nbsp; ←→ 5s &nbsp;·&nbsp; [ ] event &nbsp;·&nbsp; ↑↓ video &nbsp;·&nbsp; R restart</span>
       </div>
       <div class="axis">
-        <span class="tag">Truth</span>
+        <span class="rowlabel"><span class="tag">Windows</span><small>what the model was shown</small></span>
+        <div class="gridlane" id="laneGrid"></div>
+        <span class="rowlabel"><span class="tag">Truth</span><small>what actually happened</small></span>
         <div class="lane" id="laneTruth"><div class="scrub" data-scrub></div></div>
         <span></span>
         <div class="ribbons" id="ribbons"><svg preserveAspectRatio="none"></svg></div>
-        <span class="tag">Model</span>
+        <span class="rowlabel"><span class="tag">Model</span><small>what it reported</small></span>
         <div class="lane" id="laneModel"><div class="scrub" data-scrub></div></div>
         <span></span>
         <div class="ruler" id="ruler"></div>
@@ -202,30 +208,49 @@ const VERDICT = {hit:"--hit", miss:"--miss", false_alarm:"--fa", pending:"--pend
 const HEX     = {hit:"#35D6B0", miss:"#F2A93B", false_alarm:"#FF4D7D", pending:"#4B5464"};
 const LABEL   = {hit:"found", miss:"missed", false_alarm:"false alarm", pending:"not yet run"};
 const $ = id => document.getElementById(id);
-
-let current = DATA.videos[0];
-let picked = null;   // {lane, index}
-
 const clamp01 = x => Math.max(0, Math.min(1, x));
 const pct = (v, d) => (clamp01(v / d) * 100) + "%";
-const tc = s => {
-  if (!isFinite(s)) return "--:--";
-  const m = Math.floor(s / 60), r = s - m * 60;
-  return m + ":" + (r < 10 ? "0" : "") + r.toFixed(1);
-};
-const tcShort = s => {
-  const m = Math.floor(s / 60), r = Math.floor(s - m * 60);
-  return m + ":" + (r < 10 ? "0" : "") + r;
-};
+const tc = s => { if (!isFinite(s)) return "--:--";
+  const m = Math.floor(s / 60), r = s - m * 60; return m + ":" + (r < 10 ? "0" : "") + r.toFixed(1); };
+const tcShort = s => { const m = Math.floor(s / 60), r = Math.floor(s - m * 60);
+  return m + ":" + (r < 10 ? "0" : "") + r; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let current = DATA.videos[0];
+let picked = null;
+let shown = new Set();       // alerts already in the feed, so a seek can rebuild honestly
 
 /* ---------- header ---------- */
+const T = DATA.throughput || {};
 $("runName").textContent = DATA.run.name;
 $("runMeta").textContent =
-  DATA.run.events_path + "  ·  " + DATA.run.videos_predicted + "/" + DATA.run.videos_total +
-  " predicted" + (DATA.run.videos_failed ? ", " + DATA.run.videos_failed + " failed" : "") +
-  "  ·  " + DATA.run.policy + "  ·  built " + DATA.run.built_at;
+  (T.model_name ? T.model_name + "  ·  " : "") +
+  DATA.run.videos_predicted + "/" + DATA.run.videos_total + " videos" +
+  (DATA.run.videos_failed ? ", " + DATA.run.videos_failed + " failed" : "") +
+  "  ·  " + DATA.run.policy +
+  (T.realtime_mean ? "  ·  " + T.mean_ms.toFixed(0) + " ms/window, " +
+     T.realtime_mean.toFixed(1) + "× faster than real time" : "");
+
+/* ---------- when does each prediction become an alert? ---------- */
+// A window can only be scored once it has finished playing, and inference then takes time.
+// Only run-level aggregates were recorded, so the replay spaces alerts by the run's mean.
+function latencySec(video) {
+  const ms = (video.timing && video.timing.mean_ms) || T.mean_ms || 0;
+  return ms / 1000;
+}
+function alertTime(video, event) {
+  const w = event.from_window;
+  const closes = w ? w[1] : event.end;
+  return closes + latencySec(video);
+}
+function alertsFor(video) {
+  return video.model
+    .map((e, i) => ({event: e, index: i, at: alertTime(video, e)}))
+    .sort((a, b) => a.at - b.at);
+}
 
 /* ---------- roster ---------- */
+const dot = v => '<span class="dot" style="background:var(' + VERDICT[v] + ')"></span>';
 function buildRoster() {
   const nav = $("roster");
   let level = null;
@@ -234,21 +259,18 @@ function buildRoster() {
       level = v.level;
       const head = document.createElement("div");
       head.className = "group";
-      const n = DATA.videos.filter(x => x.level === level).length;
-      head.innerHTML = '<span class="tag">D' + level + '</span><span class="tag">' + n + '</span>';
+      head.innerHTML = '<span class="tag">D' + level + '</span><span class="tag">' +
+        DATA.videos.filter(x => x.level === level).length + '</span>';
       nav.appendChild(head);
     }
     const b = document.createElement("button");
-    b.type = "button";
-    b.dataset.id = v.id;
+    b.type = "button"; b.dataset.id = v.id;
     const chips = [];
-    if (v.state === "failed") {
-      chips.push('<span class="broke">failed</span>');
-    } else if (v.state === "not_run") {
-      chips.push('<span class="unrun">not run</span>');
-    } else {
-      for (let i = 0; i < v.tally.hits; i++)         chips.push(dot("hit"));
-      for (let i = 0; i < v.tally.misses; i++)       chips.push(dot("miss"));
+    if (v.state === "failed") chips.push('<span class="broke">failed</span>');
+    else if (v.state === "not_run") chips.push('<span class="unrun">not run</span>');
+    else {
+      for (let i = 0; i < v.tally.hits; i++) chips.push(dot("hit"));
+      for (let i = 0; i < v.tally.misses; i++) chips.push(dot("miss"));
       for (let i = 0; i < v.tally.false_alarms; i++) chips.push(dot("false_alarm"));
       if (!chips.length) chips.push('<span class="unrun">clean</span>');
     }
@@ -257,7 +279,6 @@ function buildRoster() {
     nav.appendChild(b);
   });
 }
-const dot = v => '<span class="dot" style="background:var(' + VERDICT[v] + ')"></span>';
 
 /* ---------- lanes ---------- */
 function spanEl(item, lane, index) {
@@ -267,15 +288,17 @@ function spanEl(item, lane, index) {
   el.style.left = pct(item.start, current.duration);
   el.style.width = Math.max(0.35, clamp01((item.end - item.start) / current.duration) * 100) + "%";
   el.style.background = "var(" + VERDICT[item.verdict] + ")";
-  el.dataset.lane = lane;
-  el.dataset.index = index;
-  el.dataset.label = item.class_name;
+  el.dataset.lane = lane; el.dataset.index = index; el.dataset.label = item.class_name;
   el.title = item.class_name + "  " + LABEL[item.verdict] +
-             (item.localised ? "  " + tc(item.start) + "–" + tc(item.end) : "  (class only)");
+    (item.localised ? "  " + tc(item.start) + "–" + tc(item.end) : "  (class only)");
   el.addEventListener("click", e => { e.stopPropagation(); pick(lane, index); seek(item.start + .05); });
   return el;
 }
-
+function fitLabels(box) {
+  box.querySelectorAll(".span").forEach(el => {
+    el.innerHTML = el.getBoundingClientRect().width > 58 ? "<b>" + esc(el.dataset.label) + "</b>" : "";
+  });
+}
 function drawLanes() {
   [["laneTruth", "truth"], ["laneModel", "model"]].forEach(([id, lane]) => {
     const box = $(id);
@@ -284,33 +307,37 @@ function drawLanes() {
     if (!items.length) {
       const e = document.createElement("div");
       e.className = "empty";
-      e.textContent = lane === "truth"
-        ? "no anomaly in ground truth"
-        : {ok: "model predicted normal", failed: "the run failed on this video",
-           not_run: "not yet run"}[current.state];
+      e.textContent = lane === "truth" ? "no anomaly in ground truth"
+        : {ok: "model reported nothing — it called this video normal",
+           failed: "the run failed on this video", not_run: "not yet run"}[current.state];
       box.appendChild(e);
       return;
     }
     items.forEach((item, i) => box.appendChild(spanEl(item, lane, i)));
     fitLabels(box);
   });
-}
-
-function fitLabels(box) {
-  box.querySelectorAll(".span").forEach(el => {
-    el.innerHTML = el.getBoundingClientRect().width > 58 ? "<b>" + el.dataset.label + "</b>" : "";
+  // the window grid: what the system was actually shown
+  const grid = $("laneGrid");
+  grid.innerHTML = "";
+  (current.grid || []).forEach((w, i) => {
+    const el = document.createElement("div");
+    el.className = "win " + (i % 2 ? "hi" : "lo"); el.dataset.index = i;
+    el.style.left = pct(w[0], current.duration);
+    el.style.width = Math.max(0.4, clamp01((w[1] - w[0]) / current.duration) * 100) + "%";
+    el.title = "window " + (i + 1) + " of " + current.grid.length + ": " + tc(w[0]) + "–" + tc(w[1]);
+    grid.appendChild(el);
   });
+  if (!(current.grid || []).length) {
+    const e = document.createElement("div");
+    e.className = "empty"; e.textContent = "no window grid recorded for this run";
+    grid.appendChild(e);
+  }
 }
-window.addEventListener("resize", () => {
-  ["laneTruth", "laneModel"].forEach(id => fitLabels($(id)));
-  drawRibbons();
-});
 
-/* ---------- ribbons: truth-to-prediction, the shape is the timing error ---------- */
+/* ---------- ribbons ---------- */
 function drawRibbons() {
   const svg = $("ribbons").querySelector("svg");
-  svg.innerHTML = "";
-  svg.setAttribute("viewBox", "0 0 1000 66");
+  svg.innerHTML = ""; svg.setAttribute("viewBox", "0 0 1000 56");
   const X = t => clamp01(t / current.duration) * 1000;
   const add = (d, fill, opacity, dash) => {
     const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -319,37 +346,30 @@ function drawRibbons() {
                 p.setAttribute("stroke-dasharray", "3 3"); p.setAttribute("stroke-width", "1"); }
     svg.appendChild(p);
   };
-
   if (current.level === 1) {
     const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    t.setAttribute("x", 500); t.setAttribute("y", 38); t.setAttribute("text-anchor", "middle");
+    t.setAttribute("x", 500); t.setAttribute("y", 32); t.setAttribute("text-anchor", "middle");
     t.setAttribute("fill", "#4B5464");
     t.setAttribute("style", "font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em");
-    t.textContent = "D1 — MATCHED ON CLASS, TIMING NOT SCORED";
-    svg.appendChild(t);
-    return;
+    t.textContent = "D1 — SCORED ON CLASS ONLY, TIMING NOT SCORED";
+    svg.appendChild(t); return;
   }
-
-  current.truth.forEach((g, i) => {
+  current.truth.forEach(g => {
     if (g.pair === null || g.pair === undefined) {
-      // Truth the model never reached: the ribbon runs out before it lands.
-      add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + ((X(g.start) + X(g.end)) / 2) + ",44 Z",
+      add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + ((X(g.start) + X(g.end)) / 2) + ",38 Z",
           HEX.miss, ".20", true);
       return;
     }
     const p = current.model[g.pair];
-    add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + X(p.end) + ",66 L" + X(p.start) + ",66 Z",
+    add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + X(p.end) + ",56 L" + X(p.start) + ",56 Z",
         HEX.hit, ".22");
   });
   current.model.forEach(p => {
     if (p.pair !== null && p.pair !== undefined) return;
-    // A prediction with no truth above it: the ribbon starts from nothing.
-    add("M" + ((X(p.start) + X(p.end)) / 2) + ",14 L" + X(p.end) + ",66 L" + X(p.start) + ",66 Z",
+    add("M" + ((X(p.start) + X(p.end)) / 2) + ",18 L" + X(p.end) + ",56 L" + X(p.start) + ",56 Z",
         HEX.false_alarm, ".34", true);
   });
 }
-
-/* ---------- ruler ---------- */
 function drawRuler() {
   const r = $("ruler"); r.innerHTML = "";
   const d = current.duration;
@@ -363,64 +383,78 @@ function drawRuler() {
   }
 }
 
-/* ---------- detail ---------- */
-function renderDetail() {
-  const box = $("detail");
-  if (!picked) {
-    const lines = [];
-    lines.push("<h2>" + current.id + " &middot; D" + current.level + "</h2>");
-    lines.push('<p class="placeholder">Pick a segment on either lane to see the class, the timing error, and what the model said.</p>');
-    if (current.state === "failed") {
-      lines.push('<div class="note warn">The run broke on this video:<br><b>' +
-        escapeHtml(String(current.failed)) +
-        "</b><br><br>It has no prediction, so it is excluded from the tallies. A failed video and a " +
-        "video the model called normal must never be the same thing.</div>");
-    } else if (current.state === "not_run") {
-      lines.push('<div class="note warn">No prediction row for ' + current.id +
-        " in this run. That is not the same as predicting normal, and it is not scored as a miss.</div>");
-    }
-    if (current.truth.length && current.level === 1) {
-      lines.push('<div class="note">D1 ground truth carries no timestamps. The bar spans the whole clip because the class is all that is scored here.</div>');
-    }
-    box.innerHTML = lines.join("");
-    return;
-  }
-  const item = current[picked.lane][picked.index];
-  const other = (item.pair !== null && item.pair !== undefined)
-    ? current[picked.lane === "truth" ? "model" : "truth"][item.pair] : null;
-  const rows = [];
-  const fact = (k, v) => rows.push("<div><dt>" + k + "</dt><dd>" + v + "</dd></div>");
-
-  fact("lane", picked.lane === "truth" ? "ground truth" : "model");
-  fact("span", item.localised ? tc(item.start) + " – " + tc(item.end) : "whole clip (class only)");
-  if (item.localised) fact("duration", (item.end - item.start).toFixed(1) + "s");
-  if (item.confidence !== null && item.confidence !== undefined)
-    fact("confidence", Number(item.confidence).toFixed(2));
-  if (item.iou !== null && item.iou !== undefined) fact("iou", Number(item.iou).toFixed(3));
-  if (item.iou_untimed !== null && item.iou_untimed !== undefined)
-    fact("overlap (unscored)", Number(item.iou_untimed).toFixed(3));
-  if (other && other.localised && item.localised) {
-    fact("start error", (item.start - other.start >= 0 ? "+" : "") + (item.start - other.start).toFixed(1) + "s");
-    fact("end error", (item.end - other.end >= 0 ? "+" : "") + (item.end - other.end).toFixed(1) + "s");
-  }
-
-  const colour = "var(" + VERDICT[item.verdict] + ")";
-  const out = [
-    '<div class="verdict" style="background:' + colour + ';color:#0B0E13">' + LABEL[item.verdict] + "</div>",
-    '<p class="cls">' + item.class_name + "</p>",
-    '<dl class="facts">' + rows.join("") + "</dl>",
-  ];
-  if (item.explanation) out.push('<p class="why">&ldquo;' + escapeHtml(item.explanation) + '&rdquo;</p>');
-  else if (item.description) out.push('<p class="why">' + escapeHtml(item.description) + "</p>");
-  if (item.rejected)
-    out.push('<div class="note warn">Rejected before scoring: ' + escapeHtml(item.rejected) + "</div>");
-  if (item.verdict === "false_alarm")
-    out.push('<div class="note">Nothing in the ground truth matches this at IoU ≥ 0.5 with the same class. On the portal it costs precision.</div>');
-  if (item.verdict === "miss")
-    out.push('<div class="note">The model produced nothing that matches this event’s class and timing.</div>');
-  box.innerHTML = out.join("");
+/* ---------- the alerts feed, revealed on the video's own clock ---------- */
+function alertCard(entry) {
+  const e = entry.event;
+  const el = document.createElement("button");
+  el.type = "button"; el.className = "card fresh"; el.dataset.index = entry.index;
+  el.style.borderLeftColor = HEX[e.verdict];
+  const lag = (entry.at - (e.from_window ? e.from_window[1] : e.end));
+  el.innerHTML =
+    '<div class="top"><span class="at">' + tc(e.start) + '</span>' +
+      '<span class="conf">' + (e.confidence != null ? "conf " + Number(e.confidence).toFixed(2) : "") + '</span></div>' +
+    '<p class="cls">' + esc(e.class_name) + '</p>' +
+    (e.explanation ? '<p class="why">' + esc(e.explanation) + '</p>' : '') +
+    '<span class="verdict" style="background:' + HEX[e.verdict] + '">' + LABEL[e.verdict] + '</span>' +
+    '<div class="lag">raised ' + lag.toFixed(1) + 's after its window closed' +
+      (e.iou != null ? '  ·  IoU ' + Number(e.iou).toFixed(2) : '') + '</div>';
+  el.addEventListener("click", () => { pick("model", entry.index); seek(e.start + .05); });
+  return el;
 }
-const escapeHtml = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function syncFeed(t) {
+  const feed = $("feed");
+  const due = alertsFor(current).filter(a => a.at <= t);
+  const dueKeys = new Set(due.map(a => a.index));
+  // a seek backwards must remove alerts that have not happened yet
+  if ([...shown].some(i => !dueKeys.has(i))) { feed.innerHTML = ""; shown = new Set(); }
+  due.forEach(a => {
+    if (shown.has(a.index)) return;
+    shown.add(a.index);
+    feed.appendChild(alertCard(a));
+    feed.scrollTop = feed.scrollHeight;
+  });
+  if (!feed.children.length) {
+    const p = document.createElement("div");
+    p.className = "idle";
+    p.textContent = current.state === "ok"
+      ? (current.model.length ? "no alerts yet — press play" : "the model reported nothing on this video")
+      : (current.state === "failed" ? "the run failed on this video" : "this video has not been run");
+    feed.appendChild(p);
+  } else {
+    feed.querySelectorAll(".idle").forEach(n => n.remove());
+  }
+  // spans stay dim until their alert has been raised, so the timeline reveals in step
+  document.querySelectorAll('.span[data-lane="model"]').forEach(el => {
+    el.classList.toggle("unseen", !dueKeys.has(+el.dataset.index));
+  });
+}
+
+/* ---------- captions: say what each region is, without a narrator ---------- */
+function renderCaption() {
+  const t = current.timing || {};
+  const grid = (current.grid || []).length;
+  const bits = [];
+  if (grid) {
+    const w = current.grid[0];
+    bits.push("<b>" + grid + " windows</b> of " + (w[1] - w[0]).toFixed(0) + "s" +
+      (grid > 1 ? ", stepping " + (current.grid[1][0] - current.grid[0][0]).toFixed(0) + "s" : "") +
+      (t.frames ? ", <b>" + t.frames + " frames</b> sampled" : ""));
+  }
+  if (t.mean_ms) {
+    bits.push("<b>" + t.mean_ms.toFixed(0) + " ms</b> per window on an A100" +
+      (grid > 1 && current.grid.length > 1
+        ? " — a window closes every " + (current.grid[1][0] - current.grid[0][0]).toFixed(0) +
+          "s, so inference keeps up with <b>" +
+          ((current.grid[1][0] - current.grid[0][0]) * 1000 / t.mean_ms).toFixed(1) + "× headroom</b>"
+        : ""));
+  }
+  bits.push("Alerts appear on the right as each window closes, offset by the measured inference time. " +
+            "The predictions were computed earlier — this replays them on the video's clock.");
+  $("caption").innerHTML = bits.join(" &nbsp;·&nbsp; ");
+  $("alertsIntro").textContent = current.state === "ok"
+    ? "What the system reported, in the order a live operator would have seen it."
+    : "Nothing to replay for this video.";
+}
 
 /* ---------- selection ---------- */
 function pick(lane, index) {
@@ -428,37 +462,31 @@ function pick(lane, index) {
   document.querySelectorAll(".span.picked").forEach(n => n.classList.remove("picked"));
   const el = document.querySelector('.span[data-lane="' + lane + '"][data-index="' + index + '"]');
   if (el) el.classList.add("picked");
-  renderDetail();
 }
-
 function select(id) {
   current = DATA.videos.find(v => v.id === id);
-  picked = null;
+  picked = null; shown = new Set();
+  $("feed").innerHTML = "";
   document.querySelectorAll("#roster button").forEach(b =>
     b.setAttribute("aria-current", String(b.dataset.id === id)));
   const video = $("video");
-  video.src = current.src;
-  video.load();
+  video.src = current.src; video.load();
   $("dur").textContent = "of " + tc(current.duration) + "  ·  D" + current.level;
   const fa = current.tally.false_alarms;
-  const alarm = $("alarm");
-  alarm.hidden = !fa;
-  alarm.textContent = fa ? fa + (fa === 1 ? " false alarm" : " false alarms") + " on this video" : "";
+  $("alarm").hidden = !fa;
+  $("alarm").textContent = fa ? fa + (fa === 1 ? " false alarm" : " false alarms") + " on this video" : "";
   $("playhead").hidden = true;
-  drawLanes(); drawRibbons(); drawRuler(); renderDetail();
+  drawLanes(); drawRibbons(); drawRuler(); renderCaption(); syncFeed(0);
 }
 
 /* ---------- playback ---------- */
 const video = $("video");
 function seek(t) { video.currentTime = Math.max(0, Math.min(current.duration - .05, t)); }
-
 function onTime() {
   const t = video.currentTime;
   $("clock").textContent = tc(t);
-  // Rect maths throughout: the lanes sit in a positioned grid, so offsetTop is measured
-  // against .axis while the playhead is placed against .field. Mixing the two put it at 0.
   const head = $("playhead");
-  const top = $("laneTruth").getBoundingClientRect();
+  const top = $("laneGrid").getBoundingClientRect();
   const bottom = $("laneModel").getBoundingClientRect();
   const field = document.querySelector(".field").getBoundingClientRect();
   head.hidden = false;
@@ -469,12 +497,19 @@ function onTime() {
     const item = current[el.dataset.lane][+el.dataset.index];
     el.classList.toggle("live", t >= item.start && t <= item.end);
   });
+  (current.grid || []).forEach((w, i) => {
+    const el = $("laneGrid").children[i];
+    if (!el || !el.classList) return;
+    el.classList.toggle("done", t >= w[1]);
+    el.classList.toggle("active", t >= w[0] && t < w[1]);
+  });
+  syncFeed(t);
 }
-video.addEventListener("timeupdate", onTime);
-video.addEventListener("seeked", onTime);
-video.addEventListener("loadedmetadata", onTime);
-window.addEventListener("resize", onTime);
-
+["timeupdate", "seeked", "loadedmetadata"].forEach(e => video.addEventListener(e, onTime));
+window.addEventListener("resize", () => {
+  ["laneTruth", "laneModel"].forEach(id => fitLabels($(id)));
+  drawRibbons(); onTime();
+});
 document.querySelectorAll("[data-scrub]").forEach(el => {
   el.addEventListener("click", e => {
     const r = el.getBoundingClientRect();
@@ -482,16 +517,15 @@ document.querySelectorAll("[data-scrub]").forEach(el => {
   });
 });
 
-/* ---------- keyboard ---------- */
 document.addEventListener("keydown", e => {
   if (e.target.matches("input,textarea")) return;
-  const ids = DATA.videos.map(v => v.id);
-  const i = ids.indexOf(current.id);
+  const ids = DATA.videos.map(v => v.id), i = ids.indexOf(current.id);
   if (e.key === " ") { e.preventDefault(); video.paused ? video.play() : video.pause(); }
   else if (e.key === "ArrowLeft")  { e.preventDefault(); seek(video.currentTime - 5); }
   else if (e.key === "ArrowRight") { e.preventDefault(); seek(video.currentTime + 5); }
   else if (e.key === "ArrowUp")    { e.preventDefault(); if (i > 0) select(ids[i - 1]); }
   else if (e.key === "ArrowDown")  { e.preventDefault(); if (i < ids.length - 1) select(ids[i + 1]); }
+  else if (e.key === "r" || e.key === "R") { e.preventDefault(); seek(0); video.play(); }
   else if (e.key === "[" || e.key === "]") {
     e.preventDefault();
     const marks = [...current.truth, ...current.model].map(x => x.start).sort((a, b) => a - b);
@@ -502,41 +536,47 @@ document.addEventListener("keydown", e => {
   }
 });
 
-/* ---------- tally ---------- */
+/* ---------- footer ---------- */
+const stat = (v, k, colour) =>
+  '<div class="stat"><span class="v"' + (colour ? ' style="color:var(' + colour + ')"' : "") + ">" +
+  v + '</span><span class="k">' + k + "</span></div>";
 function buildTally() {
   const foot = $("tally");
   const rate = v => v === null ? "—" : (v * 100).toFixed(0) + "%";
   DATA.summary.forEach(s => {
     const cell = document.createElement("div");
     cell.className = "cell";
-    const scored = s.videos_scored === s.videos_total
-      ? s.videos_total + " videos"
-      : s.videos_scored + " of " + s.videos_total + " videos run";
     cell.innerHTML =
-      '<div class="head"><span class="tag">D' + s.level + '</span>' +
-      '<span class="of">' + s.marks + ' marks · ' + scored + '</span></div>' +
-      '<div class="row">' +
-        stat(s.hits, "found", "--hit") +
-        stat(s.misses, "missed", "--miss") +
-        stat(s.false_alarms, "false alarm", "--fa") +
-        stat(rate(s.precision), "precision") +
-        stat(rate(s.recall), "recall") +
-      "</div>";
+      '<div class="head"><span class="tag">D' + s.level + '</span><span class="of">' + s.marks +
+      ' marks · ' + (s.videos_scored === s.videos_total ? s.videos_total + " videos"
+                     : s.videos_scored + " of " + s.videos_total + " run") + '</span></div>' +
+      '<div class="row">' + stat(s.hits, "found", "--hit") + stat(s.misses, "missed", "--miss") +
+      stat(s.false_alarms, "false alarm", "--fa") + stat(rate(s.precision), "precision") +
+      stat(rate(s.recall), "recall") + "</div>";
     foot.appendChild(cell);
   });
-  const caveat = document.createElement("div");
-  caveat.className = "caveat";
+  if (T.windows) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.innerHTML = '<div class="head"><span class="tag">Cost</span>' +
+      '<span class="of">whole run</span></div><div class="row">' +
+      stat(T.windows, "windows") + stat(T.frames, "frames") +
+      stat(T.mean_ms.toFixed(0), "ms/window") +
+      stat(T.realtime_mean ? T.realtime_mean.toFixed(1) + "×" : "—", "vs real time", "--hit") +
+      stat(T.realtime_p95 ? T.realtime_p95.toFixed(1) + "×" : "—", "at p95") + "</div>";
+    foot.appendChild(cell);
+  }
   const excluded = [];
   if (DATA.run.videos_not_run) excluded.push(DATA.run.videos_not_run + " not yet run");
   if (DATA.run.videos_failed)  excluded.push(DATA.run.videos_failed + " failed");
-  caveat.textContent = excluded.length
-    ? "Excluded from these counts, not counted as normal: " + excluded.join(", ") + "."
-    : "Counts come from the same matcher that scores the run: class match at D1, class match and IoU ≥ 0.5 at D2/D3.";
+  const caveat = document.createElement("div");
+  caveat.className = "caveat";
+  caveat.textContent = (excluded.length
+    ? "Excluded from these counts, not counted as normal: " + excluded.join(", ") + ". "
+    : "") + "An event counts only if the class matches — and at D2/D3 only if it also overlaps the " +
+    "truth by IoU ≥ 0.5. Scored by the same matcher that scores the run.";
   foot.appendChild(caveat);
 }
-const stat = (v, k, colour) =>
-  '<div class="stat"><span class="v"' + (colour ? ' style="color:var(' + colour + ')"' : "") + ">" +
-  v + '</span><span class="k">' + k + "</span></div>";
 
 buildRoster();
 buildTally();

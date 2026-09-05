@@ -1,4 +1,24 @@
-# Two-slide deck — DRAFT
+# Two-slide deck — RENDERED
+
+> **The deck is built.** `slides/index.html` is the source, `slides/ahc-two-slides.pdf` is the
+> submittable file (2 pages, 1600×900). Rebuild the PDF with:
+>
+> ```
+> python3 -m http.server 8765 &
+> "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+>   --no-pdf-header-footer --print-to-pdf=slides/ahc-two-slides.pdf --virtual-time-budget=6000 \
+>   http://127.0.0.1:8765/slides/index.html
+> ```
+>
+> Every number on it is measured and traceable to a run or a script in this repo. No fine-tuned
+> result existed at build time, so no fine-tuned number appears — if one lands, add it to the
+> model-selection table on slide 1 and rebuild.
+>
+> What follows is the original markdown draft, kept for the reasoning behind the structure.
+
+---
+
+# Original draft
 
 Required deliverable. Organisers: **exactly two slides**, covering *what you built · approach and
 why · what you learned*, preferring **graphs / tables / timelines / example frames over paragraphs**,

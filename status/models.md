@@ -32,24 +32,40 @@ output policy, scored with `ahc_vad.scoring`. Modal A100.**
 |---|---|---|---|---|---|
 | **Qwen3-VL-4B-Instruct** | 4B | **0.77** | **0.50** | **0.61** | 8/24 |
 | Qwen3-VL-8B-Instruct | 8B | 0.62 | 0.40 | 0.48 | 8/24 |
+
+*(4B vs 8B differ on only 3 of 24 videos — statistically a tie. See the retraction below.)*
 | Cosmos-Reason2-8B | 8B | 0.57 | 0.20 | 0.30 | 13/24 |
 | Qwen3-VL-2B-Instruct | 2B | 0.30 | 0.15 | 0.20 | 12/24 |
 | Qwen2.5-VL-7B-Instruct | 7B | 0.00 | 0.00 | 0.00 | **20/24** |
 
-### Three non-obvious findings
+### ⚠️ Retracted: "bigger is worse" is NOT supported
 
-**1. Bigger is worse. 4B beats 8B on the same family, same prompt, same data.**
-Qwen3-VL-8B has lower precision *and* lower recall than the 4B. This is not the usual scaling story,
-and it means our model choice is not a compromise forced by the real-time constraint — the small
-model is genuinely the better one here.
+I initially reported that 4B beats 8B as a finding. **It does not survive scrutiny and I have
+withdrawn it.**
 
-**2. Benchmark leadership does not transfer.**
+The two models differ on **3 videos out of 24**: 4B wins T007 (accident, 8B silent) and T014
+(smoke, 8B says fire); both lose T011. A sign test on 2 informative trials gives **p = 0.25**.
+The F1 gap of 0.61 vs 0.48 comes entirely from 10 TP vs 8 TP — inside the ±1 TP ≈ 5pp noise band
+this document states everywhere else.
+
+It is **not** a measurement artifact — both models emit clean `{"events": []}`, zero truncation,
+zero parse failures, and *the same number of empty windows (11 each)*. They are equally willing to
+answer; they simply disagree on 3 videos.
+
+**The defensible claim: Qwen3-VL-4B and 8B are statistically indistinguishable on this test.**
+We choose the 4B because it is **half the size at equal measured accuracy**, which is the right call
+under a real-time constraint and needs no scaling claim to justify it.
+
+### Two findings that DO survive
+
+**1. Benchmark leadership does not transfer.**
+
 Cosmos-Reason2-8B **tops NVIDIA's own Traffic Anomaly Reasoning leaderboard** (AI City Challenge 2026
 Track 3) and is purpose-built for physical-AI reasoning. On this task it gets **half the recall of a
 4B general model**. Reasoning-QA benchmark performance does not predict short-clip anomaly
 classification. This is the single most surprising result of the build.
 
-**3. Qwen2.5-VL-7B is silent on every video.**
+**2. Qwen2.5-VL-7B is silent on every video.**
 Not a parsing failure — it returns a bare `[]` (rather than the requested `{"events": [...]}`)
 24 times out of 24. Notably it is **ASK-HINT's own published backbone**, on which that paper reports
 89.83% AUC on UCF-Crime. It does not reproduce on aerial/dashcam footage with our prompt. Its

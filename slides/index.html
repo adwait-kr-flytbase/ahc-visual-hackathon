@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AHC Visual Intelligence — two slides</title>
+<style>
+:root{
+  --ink:#0B0E13; --panel:#141922; --raised:#1B212C; --line:#293142; --soft:#1F2633;
+  --text:#E8EDF4; --muted:#8B94A5; --dim:#59637A;
+  --hit:#35D6B0; --miss:#F2A93B; --fa:#FF4D7D;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#05070A;color:var(--text);font:14px/1.45 var(--sans);
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;
+  gap:22px;padding:22px}
+.slide{width:1600px;height:900px;background:var(--ink);border:1px solid var(--line);
+  padding:28px 36px 22px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.tag{font:700 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.head{display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--line);
+  padding-bottom:11px;margin-bottom:12px;flex:0 0 auto}
+.head h1{margin:0;font:700 30px/1.1 var(--sans);letter-spacing:-.022em}
+.head .sub{margin-left:auto;text-align:right;font:11px/1.5 var(--mono);color:var(--muted)}
+.head .n{font:700 11px/1 var(--mono);letter-spacing:.16em;color:var(--dim)}
+
+.cols{flex:1;display:grid;gap:15px;min-height:0}
+.s1{grid-template-columns:1fr 1.28fr}
+.s2{grid-template-columns:1fr 1fr 1fr;grid-auto-rows:auto;align-content:start;gap:13px}
+.s2 .card{padding:11px 13px}
+.s2 table{font-size:11.5px}
+.s2 th,.s2 td{padding:4px 7px 4px 0}
+.s2 .note{font-size:11px;line-height:1.5}
+.s2 .card > h2{margin-bottom:7px}
+.card{background:var(--panel);border:1px solid var(--soft);border-radius:5px;padding:13px 15px;
+  display:flex;flex-direction:column;min-height:0;overflow:visible}
+.card > h2{margin:0 0 9px;font:700 12px/1.25 var(--sans);letter-spacing:.01em}
+.card > h2 .tag{display:block;margin-bottom:4px}
+.stack{display:flex;flex-direction:column;gap:11px;min-height:0}
+
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{text-align:left;padding:5px 8px 5px 0;border-bottom:1px solid var(--soft);vertical-align:top}
+th{font:700 9.5px/1.3 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--dim);
+  border-bottom-color:var(--line)}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  padding-right:0;white-space:nowrap}
+td.n:not(:last-child),th.n:not(:last-child){padding-right:9px}
+tr.pick td{background:rgba(53,214,176,.07)}
+tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--hit)}
+td b{font-weight:700}
+.mono{font-family:var(--mono)}
+.hit{color:var(--hit)} .miss{color:var(--miss)} .fa{color:var(--fa)} .muted{color:var(--muted)}
+s{color:var(--dim);text-decoration-color:var(--fa)}
+
+.pull{border-left:3px solid var(--hit);padding:9px 0 9px 13px;margin:0;
+  font:600 15px/1.4 var(--sans)}
+.pull small{display:block;margin-top:5px;font:400 11.5px/1.5 var(--sans);color:var(--muted)}
+
+.flow{font:11px/1.75 var(--mono);color:var(--muted);white-space:pre;overflow:hidden}
+.flow b{color:var(--text);font-weight:600}
+.flow i{color:var(--hit);font-style:normal}
+
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--soft);
+  border:1px solid var(--soft);border-radius:4px;overflow:hidden}
+.kpi{background:var(--panel);padding:9px 11px}
+.kpi .v{font:700 21px/1 var(--mono);font-variant-numeric:tabular-nums}
+.kpi .k{font:9.5px/1.35 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+  margin-top:5px;display:block}
+
+.note{font:11.5px/1.55 var(--sans);color:var(--muted);margin:0}
+.note b{color:var(--text)}
+.foot{flex:0 0 auto;border-top:1px solid var(--line);margin-top:10px;padding-top:8px;
+  display:flex;gap:18px;align-items:center;font:11px/1.4 var(--sans);color:var(--muted)}
+.foot .caveat{color:var(--miss)}
+.shot{border:1px solid var(--line);border-radius:4px;background:#05070A;display:block;
+  aspect-ratio:1130/186;width:100%;flex:0 0 auto}
+.shot img{width:100%;height:100%;object-fit:fill;display:block;border-radius:3px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mini{background:var(--raised);border-radius:4px;padding:8px 10px}
+.mini .v{font:700 17px/1 var(--mono)}
+.mini .k{font:9.5px/1.35 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);display:block;margin-top:4px}
+
+@media print{
+  @page{size:1600px 900px;margin:0}
+  body{background:none;padding:0;gap:0}
+  .slide{border:0;page-break-after:always;break-after:page}
+  .slide:last-child{page-break-after:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= SLIDE 1 ================= -->
+<section class="slide">
+  <div class="head">
+    <h1>The data doesn't match the task.<br>So we built the missing half.</h1>
+    <div class="sub">
+      <span class="n">SLIDE 1 · APPROACH</span><br>
+      Real-time video anomaly detection · 11 classes<br>
+      Qwen3-VL-4B-Instruct + LoRA · one A100-40GB
+    </div>
+  </div>
+
+  <div class="cols s1">
+    <div class="stack">
+      <div class="card">
+        <h2><span class="tag">The gap that defined the build</span>What we were given vs what we are scored on</h2>
+        <table>
+          <tr><th></th><th>Training data</th><th>Scored on</th></tr>
+          <tr><td>Videos</td><td>3,173 <b>short</b> clips, 5–30 s</td><td class="mono">240–629 s</td></tr>
+          <tr><td>Events</td><td><b>exactly one</b> per clip</td><td>up to 6, mixed classes</td></tr>
+          <tr><td>Timestamps</td><td>event ≡ whole clip for <b>7 of 11</b> classes</td><td>gated at <b>tIoU ≥ 0.5</b></td></tr>
+          <tr><td>Marks</td><td class="mono">D1 = 25</td><td class="mono"><b>D2 + D3 = 75</b></td></tr>
+        </table>
+        <p class="pull" style="margin-top:11px">75 of the 100 marks had no training data at all.
+          <small>We synthesised 360 long multi-event videos with exact ground truth — then measured the shortcut we had just created, rather than assuming it away.</small></p>
+      </div>
+
+      <div class="card">
+        <h2><span class="tag">We measured the shortcut we created</span>Concatenating clips teaches the model to detect scene cuts</h2>
+        <p class="note" style="margin-bottom:8px">A model trained on spliced video learns <b>event onset ≡ cut</b>: brilliant on synthetic data, collapsing on real footage, which has no cuts. We censused pre-event footage per class first — <b>6 of 11 classes have literally none</b>.</p>
+        <table>
+          <tr><th></th><th class="n">naive splice</th><th class="n">after fix</th><th class="n">target</th></tr>
+          <tr><td>P(event | cut)</td><td class="n muted">—</td><td class="n hit"><b>0.10</b></td><td class="n muted">low</td></tr>
+          <tr><td>P(cut | event start)</td><td class="n muted">~0.70</td><td class="n hit"><b>0.536</b></td><td class="n muted">0.4–0.5</td></tr>
+        </table>
+        <p class="note" style="margin-top:8px">0.536 is near the honest floor given those 6 classes. <b>We report it rather than hide it.</b></p>
+      </div>
+      <div class="card">
+        <h2><span class="tag">The demo · demo/index.html</span>It replays each prediction on the video's clock and scores itself live</h2>
+        <div class="shot"><img src="demo.jpg" alt="The review page: ground truth and model predictions on one timeline, with an alerts feed."></div>
+        <p class="note" style="margin-top:7px">Truth above, model below, joined by a ribbon — a <b>perfect match is a rectangle, a timing error a visible skew</b>. It imports the same matcher that scores the run, so the page cannot disagree with the score.</p>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h2><span class="tag">Pipeline</span>Everything cacheable is cached, so tuning costs no GPU</h2>
+<div class="flow">dataset/train ─┐
+ 3,173 clips   ├─► <b>SYNTHESISER</b> ─► 360 long multi-event videos, exact ground truth
+ 973 normal ───┘     · filler drawn from many clips   → <i>cuts ≠ events</i>
+                     · random sub-spans               → <i>duration ≠ class</i>
+                     · test-side resolution and fps   → <i>closes the domain gap</i>
+                             │
+                             ▼
+                     windowed SFT rows ─► <b>Qwen3-VL-4B + LoRA</b>, ViT frozen
+                             │
+  video ─► <b>20 s windows, 10 s hop, 16 frames</b> ─► VLM ─► merge ─► submission JSON
+                                             ▲
+                             <i>72 merge configs swept on CPU · zero re-inference</i></div>
+      </div>
+
+      <div class="card">
+        <h2><span class="tag">Measured cost — the real-time claim</span>One A100-40GB, 34 videos, 56 minutes of footage</h2>
+        <div class="kpis">
+          <div class="kpi"><div class="v">326</div><span class="k">windows</span></div>
+          <div class="kpi"><div class="v">5,216</div><span class="k">frames</span></div>
+          <div class="kpi"><div class="v">1,830</div><span class="k">ms / window</span></div>
+          <div class="kpi"><div class="v hit">5.5×</div><span class="k">vs real time</span></div>
+          <div class="kpi"><div class="v hit">2.8×</div><span class="k">at p95</span></div>
+        </div>
+        <p class="note" style="margin-top:10px">A new window closes every <b>10 s</b> of video and is
+          scored in <b>1.83 s</b>. The system keeps up with <b>5.5× headroom</b>, and still 2.8× at the
+          95th percentile — so real-time holds on the tail, not just on average.</p>
+      </div>
+
+      <div class="card">
+        <h2><span class="tag">Model selection</span>Five VLMs, identical 24-video D1 set, same prompt and policy</h2>
+        <table>
+          <tr><th>Model</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th><th class="n">silent</th></tr>
+          <tr class="pick"><td><b>Qwen3-VL-4B</b> &nbsp;<span class="tag">chosen</span></td><td class="n">0.77</td><td class="n">0.50</td><td class="n"><b>0.61</b></td><td class="n">8/24</td></tr>
+          <tr><td>Qwen3-VL-8B</td><td class="n">0.62</td><td class="n">0.40</td><td class="n">0.48</td><td class="n">8/24</td></tr>
+          <tr><td>Cosmos-Reason2-8B</td><td class="n">0.57</td><td class="n">0.20</td><td class="n">0.30</td><td class="n">13/24</td></tr>
+          <tr><td>Qwen3-VL-2B</td><td class="n">0.30</td><td class="n">0.15</td><td class="n">0.20</td><td class="n">12/24</td></tr>
+          <tr><td>Qwen2.5-VL-7B</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0.00</td><td class="n fa">20/24</td></tr>
+        </table>
+        <p class="note" style="margin-top:7px">The 4B and 8B are <b>statistically indistinguishable</b> (slide 2). We ship the 4B: <b>half the size at equal accuracy</b>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="tag">Repo</span>
+    <span>Scorer written before any model · one shared prompt module for training and inference ·
+      raw window predictions cached so 72 merge policies were swept on CPU with zero re-inference.</span>
+  </div>
+</section>
+
+<!-- ================= SLIDE 2 ================= -->
+<section class="slide">
+  <div class="head">
+    <h1>Every failure that mattered was silent.<br>So we validated artifacts, not outputs.</h1>
+    <div class="sub">
+      <span class="n">SLIDE 2 · WHAT WE LEARNED</span><br>
+      All numbers measured on the 34-video public set<br>
+      <span class="miss">24 videos, 20 positives → ±1 TP ≈ 5 pp of recall</span>
+    </div>
+  </div>
+
+  <div class="cols s2">
+    <div class="card">
+      <h2><span class="tag">1 · The pattern</span>Seven silent failures in seven hours. None crashed.</h2>
+      <table>
+        <tr><th>#</th><th>Failure</th><th>Would have read as</th></tr>
+        <tr><td class="n">1</td><td><span class="mono">ffmpeg -t</span> silently returns a shorter segment</td><td>later timestamps wrong</td></tr>
+        <tr><td class="n">2</td><td>49 of 2,092 train rows have <span class="mono">end ≤ start</span></td><td>garbage spans</td></tr>
+        <tr><td class="n">3</td><td>Clip pool keyed on <b>folder</b>, not class label</td><td>normal traffic taught as wrong-way</td></tr>
+        <tr><td class="n">4</td><td>Empty output ≡ correct "no events"</td><td>a parser bug scoring clean</td></tr>
+        <tr><td class="n">5</td><td>One bad API response cut a 34-video run to 6 — <b>exit code 0</b></td><td>a complete run, real score</td></tr>
+        <tr><td class="n">6</td><td>Buffered output hid a 20-minute GPU job</td><td>a hang</td></tr>
+        <tr><td class="n fa">7</td><td><b>The fix for #5 caused #7:</b> error handling wrote 10 failures as <span class="mono">"events": []</span></td><td>a model that is just bad</td></tr>
+      </table>
+      <p class="note" style="margin-top:9px">All seven would have read as <b>"the model just isn't very good."</b> #7 was caught only by the diagnostic added for #4 — recording raw model text on every empty result. <b>Each is now a test.</b></p>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">2 · We retracted our own headline</span>Before it shipped, because someone asked for the mechanism</h2>
+      <p class="note" style="margin-bottom:10px"><s>Bigger is worse: Qwen3-VL-4B beats the 8B,
+        F1 0.61 vs 0.48.</s></p>
+      <table>
+        <tr><th>Video</th><th>Truth</th><th>4B</th><th>8B</th></tr>
+        <tr><td class="mono">T007</td><td>traffic_accident</td><td class="hit">correct</td><td class="muted">silent</td></tr>
+        <tr><td class="mono">T011</td><td>vehicle_blocking</td><td class="muted">silent</td><td class="fa">smoke</td></tr>
+        <tr><td class="mono">T014</td><td>smoke</td><td class="hit">correct</td><td class="fa">fire</td></tr>
+      </table>
+      <p class="note" style="margin-top:10px">The two models differ on <b>three videos out of
+        twenty-four</b>. Sign test on 2 informative trials: <b class="mono">p = 0.25</b>. The whole F1
+        gap is 10 TP vs 8 TP — inside the ±1 TP noise band we had been telling everyone to apply, and
+        then failed to apply ourselves.</p>
+      <p class="note" style="margin-top:7px">Checked before retracting: both emit clean JSON, zero truncation, and the <b>same</b> number of empty windows — equally willing to answer.</p>
+      <p class="pull" style="margin-top:10px;border-left-color:var(--miss)">Corrected claim: the 4B and
+        8B are indistinguishable here. We ship the 4B because it is half the size at equal accuracy.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">3 · Cheap policy beat model changes</span>Both free, both CPU-side, no re-inference</h2>
+      <table>
+        <tr><th>D1 output policy</th><th class="n">TP</th><th class="n">FP</th><th class="n">FN</th></tr>
+        <tr><td>every predicted event</td><td class="n">10</td><td class="n fa">12</td><td class="n">10</td></tr>
+        <tr class="pick"><td><b>top-1 per video</b></td><td class="n">10</td><td class="n hit"><b>3</b></td><td class="n">10</td></tr>
+      </table>
+      <p class="note" style="margin-top:9px"><b>False alarms cut 4× at zero recall cost.</b> A D1 video has at most one truth event, so the extras could only ever have been false alarms. One entrant on this leaderboard lost <b>26 of 35 marks to 94 false alarms</b>. Does <b>not</b> transfer to D2/D3, where it deletes real detections.</p>
+      <h2 style="margin-top:12px">And the obvious fix that does <b class="fa">not</b> work — confidence carries no signal</h2>
+      <table>
+        <tr><th>D2/D3 confidence gate</th><th class="n">TP</th><th class="n">FP</th></tr>
+        <tr><td class="mono">≥ 0.5</td><td class="n">1</td><td class="n">31</td></tr>
+        <tr><td class="mono">≥ 0.7</td><td class="n">1</td><td class="n">31</td></tr>
+        <tr><td class="mono">≥ 0.9</td><td class="n">1</td><td class="n">29</td></tr>
+      </table>
+      <p class="note" style="margin-top:8px">0.5 → 0.9 removes <b>two</b> false alarms out of 31. Whatever gates them must come from <b>outside</b> the model's own score.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">4 · Benchmark leadership does not transfer</span>The non-obvious result</h2>
+      <p class="note"><b>Cosmos-Reason2-8B</b> tops NVIDIA's own Traffic Anomaly Reasoning leaderboard
+        (AI City Challenge 2026, Track 3). On this data it reaches <b class="mono">R 0.20</b> against a
+        4B model's <b class="mono">R 0.50</b> — a gap of 6 true positives, well outside the noise band.</p>
+      <p class="note" style="margin-top:9px"><b>Qwen2.5-VL-7B</b> — ASK-HINT's own published backbone,
+        89.83% AUC on UCF-Crime in that paper — is silent on <b>20 of 24</b>. Named mechanism: it returns
+        a bare <span class="mono">[]</span> 21 times instead of the requested object. That is
+        <b>instruction-following failure, not blindness</b>, and it does not reproduce on aerial and
+        dashcam footage with our prompt.</p>
+      <p class="note" style="margin-top:8px">Qwen3-VL-2B: 14 of its empty windows are <b>truncated output</b> — part of its poor score is a token-budget artifact, not capability. We say that rather than "2B is too small".</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">5 · A negative result, tested properly</span>The ego-motion gate every paper implies</h2>
+      <p class="note" style="margin-bottom:9px">Every paper in the supplied reading list evaluates on
+        <b>fixed-camera CCTV</b>; a third of this data is drone and a third dashcam. Frame differencing
+        assumes a still background. H.264 <b>motion vectors are free out of the decoder</b> — fit a
+        global affine with RANSAC, and the residual is independently-moving objects.</p>
+      <div class="grid2">
+        <div class="mini"><div class="v">0.556</div><span class="k">AUC, in-event vs not</span></div>
+        <div class="mini"><div class="v muted">0.500</div><span class="k">chance</span></div>
+      </div>
+      <p class="note" style="margin-top:9px">Against a 2,000-trial permutation null, only <b>one of six
+        tested thresholds</b> separates from chance (1.35× lift, p≈0.06 corrected).
+        <b>It does not work.</b> So the cheap always-on gate in a cascade cannot be built this way —
+        a real architectural constraint, settled in <b>1,165 CPU-seconds and no GPU</b>.</p>
+      <p class="note" style="margin-top:9px">What survived: ego-motion itself, free and per-second,
+        recovering the <span class="mono">domain</span> field the manifest ships <b>empty for all 34
+        videos</b> — 15 videos barely move, 6 move part of the time, 13 move throughout.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">6 · Where we actually are</span>First scored upload, and the arithmetic that reframes it</h2>
+      <table>
+        <tr><th></th><th class="n">scored</th><th class="n">of</th><th class="n">marks / video</th></tr>
+        <tr><td>D1 · 24 short clips</td><td class="n">12.1</td><td class="n muted">25</td><td class="n">1.04</td></tr>
+        <tr><td>D2 · 6 × 240 s</td><td class="n">11.7</td><td class="n muted">35</td><td class="n">5.83</td></tr>
+        <tr><td>D3 · 4 long videos</td><td class="n fa">0.0</td><td class="n muted">40</td><td class="n hit"><b>10.00</b></td></tr>
+        <tr><td><b>Total</b></td><td class="n"><b>23.8</b></td><td class="n muted">100</td><td></td></tr>
+      </table>
+      <p class="note" style="margin-top:9px">D2's 11.7 is <b>exactly the empty-submission floor</b> — we
+        earned nothing there yet. And <b>one D3 video is worth ten D1 videos</b>, while we sit at zero
+        on D3. The whole remaining opportunity is long-video temporal localisation, which is precisely
+        the half the training data never contained.</p>
+      <p class="note" style="margin-top:8px">Controlled runs killed two of three explanations for the model's silence: more frames does not help (24 and 32 are worse than 16), and neither prompt variant helps. <b>Five interventions, zero improvements</b> — leaving fine-tuning as the only lever, which is where slide 1's synthesised data goes.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="tag">Honest scope</span>
+    <span class="caveat">24 videos and 20 positives, so ±1 true positive moves recall about 5 points —
+      applied to every number here.</span>
+    <span style="margin-left:auto">No fine-tuned result existed at submission time, so no fine-tuned
+      number appears on these slides.</span>
+  </div>
+</section>
+
+</body>
+</html>

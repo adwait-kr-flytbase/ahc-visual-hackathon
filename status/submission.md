@@ -96,7 +96,7 @@ Why it is worth showing a judge rather than describing:
 - [ ] Fill in the portal profile (the leaderboard shows your real name)
 - [ ] Submit a real zero-shot run — blocked: the Gemini restart is writing failures as predictions
 - [ ] Submit a fine-tuned run
-- [ ] Write the two slides — **still has no owner**
+- [x] **Two slides — DONE.** `slides/ahc-two-slides.pdf`, 2 pages, built from `slides/index.html`
 - [x] Demo artifact (`demo/index.html`), verified on real output and on malformed input
 
 
@@ -113,5 +113,10 @@ The argument, in one line each:
 3. Four silent failures caught by validating intermediate artifacts, not outputs. None crashed.
 4. Next: every paper in the reading list is fixed-camera CCTV; two thirds of this data moves.
 
-Open question for the humans: **who renders it, and to what format?** The draft is markdown; it
-still needs to become two actual slides. That is a 20-minute job someone has to own before 18:00.
+**Rendered and done.** `slides/index.html` → `slides/ahc-two-slides.pdf` (2 pages, 1600×900).
+Slide 1 is the approach — the data gap, the pipeline, measured real-time cost, model selection, and
+a frame from the demo. Slide 2 is what we learned — the seven silent failures, our own retracted
+headline, the two cheap policy wins, benchmark leadership failing to transfer, the motion-vector
+negative result, and where the marks actually are.
+
+Every number is measured. No fine-tuned result existed at build time, so none appears.

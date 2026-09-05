@@ -72,6 +72,53 @@ def _read_one(path: Path, rows: dict[str, dict], problems: list[str]) -> None:
         rows[video_id] = row
 
 
+def load_windows(paths: list[Path]) -> dict[str, dict]:
+    """Read the <run>.windows.jsonl beside each events file, when it exists.
+
+    It carries the window grid the system actually processed -- `windows` holds detections (one
+    window can emit several) and `empty_window_raw` holds the windows that returned nothing, so
+    the distinct union of their `window` fields is the grid. Verified against `chunks_processed`
+    on all 34 videos.
+    """
+    rows: dict[str, dict] = {}
+    for path in paths:
+        sibling = path.with_name(path.name.replace(".events.jsonl", ".windows.jsonl"))
+        if sibling == path or not sibling.exists():
+            continue
+        for line in sibling.read_text().splitlines():
+            if line.strip():
+                row = json.loads(line)
+                rows[row["video_id"]] = row
+    return rows
+
+
+def window_grid(row: dict | None) -> list[list[float]]:
+    """The distinct [start, end] windows the model was run on, in completion order."""
+    if not row:
+        return []
+    seen = {tuple(w["window"]) for w in row.get("windows", []) if w.get("window")}
+    seen |= {tuple(w["window"]) for w in row.get("empty_window_raw", []) if w.get("window")}
+    return [list(w) for w in sorted(seen, key=lambda w: (w[1], w[0]))]
+
+
+def timing(runtime: dict) -> dict:
+    """Measured per-window latency, and whether it keeps up with the window hop.
+
+    Only run-level aggregates were recorded, not per-window times, so the replay spaces alerts by
+    the run's mean. The page says so rather than implying we timed each window.
+    """
+    models = (runtime or {}).get("model_runtimes") or []
+    if not models:
+        return {}
+    m = models[0]
+    return {"model_name": m.get("model_name"), "calls": m.get("call_count"),
+            "mean_ms": m.get("average_time_ms"), "p50_ms": m.get("p50_time_ms"),
+            "p95_ms": m.get("p95_time_ms"), "max_ms": m.get("max_time_ms"),
+            "frames": (runtime or {}).get("frames_processed"),
+            "chunks": (runtime or {}).get("chunks_processed"),
+            "end_to_end_ms": (runtime or {}).get("end_to_end_internal_time_ms")}
+
+
 def to_events(raw_events: list[dict], video_id: str, problems: list[str]) -> tuple[list[Event], list[dict]]:
     """Predicted dicts -> (Events the scorer accepts, display records).
 
@@ -89,6 +136,7 @@ def to_events(raw_events: list[dict], video_id: str, problems: list[str]) -> tup
             "end": end,
             "confidence": raw.get("confidence"),
             "explanation": (raw.get("explanation") or "").strip(),
+            "window": raw.get("window"),
             "rejected": None,
         }
         if class_name not in ANOMALY_CLASSES:
@@ -118,7 +166,7 @@ def apply_top1(row: dict) -> dict:
     return {**row, "events": [best]}
 
 
-def build_video(video_id, info, gt_events, prediction, problems):
+def build_video(video_id, info, gt_events, prediction, problems, window_row=None):
     """One video's payload: both lanes, every span already carrying its verdict.
 
     Three states, never collapsed: no row at all is `not_run`, a row carrying `failed` is a
@@ -167,6 +215,7 @@ def build_video(video_id, info, gt_events, prediction, problems):
             "confidence": record["confidence"],
             "explanation": record["explanation"],
             "rejected": record["rejected"],
+            "from_window": record.get("window"),
             "verdict": "hit" if pair else "false_alarm",
             "iou": pair[1] if pair else None,
             "pair": pair[0] if pair else None,
@@ -190,12 +239,48 @@ def build_video(video_id, info, gt_events, prediction, problems):
         "truth": truth,
         "model": model,
         "runtime": (prediction or {}).get("runtime", {}),
+        "timing": timing((prediction or {}).get("runtime", {})),
+        "grid": window_grid(window_row) if predicted else [],
         "tally": {
             "hits": result.true_positives if result else 0,
             "misses": result.misses if result else 0,
             "false_alarms": result.false_alarms if result else 0,
         },
     }
+
+
+def throughput(videos):
+    """Run-level cost and whether inference keeps up with the window hop.
+
+    The hop is how often a new window closes, so a system keeps up in real time when a window is
+    scored in less than one hop. Hop is read off the grid, not assumed.
+    """
+    hops, means, p95s, frames, chunks = [], [], [], 0, 0
+    model = None
+    for video in videos:
+        t = video.get("timing") or {}
+        if not t.get("mean_ms"):
+            continue
+        model = model or t.get("model_name")
+        frames += t.get("frames") or 0
+        chunks += t.get("chunks") or 0
+        # weight by call count: a mean of per-video means over-weights the short D1 videos,
+        # which are one window each
+        means.append((t["mean_ms"], t.get("calls") or 1))
+        if t.get("p95_ms"):
+            p95s.append((t["p95_ms"], t.get("calls") or 1))
+        grid = video.get("grid") or []
+        if len(grid) > 1:
+            hops.append(round(grid[1][0] - grid[0][0], 3))
+    if not means:
+        return {}
+    hop = max(set(hops), key=hops.count) if hops else None
+    mean_ms = sum(v * n for v, n in means) / sum(n for _, n in means)
+    p95_ms = (sum(v * n for v, n in p95s) / sum(n for _, n in p95s)) if p95s else None
+    return {"model_name": model, "frames": frames, "windows": chunks, "hop_sec": hop,
+            "mean_ms": mean_ms, "p95_ms": p95_ms,
+            "realtime_mean": (hop * 1000 / mean_ms) if hop and mean_ms else None,
+            "realtime_p95": (hop * 1000 / p95_ms) if hop and p95_ms else None}
 
 
 def summarise(videos):
@@ -255,8 +340,10 @@ def main() -> int:
     unknown = sorted(set(predictions) - set(manifest))
     problems += [f"{video_id}: predicted but not in the manifest, ignored" for video_id in unknown]
 
+    windows = load_windows(events_paths)
     videos = [
-        build_video(video_id, info, ground_truth.get(video_id, []), predictions.get(video_id), problems)
+        build_video(video_id, info, ground_truth.get(video_id, []), predictions.get(video_id),
+                    problems, windows.get(video_id))
         for video_id, info in manifest.items()
     ]
 
@@ -272,6 +359,7 @@ def main() -> int:
             "videos_not_run": sum(1 for v in videos if v["state"] == "not_run"),
             "videos_total": len(videos),
         },
+        "throughput": throughput(videos),
         "problems": problems,
         "videos": videos,
         "summary": summarise(videos),
