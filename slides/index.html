@@ -5,56 +5,39 @@
 <title>AHC Visual Intelligence — two slides</title>
 <style>
 :root{
-  --ink:#0B0E13; --panel:#161C26; --raised:#202836; --line:#2E3749;
-  --text:#EDF1F7; --muted:#939DB0; --dim:#5C6679;
-  --hit:#35D6B0; --miss:#F5B547; --fa:#FF4D7D; --ph:#7C6BFF;
+  --ink:#0A0E14; --panel:#141B25; --raised:#1D2632; --line:#2A3444;
+  --text:#F2F6FB; --muted:#94A0B4; --dim:#5D6879;
+  --hit:#2BE0B7; --miss:#F7B23F; --fa:#FF3D71;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 body{margin:0;background:#05070A;color:var(--text);font:16px/1.5 var(--sans);
   -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;
-  gap:24px;padding:24px}
+  gap:26px;padding:26px}
 .slide{width:1600px;height:900px;background:var(--ink);border:1px solid var(--line);
-  padding:38px 46px 30px;display:flex;flex-direction:column;position:relative}
+  padding:52px 64px 40px;display:flex;flex-direction:column}
 
-h1{margin:0;font:700 40px/1.08 var(--sans);letter-spacing:-.026em}
-h1 span{color:var(--muted);font-weight:400}
-.head{display:flex;align-items:flex-end;gap:20px;margin-bottom:20px;flex:0 0 auto}
-.head .meta{margin-left:auto;text-align:right;font:12px/1.7 var(--mono);color:var(--dim)}
+.eyebrow{font:700 13px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+h1{margin:16px 0 0;font:700 52px/1.1 var(--sans);letter-spacing:-.03em}
+h1 span{color:var(--muted)}
+.head{display:flex;align-items:flex-end;gap:30px;flex:0 0 auto}
+.head .meta{margin-left:auto;text-align:right;font:13px/1.8 var(--mono);color:var(--dim)}
 .head .meta b{color:var(--muted);font-weight:400}
-.eyebrow{font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
-  display:block;margin-bottom:12px}
 
-.body{flex:1;display:flex;flex-direction:column;gap:18px;min-height:0}
-.row{display:flex;gap:22px;min-height:0}
-.box{background:var(--panel);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column}
-.box > h2{margin:0 0 4px;font:700 19px/1.25 var(--sans);letter-spacing:-.012em}
-.box > .sub{margin:0 0 16px;font:14px/1.45 var(--sans);color:var(--muted)}
+.hero{flex:1;margin:38px 0 0;display:flex;flex-direction:column;min-height:0}
+.hero .cap{font:15px/1.4 var(--sans);color:var(--muted);margin:0 0 4px}
 
-.kpis{display:flex;gap:12px}
-.kpi{flex:1;background:var(--raised);border-radius:6px;padding:9px 13px}
-.kpi .v{font:700 30px/1 var(--mono);letter-spacing:-.03em}
-.kpi .k{display:block;margin-top:7px;font:10.5px/1.3 var(--mono);letter-spacing:.09em;
-  text-transform:uppercase;color:var(--dim)}
-.kpi .n{display:block;margin-top:5px;font:12.5px/1.4 var(--sans);color:var(--muted)}
+.cards{display:flex;gap:20px;flex:0 0 auto;margin-top:32px}
+.card{flex:1;background:var(--panel);border-radius:10px;padding:24px 26px}
+.card .n{font:700 46px/1 var(--mono);letter-spacing:-.035em}
+.card .t{margin-top:14px;font:16px/1.4 var(--sans);color:var(--text)}
+.card .s{margin-top:7px;font:14px/1.45 var(--sans);color:var(--muted)}
 
-.lead{font:20px/1.4 var(--sans);margin:0}
-.lead b{color:var(--hit)}
-.big{font:700 56px/1 var(--mono);letter-spacing:-.035em}
-
-.ph{border:1.5px dashed var(--ph);border-radius:8px;padding:14px 18px;background:rgba(124,107,255,.07)}
-.ph .t{font:700 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ph)}
-.ph .d{margin-top:8px;font:14px/1.45 var(--sans);color:var(--muted)}
-
-.foot{flex:0 0 auto;margin-top:20px;padding-top:14px;border-top:1px solid var(--line);
-  display:flex;gap:26px;font:13px/1.4 var(--sans);color:var(--dim)}
+.foot{flex:0 0 auto;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+  font:14px/1.4 var(--sans);color:var(--dim);display:flex;gap:28px}
 .foot b{color:var(--muted);font-weight:600}
-
 text{font-family:var(--mono)}
-.lbl{fill:#939DB0;font-size:13px}
-.lbl-s{fill:#5C6679;font-size:11.5px;letter-spacing:.09em}
-.val{fill:#EDF1F7;font-size:15px;font-weight:700}
 
 @media print{
   @page{size:1600px 900px;margin:0}
@@ -66,329 +49,195 @@ text{font-family:var(--mono)}
 </head>
 <body>
 
-<!-- ========================= SLIDE 1 ========================= -->
+<!-- ===================== SLIDE 1 — WHAT WE BUILT ===================== -->
 <section class="slide">
   <div class="head">
     <div>
-      <span class="eyebrow">Slide 1 · What we built &amp; why</span>
-      <h1>The training data is short clips.<br>The marks are in <span>long video.</span></h1>
+      <span class="eyebrow">What we built</span>
+      <h1>A 4B model watches the video<br>and <span>raises the alert itself.</span></h1>
     </div>
     <div class="meta">
       Real-time video anomaly detection · 11 classes<br>
-      <b>Qwen3-VL-4B-Instruct</b> · one A100-40GB<br>
+      <b>Qwen3-VL-4B-Instruct · one A100-40GB</b><br>
       34 public test videos · 56 minutes of footage
     </div>
   </div>
 
-  <div class="body">
+  <div class="hero">
+    <p class="cap">Every 10 seconds a new 20-second window closes. 16 frames go to the model; it
+      answers with a class, a confidence and a sentence of reasoning.</p>
+    <svg viewBox="0 0 1470 330" style="width:100%;flex:1;min-height:0">
+      <defs>
+        <marker id="ar" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+          <path d="M0,1.5 L9,5.5 L0,9.5" fill="none" stroke="#5D6879" stroke-width="2"/>
+        </marker>
+      </defs>
 
-    <!-- HERO: the gap, drawn to scale -->
-    <div class="box" style="flex:0 0 auto">
-      <h2>Every training clip is 5–30 s with one event. We are scored on 240–629 s with up to six.</h2>
-      <p class="sub">Drawn to a single time scale. Green blocks are the events a model must find and localise to ±IoU 0.5.</p>
-      <svg viewBox="0 0 1440 176" style="width:100%;height:150px;flex:0 0 auto">
-        <!-- axis -->
-        <line x1="150" y1="166" x2="1420" y2="166" stroke="#2E3749"/>
-        <g class="lbl-s">
-          <text x="150" y="160" text-anchor="middle">0s</text>
-          <text x="452" y="160" text-anchor="middle">150s</text>
-          <text x="754" y="160" text-anchor="middle">300s</text>
-          <text x="1056" y="160" text-anchor="middle">450s</text>
-          <text x="1358" y="160" text-anchor="middle">600s</text>
-        </g>
+      <!-- the strip of windows -->
+      <text x="0" y="26" fill="#5D6879" font-size="14" letter-spacing="2.6">INCOMING VIDEO</text>
+      <rect x="0" y="44" width="1470" height="34" rx="5" fill="#1D2632"/>
+      <rect x="0"   y="48" width="250" height="12" rx="3" fill="#3A4A61"/>
+      <rect x="125" y="62" width="250" height="12" rx="3" fill="#3A4A61"/>
+      <rect x="250" y="48" width="250" height="12" rx="3" fill="#2BE0B7"/>
+      <rect x="375" y="62" width="250" height="12" rx="3" fill="#3A4A61"/>
+      <rect x="500" y="48" width="250" height="12" rx="3" fill="#3A4A61"/>
+      <text x="266" y="104" fill="#2BE0B7" font-size="14">one 20 s window · 16 frames · 10 s hop</text>
 
-        <!-- training clip -->
-        <text x="140" y="34" text-anchor="end" class="lbl">TRAIN</text>
-        <text x="140" y="52" text-anchor="end" class="lbl-s">3,173 clips</text>
-        <rect x="150" y="18" width="60" height="30" rx="3" fill="#35D6B0" opacity=".85"/>
-        <text x="226" y="38" class="val" fill="#939DB0">30 s · exactly one event · no usable timestamps for 7 of 11 classes</text>
+      <!-- flow -->
+      <g stroke="#5D6879" stroke-width="2" marker-end="url(#ar)" fill="none">
+        <line x1="192" y1="196" x2="252" y2="196"/>
+        <line x1="560" y1="196" x2="620" y2="196"/>
+        <line x1="930" y1="196" x2="990" y2="196"/>
+      </g>
 
-        <!-- D2 -->
-        <text x="140" y="82" text-anchor="end" class="lbl">D2 · 35 marks</text>
-        <text x="140" y="100" text-anchor="end" class="lbl-s">6 videos</text>
-        <rect x="150" y="66" width="483" height="30" rx="3" fill="#202836"/>
-        <rect x="190" y="66" width="40" height="30" rx="2" fill="#35D6B0"/>
-        <rect x="271" y="66" width="40" height="30" rx="2" fill="#35D6B0"/>
-        <rect x="351" y="66" width="40" height="30" rx="2" fill="#35D6B0"/>
-        <rect x="432" y="66" width="40" height="30" rx="2" fill="#35D6B0"/>
-        <rect x="512" y="66" width="40" height="30" rx="2" fill="#35D6B0"/>
-        <rect x="593" y="66" width="40" height="30" rx="2" fill="#35D6B0"/>
-        <text x="649" y="86" class="val" fill="#939DB0">240 s · up to 6 events</text>
+      <rect x="0" y="160" width="192" height="72" rx="8" fill="#1D2632"/>
+      <text x="96" y="196" text-anchor="middle" fill="#F2F6FB" font-size="18">sample frames</text>
+      <text x="96" y="218" text-anchor="middle" fill="#5D6879" font-size="14">0.4 s</text>
 
-        <!-- D3 -->
-        <text x="140" y="130" text-anchor="end" class="lbl">D3 · 40 marks</text>
-        <text x="140" y="148" text-anchor="end" class="lbl-s">4 videos</text>
-        <rect x="150" y="114" width="1265" height="30" rx="3" fill="#202836"/>
-        <rect x="492" y="114" width="151" height="30" rx="2" fill="#35D6B0"/>
-        <rect x="1136" y="114" width="91" height="30" rx="2" fill="#35D6B0"/>
-        <text x="1243" y="134" class="val" fill="#939DB0">629 s · mixed classes</text>
-      </svg>
-      <p class="lead" style="margin-top:6px">
-        <b>75 of the 100 marks had no training data at all</b> — so we manufactured it:
-        360 long multi-event videos with exact ground truth.</p>
+      <rect x="252" y="152" width="308" height="88" rx="8" fill="#0F2A24" stroke="#2BE0B7" stroke-width="2"/>
+      <text x="406" y="190" text-anchor="middle" fill="#2BE0B7" font-size="20" font-weight="700">Qwen3-VL-4B</text>
+      <text x="406" y="214" text-anchor="middle" fill="#94A0B4" font-size="14">+ LoRA · one A100</text>
+
+      <rect x="620" y="160" width="310" height="72" rx="8" fill="#1D2632"/>
+      <text x="775" y="190" text-anchor="middle" fill="#F2F6FB" font-size="18">merge overlapping windows</text>
+      <text x="775" y="214" text-anchor="middle" fill="#5D6879" font-size="14">72 policies swept on CPU · no GPU</text>
+
+      <rect x="990" y="160" width="230" height="72" rx="8" fill="#1D2632"/>
+      <text x="1105" y="190" text-anchor="middle" fill="#F2F6FB" font-size="18">alert</text>
+      <text x="1105" y="214" text-anchor="middle" fill="#5D6879" font-size="14">class · time · reason</text>
+
+      <!-- example alert -->
+      <rect x="1252" y="146" width="218" height="100" rx="8" fill="#1D2632" stroke="#FF3D71" stroke-width="0" />
+      <rect x="1252" y="146" width="4" height="100" rx="2" fill="#FF3D71"/>
+      <text x="1272" y="176" fill="#F2F6FB" font-size="16" font-weight="700">traffic_accident</text>
+      <text x="1272" y="200" fill="#94A0B4" font-size="14">confidence 0.95</text>
+      <text x="1272" y="224" fill="#5D6879" font-size="13">“a collision between</text>
+      <text x="1272" y="240" fill="#5D6879" font-size="13">two vehicles…”</text>
+
+      <!-- timing bar -->
+      <text x="0" y="296" fill="#5D6879" font-size="14" letter-spacing="2.6">TIME BUDGET FOR ONE WINDOW</text>
+      <rect x="0" y="308" width="1470" height="16" rx="8" fill="#1D2632"/>
+      <rect x="0" y="308" width="269" height="16" rx="8" fill="#2BE0B7"/>
+      <text x="285" y="321" fill="#2BE0B7" font-size="14">1.83 s used</text>
+      <text x="1470" y="321" text-anchor="end" fill="#5D6879" font-size="14">10 s available before the next window closes</text>
+    </svg>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="n" style="color:var(--miss)">75 / 100</div>
+      <div class="t">marks had no training data</div>
+      <div class="s">Train ships 5–30 s clips with one event. D2 and D3 are 4–10 minute videos with
+        several. We synthesised 360 of them.</div>
     </div>
-
-    <div class="row" style="flex:1;min-height:0">
-
-      <!-- PIPELINE -->
-      <div class="box" style="flex:1.5">
-        <h2>Pipeline</h2>
-        <p class="sub">Everything cacheable is cached, so tuning the output policy costs no GPU.</p>
-        <svg viewBox="0 0 860 158" style="width:100%;height:146px;flex:0 0 auto">
-          <defs>
-            <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-              <path d="M0,1.5 L8,5 L0,8.5" fill="none" stroke="#5C6679" stroke-width="1.6"/>
-            </marker>
-          </defs>
-          <g stroke="#5C6679" stroke-width="1.6" marker-end="url(#a)" fill="none">
-            <line x1="150" y1="30" x2="196" y2="30"/>
-            <line x1="356" y1="30" x2="402" y2="30"/>
-            <line x1="470" y1="52" x2="470" y2="86"/>
-            <line x1="150" y1="118" x2="196" y2="118"/>
-            <line x1="356" y1="118" x2="402" y2="118"/>
-            <line x1="538" y1="118" x2="584" y2="118"/>
-            <line x1="744" y1="118" x2="790" y2="118"/>
-          </g>
-
-          <rect x="10" y="10" width="140" height="40" rx="6" fill="#202836"/>
-          <text x="80" y="28" text-anchor="middle" fill="#EDF1F7" font-size="14">3,173 clips</text>
-          <text x="80" y="44" text-anchor="middle" fill="#5C6679" font-size="12">+ 973 normal</text>
-
-          <rect x="196" y="8" width="160" height="44" rx="6" fill="#12251F" stroke="#35D6B0" stroke-width="1.5"/>
-          <text x="276" y="26" text-anchor="middle" fill="#35D6B0" font-size="14">SYNTHESISER</text>
-          <text x="276" y="43" text-anchor="middle" fill="#939DB0" font-size="12">360 long videos</text>
-
-          <rect x="402" y="10" width="136" height="40" rx="6" fill="#202836"/>
-          <text x="470" y="28" text-anchor="middle" fill="#EDF1F7" font-size="14">SFT rows</text>
-          <text x="470" y="44" text-anchor="middle" fill="#5C6679" font-size="12">windowed</text>
-
-          <rect x="10" y="98" width="140" height="40" rx="6" fill="#202836"/>
-          <text x="80" y="123" text-anchor="middle" fill="#EDF1F7" font-size="14">test video</text>
-
-          <rect x="196" y="96" width="160" height="44" rx="6" fill="#202836"/>
-          <text x="276" y="114" text-anchor="middle" fill="#EDF1F7" font-size="14">20 s windows</text>
-          <text x="276" y="131" text-anchor="middle" fill="#5C6679" font-size="12">10 s hop · 16 frames</text>
-
-          <rect x="402" y="90" width="136" height="56" rx="6" fill="#12251F" stroke="#35D6B0" stroke-width="1.5"/>
-          <text x="470" y="112" text-anchor="middle" fill="#35D6B0" font-size="14">Qwen3-VL-4B</text>
-          <text x="470" y="128" text-anchor="middle" fill="#939DB0" font-size="12">+ LoRA · ViT frozen</text>
-
-          <rect x="584" y="96" width="160" height="44" rx="6" fill="#202836"/>
-          <text x="664" y="114" text-anchor="middle" fill="#EDF1F7" font-size="14">merge policy</text>
-          <text x="664" y="131" text-anchor="middle" fill="#35D6B0" font-size="12">72 configs · 0 GPU</text>
-
-          <rect x="790" y="98" width="62" height="40" rx="6" fill="#202836"/>
-          <text x="821" y="116" text-anchor="middle" fill="#EDF1F7" font-size="13">events</text>
-          <text x="821" y="131" text-anchor="middle" fill="#5C6679" font-size="12">JSON</text>
-
-          <text x="10" y="76" fill="#5C6679" font-size="12" letter-spacing="1.4">TRAINING — WE BUILT THIS HALF</text>
-          <text x="700" y="76" fill="#5C6679" font-size="12" letter-spacing="1.4">INFERENCE</text>
-        </svg>
-        <div class="kpis" style="margin-top:14px">
-          <div class="kpi"><div class="v">10<span style="font-size:19px"> s</span></div>
-            <span class="k">window closes every</span></div>
-          <div class="kpi"><div class="v">1.83<span style="font-size:19px"> s</span></div>
-            <span class="k">to score it</span></div>
-          <div class="kpi" style="background:#12251F"><div class="v" style="color:var(--hit)">5.5×</div>
-            <span class="k">faster than real time</span></div>
-          <div class="kpi"><div class="v">$0</div><span class="k">to tune the policy</span></div>
-        </div>
-        <p class="sub" style="margin:7px 0 0;font-size:12.5px">2.8× at p95 — real time holds on the tail. 326 windows, 5,216 frames, one A100-40GB.</p>
-      </div>
-
-      <!-- MODEL CHOICE -->
-      <div class="box" style="flex:1">
-        <h2>Why a 4B</h2>
-        <p class="sub">Five VLMs, identical 24-video set, same prompt and policy. F1.</p>
-        <svg viewBox="0 0 400 200" style="width:100%;height:186px;flex:0 0 auto">
-          <g class="lbl">
-            <text x="0" y="22" fill="#35D6B0">Qwen3-VL-4B</text>
-            <text x="0" y="62">Qwen3-VL-8B</text>
-            <text x="0" y="102">Cosmos-R2-8B</text>
-            <text x="0" y="142">Qwen3-VL-2B</text>
-            <text x="0" y="182">Qwen2.5-VL-7B</text>
-          </g>
-          <g>
-            <rect x="132" y="8" width="222" height="20" rx="3" fill="#35D6B0"/>
-            
-            <rect x="132" y="48" width="175" height="20" rx="3" fill="#46566E"/>
-            <rect x="132" y="88" width="109" height="20" rx="3" fill="#46566E"/>
-            <rect x="132" y="128" width="73" height="20" rx="3" fill="#46566E"/>
-            <rect x="132" y="168" width="3" height="20" rx="1.5" fill="#FF4D7D"/>
-          </g>
-          <g class="val">
-            <text x="364" y="24">0.61</text>
-            <text x="317" y="64" fill="#939DB0">0.48</text>
-            <text x="251" y="104" fill="#939DB0">0.30</text>
-            <text x="215" y="144" fill="#939DB0">0.20</text>
-            <text x="145" y="184" fill="#FF4D7D">0.00</text>
-          </g>
-        </svg>
-        <p class="sub" style="margin:10px 0 0">The 4B and 8B are <b style="color:var(--text)">statistically
-          indistinguishable</b> — they differ on 3 videos of 24, p = 0.25. We ship the 4B because it is
-          <b style="color:var(--text)">half the size at equal measured accuracy</b>.</p>
-      </div>
+    <div class="card">
+      <div class="n" style="color:var(--hit)">5.5×</div>
+      <div class="t">faster than real time</div>
+      <div class="s">1.83 s to score a window that arrives every 10 s. Still 2.8× at the 95th
+        percentile, so it holds on the tail.</div>
     </div>
-
+    <div class="card">
+      <div class="n">4B</div>
+      <div class="t">parameters, one GPU</div>
+      <div class="s">The 8B is statistically indistinguishable on this test, so we ship the smaller
+        one. Nothing hosted is in the runtime path.</div>
+    </div>
   </div>
 
   <div class="foot">
-    <span><b>Demo:</b> a self-contained page replays every prediction on the video's own clock and scores itself live → slide 2</span>
-    <span style="margin-left:auto"><b>Repo:</b> scorer written before any model · one prompt module shared by training and inference</span>
+    <span><b>Demo:</b> a dashboard runs this live — press a button, one window goes to the A100, the
+      alert comes back in about nine seconds.</span>
   </div>
 </section>
 
-<!-- ========================= SLIDE 2 ========================= -->
+<!-- ===================== SLIDE 2 — WHAT HAPPENED ===================== -->
 <section class="slide">
   <div class="head">
     <div>
-      <span class="eyebrow">Slide 2 · What we learned</span>
-      <h1>Nothing crashed. <span>That was the problem.</span></h1>
+      <span class="eyebrow">What happened</span>
+      <h1>Short clips work. <span>Long video does not —<br>and that is where the marks are.</span></h1>
     </div>
     <div class="meta">
-      All numbers measured on the 34-video public set<br>
-      <b>24 videos, 20 positives → ±1 TP ≈ 5 pp of recall</b><br>
-      applied to every number on this page
+      First scored upload · zero-shot, no fine-tuning yet<br>
+      <b>23.8 / 100</b><br>
+      24 videos, 20 positives → ±1 detection ≈ 5 pp of recall
     </div>
   </div>
 
-  <div class="body">
-    <div class="row" style="flex:1;min-height:0">
+  <div class="hero">
+    <p class="cap">Marks earned against marks available. One D3 video is worth ten D1 videos.</p>
+    <svg viewBox="0 0 1470 330" style="width:100%;flex:1;min-height:0">
+      <!-- D1 -->
+      <text x="0" y="46" fill="#94A0B4" font-size="19">D1</text>
+      <text x="0" y="68" fill="#5D6879" font-size="14">24 short clips</text>
+      <rect x="150" y="24" width="368" height="54" rx="6" fill="#1D2632"/>
+      <rect x="150" y="24" width="178" height="54" rx="6" fill="#2BE0B7"/>
+      <text x="344" y="58" fill="#F2F6FB" font-size="24" font-weight="700">12.1</text>
+      <text x="404" y="58" fill="#5D6879" font-size="16">of 25</text>
 
-      <!-- 1 · WHERE THE MARKS ARE -->
-      <div class="box" style="flex:1">
-        <h2>Where the marks actually are</h2>
-        <p class="sub">First scored upload. D2's 11.7 is exactly the empty-submission floor.</p>
-        <svg viewBox="0 0 400 200" style="width:100%;height:150px;flex:0 0 auto">
-          <g class="lbl">
-            <text x="0" y="30">D1</text><text x="0" y="90">D2</text><text x="0" y="150">D3</text>
-          </g>
-          <g>
-            <rect x="42" y="14" width="230" height="24" rx="3" fill="#202836"/>
-            <rect x="42" y="14" width="111" height="24" rx="3" fill="#35D6B0"/>
-            <rect x="42" y="74" width="322" height="24" rx="3" fill="#202836"/>
-            <rect x="42" y="74" width="108" height="24" rx="3" fill="#F5B547"/>
-            <rect x="42" y="134" width="368" height="24" rx="3" fill="#202836"/>
-            <rect x="42" y="134" width="3" height="24" rx="1.5" fill="#FF4D7D"/>
-          </g>
-          <g class="val">
-            <text x="160" y="32">12.1</text><text x="200" y="32" class="lbl-s" fill="#5C6679">of 25</text>
-            <text x="157" y="92">11.7</text><text x="197" y="92" class="lbl-s" fill="#5C6679">of 35 — the floor</text>
-            <text x="52" y="152" fill="#FF4D7D">0.0</text><text x="86" y="152" class="lbl-s" fill="#5C6679">of 40</text>
-          </g>
-          <text x="0" y="190" class="lbl" fill="#EDF1F7">TOTAL 23.8 / 100</text>
-        </svg>
-        <div style="background:var(--raised);border-radius:6px;padding:14px 16px;margin-top:8px">
-          <div style="display:flex;align-items:baseline;gap:12px">
-            <span class="big" style="font-size:38px;color:var(--hit)">10×</span>
-            <span style="font:14.5px/1.4 var(--sans);color:var(--muted)">
-              One D3 video is worth <b style="color:var(--text)">ten</b> D1 videos
-              — 10.00 vs 1.04 marks each — and we are at zero on D3.</span>
-          </div>
-        </div>
-      </div>
+      <!-- D2 -->
+      <text x="0" y="152" fill="#94A0B4" font-size="19">D2</text>
+      <text x="0" y="174" fill="#5D6879" font-size="14">6 × 4 minutes</text>
+      <rect x="150" y="130" width="515" height="54" rx="6" fill="#1D2632"/>
+      <rect x="150" y="130" width="172" height="54" rx="6" fill="#F7B23F"/>
+      <text x="338" y="164" fill="#F2F6FB" font-size="24" font-weight="700">11.7</text>
+      <text x="398" y="164" fill="#5D6879" font-size="16">of 35</text>
+      <text x="150" y="206" fill="#F7B23F" font-size="14">exactly the score for submitting nothing at all</text>
 
-      <!-- 2 · FALSE ALARMS -->
-      <div class="box" style="flex:1">
-        <h2>Lower false-alarm, for free</h2>
-        <p class="sub">One entrant on this leaderboard lost 26 of 35 marks to 94 false alarms.</p>
-        <svg viewBox="0 0 400 200" style="width:100%;height:150px;flex:0 0 auto">
-          <text x="0" y="16" class="lbl-s">D1 · EVERY PREDICTED EVENT</text>
-          <rect x="0" y="26" width="167" height="30" rx="3" fill="#35D6B0"/>
-          <text x="14" y="47" class="val" fill="#0B0E13">10 found</text>
-          <rect x="173" y="26" width="200" height="30" rx="3" fill="#FF4D7D"/>
-          <text x="187" y="47" class="val" fill="#0B0E13">12 false alarms</text>
+      <!-- D3 -->
+      <text x="0" y="258" fill="#94A0B4" font-size="19">D3</text>
+      <text x="0" y="280" fill="#5D6879" font-size="14">4 long videos</text>
+      <rect x="150" y="236" width="589" height="54" rx="6" fill="#1D2632"/>
+      <rect x="150" y="236" width="6" height="54" rx="3" fill="#FF3D71"/>
+      <text x="172" y="270" fill="#FF3D71" font-size="24" font-weight="700">0.0</text>
+      <text x="216" y="270" fill="#5D6879" font-size="16">of 40</text>
 
-          <text x="0" y="96" class="lbl-s" fill="#35D6B0">D1 · TOP-1 EVENT PER VIDEO</text>
-          <rect x="0" y="106" width="167" height="30" rx="3" fill="#35D6B0"/>
-          <text x="14" y="127" class="val" fill="#0B0E13">10 found</text>
-          <rect x="173" y="106" width="50" height="30" rx="3" fill="#FF4D7D"/>
-          <text x="187" y="127" class="val" fill="#0B0E13">3</text>
+      <!-- the reframe -->
+      <rect x="880" y="24" width="590" height="266" rx="10" fill="#141B25"/>
+      <text x="912" y="66" fill="#5D6879" font-size="14" letter-spacing="2.6">MARKS PER VIDEO</text>
+      <text x="912" y="118" fill="#94A0B4" font-size="17">D1</text>
+      <rect x="1000" y="100" width="24" height="24" rx="4" fill="#3A4A61"/>
+      <text x="1040" y="119" fill="#94A0B4" font-size="17">1.04</text>
 
-          <line x1="167" y1="60" x2="167" y2="104" stroke="#35D6B0" stroke-width="1.4" stroke-dasharray="4 3"/>
-          <text x="0" y="174" class="lbl" fill="#EDF1F7">4× fewer false alarms.</text>
-          <text x="0" y="194" class="lbl">Zero recall cost. Zero GPU.</text>
-        </svg>
-        <div style="background:var(--raised);border-radius:6px;padding:13px 16px;margin-top:8px">
-          <div class="lbl-s" style="color:var(--fa)">AND THE OBVIOUS FIX THAT DOES NOT WORK</div>
-          <p style="margin:8px 0 0;font:14.5px/1.45 var(--sans);color:var(--muted)">
-            Gating on the model's own confidence, 0.5 → 0.9, removes
-            <b style="color:var(--text)">2 false alarms out of 31</b>. Confidence carries no signal —
-            whatever gates false alarms must come from outside the model.</p>
-        </div>
-      </div>
+      <text x="912" y="176" fill="#94A0B4" font-size="17">D2</text>
+      <rect x="1000" y="158" width="134" height="24" rx="4" fill="#3A4A61"/>
+      <text x="1150" y="177" fill="#94A0B4" font-size="17">5.83</text>
 
-      <!-- 3 · SILENT FAILURES -->
-      <div class="box" style="flex:1.1">
-        <h2>Seven silent failures in seven hours</h2>
-        <p class="sub">None crashed. Every one would have read as “the model just isn't very good.”</p>
-        <svg viewBox="0 0 420 200" style="width:100%;height:246px;flex:0 0 auto">
-          <g class="lbl-s" fill="#939DB0">
-            <rect x="0" y="4" width="420" height="24" rx="3" fill="#202836"/>
-            <text x="10" y="20" fill="#5C6679">1</text><text x="30" y="20">ffmpeg -t silently returns a shorter segment</text>
-            <rect x="0" y="32" width="420" height="24" rx="3" fill="#202836"/>
-            <text x="10" y="48" fill="#5C6679">2</text><text x="30" y="48">49 of 2,092 train rows have end ≤ start</text>
-            <rect x="0" y="60" width="420" height="24" rx="3" fill="#202836"/>
-            <text x="10" y="76" fill="#5C6679">3</text><text x="30" y="76">clip pool keyed on folder, not class label</text>
-            <rect x="0" y="88" width="420" height="24" rx="3" fill="#202836"/>
-            <text x="10" y="104" fill="#5C6679">4</text><text x="30" y="104">empty output ≡ a correct “no events”</text>
-            <rect x="0" y="116" width="420" height="24" rx="3" fill="#202836"/>
-            <text x="10" y="132" fill="#5C6679">5</text><text x="30" y="132">one bad API reply cut a 34-video run to 6, exit 0</text>
-            <rect x="0" y="144" width="420" height="24" rx="3" fill="#202836"/>
-            <text x="10" y="160" fill="#5C6679">6</text><text x="30" y="160">buffered output hid a 20-minute GPU job</text>
-            <rect x="0" y="172" width="420" height="24" rx="3" fill="#2A1E28" stroke="#FF4D7D"/>
-            <text x="10" y="188" fill="#FF4D7D">7</text>
-            <text x="30" y="188" fill="#EDF1F7">the fix for #5 caused #7 — failures written as []</text>
-          </g>
-        </svg>
-        <div style="background:var(--raised);border-radius:6px;padding:13px 16px;margin-top:8px">
-          <p style="margin:0;font:14.5px/1.45 var(--sans);color:var(--muted)">
-            <b style="color:var(--text)">So we validate intermediate artifacts, not outputs.</b>
-            #7 was caught only by the diagnostic added for #4. Each is now a test.</p>
-        </div>
-      </div>
+      <text x="912" y="234" fill="#F2F6FB" font-size="17">D3</text>
+      <rect x="1000" y="216" width="230" height="24" rx="4" fill="#2BE0B7"/>
+      <text x="1246" y="235" fill="#2BE0B7" font-size="17" font-weight="700">10.00</text>
+
+      <text x="912" y="272" fill="#94A0B4" font-size="15">The whole remaining opportunity is long video —</text>
+      <text x="912" y="292" fill="#94A0B4" font-size="15">exactly the half the training data never contained.</text>
+    </svg>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="n"><span style="color:var(--fa)">12</span> <span style="color:var(--dim)">→</span> <span style="color:var(--hit)">3</span></div>
+      <div class="t">false alarms, for free</div>
+      <div class="s">Keeping only the top answer per clip cut them 4× with no loss of recall, on CPU.
+        The model's own confidence turned out to be useless as a filter.</div>
     </div>
-
-    <div class="row" style="flex:0 0 auto">
-
-      <!-- retraction -->
-      <div class="box" style="flex:1.15">
-        <div class="lbl-s" style="color:var(--miss);margin-bottom:8px">WE RETRACTED OUR OWN HEADLINE, BEFORE IT SHIPPED</div>
-        <p style="margin:0;font:15px/1.5 var(--sans);color:var(--muted)">
-          <s style="color:var(--dim)">“Bigger is worse — the 4B beats the 8B, F1 0.61 vs 0.48.”</s>
-          The two models differ on <b style="color:var(--text)">3 videos out of 24</b>; sign test
-          <b style="color:var(--text)">p = 0.25</b>. The gap was 10 TP vs 8 TP — inside the ±1 TP noise
-          band we had been telling everyone to apply, and then failed to apply ourselves.</p>
-      </div>
-
-      <!-- negative result -->
-      <div class="box" style="flex:1">
-        <div class="lbl-s" style="color:var(--miss);margin-bottom:8px">A NEGATIVE RESULT, TESTED PROPERLY</div>
-        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px">
-          <span class="big" style="font-size:34px">0.556</span>
-          <span class="lbl-s" style="color:var(--dim)">AUC · CHANCE IS 0.500</span>
-        </div>
-        <p style="margin:0;font:14px/1.45 var(--sans);color:var(--muted)">
-          Codec motion vectors as an ego-motion-robust gate — free from the decoder, the idea every
-          fixed-camera paper implies. Against a 2,000-trial permutation null it
-          <b style="color:var(--text)">does not work</b>. Settled in 1,165 CPU-seconds, no GPU.</p>
-      </div>
-
-      <!-- placeholder -->
-      <div class="ph" style="flex:.85">
-        <div class="t">Placeholder · fine-tune</div>
-        <div class="d">The LoRA run had not finished at build time, so <b style="color:var(--text)">no
-          fine-tuned number appears anywhere on these slides</b>. If it lands, it goes in the model
-          table on slide 1 and the marks chart here — and nowhere else.</div>
-      </div>
+    <div class="card">
+      <div class="n">7</div>
+      <div class="t">silent failures, 0 crashes</div>
+      <div class="s">Every one would have read as “the model isn't very good” — and the fix for the
+        fifth caused the seventh. So we validate intermediate artifacts, not outputs.</div>
+    </div>
+    <div class="card">
+      <div class="n">0.556</div>
+      <div class="t">AUC where chance is 0.500</div>
+      <div class="s">The ego-motion gate every fixed-camera paper implies. We tested it against a
+        permutation null: it does not work. A day of GPU saved.</div>
     </div>
   </div>
 
   <div class="foot">
-    <span><b>What we would do next:</b> the whole remaining opportunity is long-video temporal
-      localisation — precisely the half the training data never contained.</span>
-    <span style="margin-left:auto"><b>Rule we kept:</b> any number still unmeasured at submission was
-      deleted, not guessed.</span>
+    <span><b>Honest scope:</b> no fine-tuned result existed at submission, so no fine-tuned number
+      appears here.</span>
+    <span style="margin-left:auto"><b>We retracted our own headline</b> — “bigger is worse” was
+      3 videos out of 24, p = 0.25.</span>
   </div>
 </section>
 

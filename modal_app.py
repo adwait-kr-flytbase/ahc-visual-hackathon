@@ -97,7 +97,7 @@ def _stream(cmd, cwd, shell):
     return {"rc": proc.returncode, "tail": "\n".join(lines[-40:])}
 
 
-@app.function(image=INFER, gpu="A100-40GB", volumes={"/vol": vol, "/hf": hf_cache},
+@app.function(image=INFER, gpu="A100-80GB", volumes={"/vol": vol, "/hf": hf_cache},
               timeout=7200, secrets=[modal.Secret.from_name("hf-token")])
 def zeroshot(model: str = "Qwen/Qwen3-VL-4B-Instruct",
              videos: str = "/vol/dataset/test/videos",

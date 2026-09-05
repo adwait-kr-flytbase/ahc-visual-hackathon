@@ -370,8 +370,10 @@ def main() -> int:
     here = Path(__file__).parent
     args.out.write_text((here / "template.html").read_text().replace("__DATA__", blob))
     # the presenter view shares the payload exactly, so the two can never disagree
-    present = here / "present.html"
-    present.write_text((here / "present-template.html").read_text().replace("__DATA__", blob))
+    for name in ("present", "dash"):
+        (here / f"{name}.html").write_text(
+            (here / f"{name}-template.html").read_text().replace("__DATA__", blob))
+    present = here / "dash.html"
 
     run = payload["run"]
     print(f"wrote {under_root(args.out)} and {under_root(present)}  "

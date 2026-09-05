@@ -1,20 +1,28 @@
 # Two-slide deck — RENDERED
 
-> **The deck is built.** `slides/index.html` is the source, `slides/ahc-two-slides.pdf` is the
-> submittable file (2 pages, 1600×900). Rebuild the PDF with:
+> **Built.** `slides/index.html` is the source, `slides/ahc-two-slides.pdf` is the submittable file
+> (2 pages, 1600x900). Rebuild:
 >
 > ```
-> python3 -m http.server 8765 &
+> .venv/bin/python demo/server.py &            # or any static server
 > "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
 >   --no-pdf-header-footer --print-to-pdf=slides/ahc-two-slides.pdf --virtual-time-budget=6000 \
->   http://127.0.0.1:8765/slides/index.html
+>   http://127.0.0.1:8800/slides/index.html
 > ```
 >
-> Every number on it is measured and traceable to a run or a script in this repo. No fine-tuned
-> result existed at build time, so no fine-tuned number appears — if one lands, add it to the
-> model-selection table on slide 1 and rebuild.
+> **Design rule, learned the hard way over three rewrites: one message and one picture per slide.**
+> The first two versions were dense grids of tables and were rejected as chaotic — correctly. The
+> organisers ask for graphs, tables, timelines and example frames *over paragraphs*, and a judge
+> gives a slide about twenty seconds.
 >
-> What follows is the original markdown draft, kept for the reasoning behind the structure.
+> Slide 1 = **what we built**: a headline, one pipeline diagram with the timing budget drawn on it,
+> three numbers (75/100 marks had no training data · 5.5x real time · 4B on one GPU).
+> Slide 2 = **what happened**: a headline, one marks chart with D3 at zero and the marks-per-video
+> reframe, three findings (false alarms 12 -> 3 · seven silent failures · the tested negative result).
+>
+> Everything else that used to be on these slides now lives in `status/experiments.md` and
+> `mv/README.md`, which is where evidence belongs. If a number is unmeasured at submission, delete
+> the row rather than guess. No fine-tuned result existed at build time, so none appears.
 
 ---
 

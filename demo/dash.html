@@ -3,357 +3,428 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Live anomaly monitor — demo</title>
+<title>Anomaly monitor</title>
 <style>
 :root{
-  --ink:#06080C; --panel:#111722; --raised:#1A2231; --line:#28313F;
-  --text:#F2F5FA; --muted:#98A2B4; --dim:#5E687A;
-  --hit:#2BE0B7; --miss:#F7B23F; --fa:#FF3D71;
+  --ink:#070A0F; --panel:#0F141D; --raised:#18202C; --line:#243040; --line-s:#1B2432;
+  --text:#EEF2F8; --muted:#8E99AC; --dim:#5A6474;
+  --hit:#2BE0B7; --miss:#F7B23F; --fa:#FF3D71; --live:#2BE0B7; --rec:#8E99AC;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--ink);color:var(--text);font:16px/1.5 var(--sans);overflow:hidden;
-  -webkit-font-smoothing:antialiased;cursor:default}
-:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+body{background:var(--ink);color:var(--text);font:14px/1.5 var(--sans);overflow:hidden;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--hit);outline-offset:2px}
+.tag{font:700 10px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-.stage{position:fixed;inset:0;display:flex;flex-direction:column}
+/* header */
+.top{display:flex;align-items:center;gap:18px;padding:11px 18px;background:var(--panel);
+  border-bottom:1px solid var(--line);flex:0 0 auto}
+.top h1{margin:0;font:700 15px/1 var(--sans);letter-spacing:-.01em}
+.top h1 i{font-style:normal;color:var(--hit)}
+.pill{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:20px;
+  border:1px solid var(--line);font:700 10px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--dim)}
+.pill.on{border-color:var(--live);color:var(--live)} .pill.on .dot{background:var(--live);
+  animation:pulse 1.6s ease-in-out infinite}
+.pill.off{color:var(--rec)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.top .sel{margin-left:auto;display:flex;align-items:center;gap:10px}
+select{background:var(--raised);color:var(--text);border:1px solid var(--line);border-radius:5px;
+  padding:6px 9px;font:12px/1 var(--mono)}
 
-/* ---------- top HUD ---------- */
-.hud{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;gap:26px;
-  padding:20px 30px;background:linear-gradient(#06080Cf2,#06080C00)}
-.hud .brand{font:700 17px/1 var(--sans);letter-spacing:-.01em}
-.hud .brand i{font-style:normal;color:var(--hit)}
-.hud .chip{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  padding:6px 10px;border:1px solid var(--line);border-radius:4px;color:var(--muted)}
-.hud .chip.live{border-color:var(--fa);color:var(--fa)}
-.hud .spacer{flex:1}
-.hud .metric{text-align:right;font:12px/1.55 var(--mono);color:var(--dim)}
-.hud .metric b{color:var(--text);font-weight:600}
+/* grid */
+.wrap{flex:1;display:grid;grid-template-columns:1fr 396px;grid-template-rows:1fr auto;
+  gap:1px;background:var(--line-s);min-height:0}
+.cell{background:var(--ink);min-height:0;min-width:0;display:flex;flex-direction:column}
 
-/* ---------- video ---------- */
-.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
-.screen video{width:100%;height:100%;object-fit:contain;background:#000}
-.state{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;
-  text-align:center;font:14px/1.6 var(--mono);color:var(--dim);pointer-events:none}
-.state b{display:block;font:600 17px/1.4 var(--sans);color:var(--text);margin-bottom:8px}
+/* video */
+.vid{position:relative;flex:1;min-height:0;background:#000;display:flex}
+.vid video{width:100%;height:100%;object-fit:contain;background:#000}
+.badge{position:absolute;top:12px;left:14px;z-index:5;display:flex;gap:8px}
+.state{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;font:13px/1.5 var(--mono);color:var(--dim);pointer-events:none;
+  text-align:center;padding:20px}
+.state b{font:600 16px/1.4 var(--sans);color:var(--text)}
 .state.bad b{color:var(--fa)}
-.vignette{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(#06080Ccc 0,#06080C00 20%,#06080C00 46%,#06080Cf0 100%)}
 
-/* ---------- caption ---------- */
-.caption{position:absolute;left:0;right:420px;bottom:0;z-index:30;padding:0 40px 40px}
-.caption .step{font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
-  color:var(--hit);margin-bottom:14px;display:block}
-.caption h2{margin:0 0 12px;font:700 34px/1.16 var(--sans);letter-spacing:-.022em;max-width:22ch}
-.caption p{margin:0;font:19px/1.5 var(--sans);color:var(--muted);max-width:56ch}
-.caption p b{color:var(--text);font-weight:600}
+/* timeline */
+.tl{flex:0 0 auto;padding:12px 16px 14px;background:var(--panel);border-top:1px solid var(--line)}
+.tl .hd{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.tl .hd .t{font:700 15px/1 var(--mono)}
+.tl .hd .d{font:11px/1 var(--mono);color:var(--dim)}
+.tl .hd .w{margin-left:auto;font:11px/1 var(--mono);color:var(--hit)}
+.lane-row{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.lane-row .lb{width:52px;flex:0 0 auto;text-align:right}
+.lane{position:relative;flex:1;height:20px;background:var(--raised);border-radius:3px;
+  overflow:hidden;cursor:col-resize}
+.lane.g{height:9px;cursor:default}
+.seg{position:absolute;top:0;bottom:0;border-radius:2px;transition:opacity .2s}
+.seg.hide{opacity:.1}
+.win{position:absolute;top:2px;height:5px;border-radius:1px;background:#2A3648}
+.win.done{background:#4E6180}
+.win.sel{background:var(--hit)}
+.ph{position:absolute;top:0;bottom:0;width:2px;background:#fff;pointer-events:none;z-index:3}
+.mark{position:absolute;top:-3px;bottom:-3px;border:1px solid var(--hit);border-radius:3px;
+  background:rgba(43,224,183,.10);pointer-events:none;z-index:2}
 
-/* ---------- timeline ---------- */
-.strip{position:absolute;left:40px;right:460px;bottom:190px;z-index:30}
-.strip .row{display:flex;align-items:center;gap:12px;margin-bottom:7px}
-.strip .tag{width:64px;flex:0 0 auto;text-align:right;font:600 10px/1 var(--mono);
-  letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
-.strip .lane{position:relative;flex:1;height:22px;background:#0F1520cc;border-radius:3px;overflow:hidden}
-.strip .lane.grid{height:9px}
-.strip .seg{position:absolute;top:0;bottom:0;border-radius:2px;transition:opacity .25s ease}
-.strip .seg.hidden{opacity:0}
-.strip .win{position:absolute;top:2px;height:5px;border-radius:1px;background:#2B3646}
-.strip .win.done{background:#4C5F7C}
-.strip .head{position:absolute;top:0;bottom:0;width:2px;background:#fff;z-index:4}
-.strip .clock{margin-top:8px;margin-left:76px;font:12px/1 var(--mono);color:var(--dim)}
+/* right column */
+.side{background:var(--panel);overflow:hidden;display:flex;flex-direction:column}
+.sec{border-bottom:1px solid var(--line);padding:14px 16px}
+.sec h2{margin:0 0 10px;font:700 11px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim)}
+button.run{width:100%;padding:13px;border-radius:6px;border:0;cursor:pointer;
+  background:var(--hit);color:#06090D;font:700 13px/1 var(--sans);letter-spacing:.01em}
+button.run:hover{filter:brightness(1.08)}
+button.run:disabled{background:var(--raised);color:var(--dim);cursor:default}
+.meta{display:flex;gap:14px;margin-top:10px;font:11px/1.4 var(--mono);color:var(--dim)}
+.meta b{color:var(--text);font-weight:600}
+.result{margin-top:12px;border-left:3px solid var(--line);padding-left:11px}
+.result .cls{font:700 14px/1.3 var(--mono);margin:0 0 5px;word-break:break-all}
+.result .why{margin:0;font:13px/1.45 var(--sans);color:var(--muted)}
+.result .none{font:13px/1.4 var(--mono);color:var(--dim)}
+.bars{margin-top:12px}
+.bar{display:flex;align-items:center;gap:9px;margin-bottom:5px;font:11px/1 var(--mono)}
+.bar .k{width:56px;color:var(--dim);text-align:right;flex:0 0 auto}
+.bar .t{flex:1;height:8px;background:var(--raised);border-radius:4px;overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:4px}
+.bar .v{width:62px;text-align:right;color:var(--text)}
 
-/* ---------- alerts ---------- */
-.feed{position:absolute;top:78px;right:0;bottom:0;width:420px;z-index:30;padding:0 30px 34px 10px;
-  overflow:hidden;display:flex;flex-direction:column;gap:11px;justify-content:flex-end}
-.alert{background:#141C29f2;border:1px solid var(--line);border-left:4px solid var(--fa);
-  border-radius:7px;padding:14px 16px;animation:slide .4s cubic-bezier(.2,.8,.3,1)}
-@keyframes slide{from{transform:translateX(28px);opacity:0}to{transform:none;opacity:1}}
-.alert .top{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-.alert .t{font:700 15px/1 var(--mono)}
-.alert .c{margin-left:auto;font:12px/1 var(--mono);color:var(--muted)}
-.alert .cls{font:700 17px/1.25 var(--mono);margin:0 0 7px;word-break:break-all}
-.alert .why{margin:0;font:14.5px/1.45 var(--sans);color:var(--muted)}
-.alert .v{display:inline-block;margin-top:9px;padding:3px 8px;border-radius:3px;
-  font:700 10px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#06080C}
-.feed .idle{color:var(--dim);font:13px/1.6 var(--mono);text-align:right;padding-right:4px}
+.feed{flex:1;overflow-y:auto;padding:12px 16px 18px}
+.alert{border:1px solid var(--line);border-left:3px solid var(--fa);border-radius:6px;
+  padding:10px 12px;margin-bottom:8px;background:var(--raised);animation:in .35s ease}
+@keyframes in{from{transform:translateX(16px);opacity:0}to{transform:none;opacity:1}}
+.alert .r1{display:flex;align-items:baseline;gap:9px;margin-bottom:4px}
+.alert .tm{font:700 12px/1 var(--mono)} .alert .cf{margin-left:auto;font:11px/1 var(--mono);color:var(--dim)}
+.alert .cl{font:700 13px/1.3 var(--mono);margin:0 0 5px;word-break:break-all}
+.alert .wy{margin:0;font:12.5px/1.4 var(--sans);color:var(--muted)}
+.alert .vd{display:inline-block;margin-top:7px;padding:2px 7px;border-radius:3px;
+  font:700 9px/1.5 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:#06090D}
+.feed .idle{color:var(--dim);font:12px/1.6 var(--mono)}
 
-/* ---------- title & scoreboard cards ---------- */
-.card{position:absolute;inset:0;z-index:40;background:var(--ink);display:flex;flex-direction:column;
-  justify-content:center;padding:0 90px}
-.card h1{margin:0 0 20px;font:700 62px/1.06 var(--sans);letter-spacing:-.032em;max-width:20ch}
-.card h1 span{color:var(--muted)}
-.card .lead{margin:0;font:23px/1.5 var(--sans);color:var(--muted);max-width:62ch}
-.card .lead b{color:var(--hit);font-weight:600}
-.tiles{display:flex;gap:16px;margin-top:44px}
-.tile{background:var(--panel);border-radius:9px;padding:20px 24px;min-width:172px}
-.tile .v{font:700 40px/1 var(--mono);letter-spacing:-.03em}
-.tile .k{display:block;margin-top:10px;font:11px/1.35 var(--mono);letter-spacing:.12em;
-  text-transform:uppercase;color:var(--dim)}
-.score{display:flex;gap:16px;margin-top:36px}
-.score .col{flex:1;background:var(--panel);border-radius:9px;padding:20px 24px}
-.score .col h3{margin:0 0 14px;font:700 13px/1 var(--mono);letter-spacing:.14em;
-  text-transform:uppercase;color:var(--dim)}
-.score .big{font:700 34px/1 var(--mono)}
-.score .sub{margin-top:9px;font:13.5px/1.45 var(--sans);color:var(--muted)}
-
-/* ---------- footer controls ---------- */
-.foot{position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;gap:16px;
-  padding:14px 30px;font:12px/1 var(--mono);color:var(--dim);
-  background:linear-gradient(#06080C00,#06080Cee)}
-.dots{display:flex;gap:7px}
-.dots i{width:7px;height:7px;border-radius:50%;background:#2B3646;display:block;cursor:pointer}
-.dots i.on{background:var(--text)}
-.dots i.seen{background:#4C5F7C}
-.foot .keys{margin-left:auto}
-.foot kbd{font:11px/1 var(--mono);border:1px solid var(--line);border-radius:3px;padding:3px 6px;
-  color:var(--muted);margin:0 2px}
+/* metrics strip */
+.strip{grid-column:1/-1;background:var(--panel);border-top:1px solid var(--line);
+  display:flex;align-items:stretch;overflow-x:auto}
+.m{padding:11px 18px;border-right:1px solid var(--line-s);white-space:nowrap}
+.m .h{font:700 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  margin-bottom:8px}
+.m .row{display:flex;gap:16px}
+.m .st{display:flex;flex-direction:column;gap:4px}
+.m .st .v{font:700 19px/1 var(--mono)}
+.m .st .k{font:9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.cls-bars{display:flex;gap:5px;align-items:flex-end;height:36px}
+.cls-bars .c{width:13px;background:var(--raised);border-radius:2px 2px 0 0;position:relative}
+.cls-bars .c i{position:absolute;bottom:0;left:0;right:0;border-radius:2px 2px 0 0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <script id="payload" type="application/json">{"run": {"name": "qwen3-vl-4b zero-shot", "events_path": "out/d1.events.jsonl  +  out/d23.events.jsonl", "built_at": "2026-09-05 16:46 IST", "policy": "every predicted event", "videos_predicted": 34, "videos_failed": 0, "videos_not_run": 0, "videos_total": 34}, "throughput": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "frames": 5216, "windows": 326, "hop_sec": 10.0, "mean_ms": 1829.996564417178, "p95_ms": 3517.8676687116567, "realtime_mean": 5.464491133175884, "realtime_p95": 2.842631088412227}, "problems": [], "videos": [{"id": "T001", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T001.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 5068, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 4523.0, "average_time_ms": 4523.0, "p50_time_ms": 4523.0, "p95_time_ms": 4523.0, "max_time_ms": 4523.0}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 4523.0, "p50_ms": 4523.0, "p95_ms": 4523.0, "max_ms": 4523.0, "frames": 16, "chunks": 1, "end_to_end_ms": 5068}, "grid": [[0.0, 5.7]], "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T002", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T002.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1703, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 1298.97, "average_time_ms": 1298.97, "p50_time_ms": 1298.97, "p95_time_ms": 1298.97, "max_time_ms": 1298.97}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 1298.97, "p50_ms": 1298.97, "p95_ms": 1298.97, "max_ms": 1298.97, "frames": 16, "chunks": 1, "end_to_end_ms": 1703}, "grid": [[0.0, 5.8]], "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T003", "level": 1, "duration": 14.0, "src": "../dataset/test/videos/T003.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 622, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 562.61, "average_time_ms": 562.61, "p50_time_ms": 562.61, "p95_time_ms": 562.61, "max_time_ms": 562.61}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 562.61, "p50_ms": 562.61, "p95_ms": 562.61, "max_ms": 562.61, "frames": 16, "chunks": 1, "end_to_end_ms": 622}, "grid": [[0.0, 14.0]], "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T004", "level": 1, "duration": 14.0, "src": "../dataset/test/videos/T004.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [], "model": [{"class_name": "traffic_congestion", "start": 8.0, "end": 14.0, "localised": true, "confidence": 0.95, "explanation": "A long line of vehicles with brake lights on indicates heavy traffic congestion.", "rejected": null, "from_window": [0.0, 14.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 4318, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 4227.91, "average_time_ms": 4227.91, "p50_time_ms": 4227.91, "p95_time_ms": 4227.91, "max_time_ms": 4227.91}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 4227.91, "p50_ms": 4227.91, "p95_ms": 4227.91, "max_ms": 4227.91, "frames": 16, "chunks": 1, "end_to_end_ms": 4318}, "grid": [[0.0, 14.0]], "tally": {"hits": 0, "misses": 0, "false_alarms": 1}}, {"id": "T005", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T005.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 0.0, "end": 5.7, "localised": false, "description": "Crashed and burned cars and trucks while a civil-defense team examines the accident.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_accident", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.98, "explanation": "Multiple vehicles are severely damaged and charred, indicating a major fire or crash.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}, {"class_name": "fire", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.95, "explanation": "All vehicles are heavily charred and blackened, consistent with a recent fire.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.85, "explanation": "Several individuals in high-visibility vests are standing and observing the scene.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 15751, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 15312.18, "average_time_ms": 15312.18, "p50_time_ms": 15312.18, "p95_time_ms": 15312.18, "max_time_ms": 15312.18}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 15312.18, "p50_ms": 15312.18, "p95_ms": 15312.18, "max_ms": 15312.18, "frames": 16, "chunks": 1, "end_to_end_ms": 15751}, "grid": [[0.0, 5.7]], "tally": {"hits": 1, "misses": 0, "false_alarms": 2}}, {"id": "T006", "level": 1, "duration": 17.0, "src": "../dataset/test/videos/T006.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 0.0, "end": 17.0, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_accident", "start": 1.0, "end": 3.0, "localised": true, "confidence": 0.95, "explanation": "A vehicle collision is visible with smoke and debris on the road.", "rejected": null, "from_window": [0.0, 17.0], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.118}, {"class_name": "road_spill_or_debris", "start": 1.0, "end": 17.0, "localised": true, "confidence": 0.9, "explanation": "Debris and broken road surface are visible after the accident.", "rejected": null, "from_window": [0.0, 17.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 8321, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 8063.75, "average_time_ms": 8063.75, "p50_time_ms": 8063.75, "p95_time_ms": 8063.75, "max_time_ms": 8063.75}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 8063.75, "p50_ms": 8063.75, "p95_ms": 8063.75, "max_ms": 8063.75, "frames": 16, "chunks": 1, "end_to_end_ms": 8321}, "grid": [[0.0, 17.0]], "tally": {"hits": 1, "misses": 0, "false_alarms": 1}}, {"id": "T007", "level": 1, "duration": 22.7, "src": "../dataset/test/videos/T007.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 0.0, "end": 22.7, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_accident", "start": 8.5, "end": 15.0, "localised": true, "confidence": 0.95, "explanation": "A white truck is involved in a collision with a large truck, causing the white truck to be overturned and blocking traffic.", "rejected": null, "from_window": [0.0, 22.7], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.286}, {"class_name": "stalled_or_broken_down_vehicle", "start": 8.5, "end": 15.0, "localised": true, "confidence": 0.95, "explanation": "The white truck is stationary after the collision, positioned on the road shoulder.", "rejected": null, "from_window": [0.0, 22.7], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "vehicle_blocking_traffic", "start": 8.5, "end": 15.0, "localised": true, "confidence": 0.95, "explanation": "The overturned white truck is blocking traffic on the road.", "rejected": null, "from_window": [0.0, 22.7], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 12874, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 12595.96, "average_time_ms": 12595.96, "p50_time_ms": 12595.96, "p95_time_ms": 12595.96, "max_time_ms": 12595.96}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 12595.96, "p50_ms": 12595.96, "p95_ms": 12595.96, "max_ms": 12595.96, "frames": 16, "chunks": 1, "end_to_end_ms": 12874}, "grid": [[0.0, 22.7]], "tally": {"hits": 1, "misses": 0, "false_alarms": 2}}, {"id": "T008", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T008.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_congestion", "start": 0.0, "end": 5.7, "localised": false, "description": "A road crowded with cars and surrounded by trees.", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1883, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 1373.3, "average_time_ms": 1373.3, "p50_time_ms": 1373.3, "p95_time_ms": 1373.3, "max_time_ms": 1373.3}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 1373.3, "p50_ms": 1373.3, "p95_ms": 1373.3, "max_ms": 1373.3, "frames": 16, "chunks": 1, "end_to_end_ms": 1883}, "grid": [[0.0, 5.7]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T009", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T009.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_congestion", "start": 0.0, "end": 5.8, "localised": false, "description": "A bridge crowded with cars crosses a river surrounded by trees.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_congestion", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.98, "explanation": "The bridge is filled with dense traffic, indicating severe congestion.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 4507, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 4089.67, "average_time_ms": 4089.67, "p50_time_ms": 4089.67, "p95_time_ms": 4089.67, "max_time_ms": 4089.67}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 4089.67, "p50_ms": 4089.67, "p95_ms": 4089.67, "max_ms": 4089.67, "frames": 16, "chunks": 1, "end_to_end_ms": 4507}, "grid": [[0.0, 5.8]], "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T010", "level": 1, "duration": 13.2, "src": "../dataset/test/videos/T010.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "stalled_or_broken_down_vehicle", "start": 0.0, "end": 13.2, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1519, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 813.72, "average_time_ms": 813.72, "p50_time_ms": 813.72, "p95_time_ms": 813.72, "max_time_ms": 813.72}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 813.72, "p50_ms": 813.72, "p95_ms": 813.72, "max_ms": 813.72, "frames": 16, "chunks": 1, "end_to_end_ms": 1519}, "grid": [[0.0, 13.2]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T011", "level": 1, "duration": 11.2, "src": "../dataset/test/videos/T011.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "vehicle_blocking_traffic", "start": 0.0, "end": 11.2, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 807, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 690.31, "average_time_ms": 690.31, "p50_time_ms": 690.31, "p95_time_ms": 690.31, "max_time_ms": 690.31}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 690.31, "p50_ms": 690.31, "p95_ms": 690.31, "max_ms": 690.31, "frames": 16, "chunks": 1, "end_to_end_ms": 807}, "grid": [[0.0, 11.2]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T012", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T012.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "fire", "start": 0.0, "end": 5.8, "localised": false, "description": "A huge fire burning among buildings.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "fire", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.98, "explanation": "Bright orange flames are visible rising from a building in the city center.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}, {"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.95, "explanation": "A large plume of dark smoke is rising from the fire and spreading into the night sky.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 8386, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 8044.74, "average_time_ms": 8044.74, "p50_time_ms": 8044.74, "p95_time_ms": 8044.74, "max_time_ms": 8044.74}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 8044.74, "p50_ms": 8044.74, "p95_ms": 8044.74, "max_ms": 8044.74, "frames": 16, "chunks": 1, "end_to_end_ms": 8386}, "grid": [[0.0, 5.8]], "tally": {"hits": 1, "misses": 0, "false_alarms": 1}}, {"id": "T013", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T013.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "fire", "start": 0.0, "end": 5.8, "localised": false, "description": "A fire burning between buildings with black smoke rising.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.95, "explanation": "A dark smoke plume is continuously rising from a building in the urban area.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 5374, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 4968.8, "average_time_ms": 4968.8, "p50_time_ms": 4968.8, "p95_time_ms": 4968.8, "max_time_ms": 4968.8}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 4968.8, "p50_ms": 4968.8, "p95_ms": 4968.8, "max_ms": 4968.8, "frames": 16, "chunks": 1, "end_to_end_ms": 5374}, "grid": [[0.0, 5.8]], "tally": {"hits": 0, "misses": 1, "false_alarms": 1}}, {"id": "T014", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T014.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": false, "description": "Thick white smoke rising over the scene.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.98, "explanation": "Heavy white and gray smoke obscures the scene, indicating a significant fire.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}, {"class_name": "fire", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.95, "explanation": "A persistent red glow indicates active fire beneath dense smoke.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 8070, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 7766.5, "average_time_ms": 7766.5, "p50_time_ms": 7766.5, "p95_time_ms": 7766.5, "max_time_ms": 7766.5}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 7766.5, "p50_ms": 7766.5, "p95_ms": 7766.5, "max_ms": 7766.5, "frames": 16, "chunks": 1, "end_to_end_ms": 8070}, "grid": [[0.0, 5.8]], "tally": {"hits": 1, "misses": 0, "false_alarms": 1}}, {"id": "T015", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T015.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": false, "description": "Smoke rising from trees next to several houses.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.95, "explanation": "A large plume of smoke is rising from a location near a road and residential area.", "rejected": null, "from_window": [0.0, 5.8], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 5372, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 5015.18, "average_time_ms": 5015.18, "p50_time_ms": 5015.18, "p95_time_ms": 5015.18, "max_time_ms": 5015.18}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 5015.18, "p50_ms": 5015.18, "p95_ms": 5015.18, "max_ms": 5015.18, "frames": 16, "chunks": 1, "end_to_end_ms": 5372}, "grid": [[0.0, 5.8]], "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T016", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T016.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": false, "description": "Streets in a residential neighborhood flooded with water.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.98, "explanation": "The entire scene is covered in muddy floodwater, submerging buildings and vehicles.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}, {"class_name": "stalled_or_broken_down_vehicle", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.95, "explanation": "Multiple vehicles are stationary in the flooded area, indicating they are stalled or broken down.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "vehicle_blocking_traffic", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.92, "explanation": "Vehicles are blocking lanes and parking areas, obstructing traffic flow.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 14185, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 13723.71, "average_time_ms": 13723.71, "p50_time_ms": 13723.71, "p95_time_ms": 13723.71, "max_time_ms": 13723.71}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 13723.71, "p50_ms": 13723.71, "p95_ms": 13723.71, "max_ms": 13723.71, "frames": 16, "chunks": 1, "end_to_end_ms": 14185}, "grid": [[0.0, 5.7]], "tally": {"hits": 1, "misses": 0, "false_alarms": 2}}, {"id": "T017", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T017.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": false, "description": "Green land and bushes submerged by excess water.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.95, "explanation": "Large areas of land are submerged in water, indicating widespread flooding.", "rejected": null, "from_window": [0.0, 5.7], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 9544, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 8814.5, "average_time_ms": 8814.5, "p50_time_ms": 8814.5, "p95_time_ms": 8814.5, "max_time_ms": 8814.5}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 8814.5, "p50_ms": 8814.5, "p95_ms": 8814.5, "max_ms": 8814.5, "frames": 16, "chunks": 1, "end_to_end_ms": 9544}, "grid": [[0.0, 5.7]], "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T018", "level": 1, "duration": 11.1, "src": "../dataset/test/videos/T018.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "wrong_way_driving", "start": 0.0, "end": 11.1, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "traffic_accident", "start": 7.0, "end": 11.1, "localised": true, "confidence": 0.95, "explanation": "A large truck crashes into a black SUV, causing a significant collision with debris and smoke.", "rejected": null, "from_window": [0.0, 11.1], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 4857, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 4727.66, "average_time_ms": 4727.66, "p50_time_ms": 4727.66, "p95_time_ms": 4727.66, "max_time_ms": 4727.66}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 4727.66, "p50_ms": 4727.66, "p95_ms": 4727.66, "max_ms": 4727.66, "frames": 16, "chunks": 1, "end_to_end_ms": 4857}, "grid": [[0.0, 11.1]], "tally": {"hits": 0, "misses": 1, "false_alarms": 1}}, {"id": "T019", "level": 1, "duration": 13.3, "src": "../dataset/test/videos/T019.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "road_spill_or_debris", "start": 0.0, "end": 13.3, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1416, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 990.29, "average_time_ms": 990.29, "p50_time_ms": 990.29, "p95_time_ms": 990.29, "max_time_ms": 990.29}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 990.29, "p50_ms": 990.29, "p95_ms": 990.29, "max_ms": 990.29, "frames": 16, "chunks": 1, "end_to_end_ms": 1416}, "grid": [[0.0, 13.3]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T020", "level": 1, "duration": 26.1, "src": "../dataset/test/videos/T020.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "road_spill_or_debris", "start": 0.0, "end": 26.1, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1200, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 892.79, "average_time_ms": 892.79, "p50_time_ms": 892.79, "p95_time_ms": 892.79, "max_time_ms": 892.79}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 892.79, "p50_ms": 892.79, "p95_ms": 892.79, "max_ms": 892.79, "frames": 16, "chunks": 1, "end_to_end_ms": 1200}, "grid": [[0.0, 26.1]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T021", "level": 1, "duration": 20.267, "src": "../dataset/test/videos/T021.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "fighting_or_violence", "start": 0.0, "end": 20.267, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1799, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 817.33, "average_time_ms": 817.33, "p50_time_ms": 817.33, "p95_time_ms": 817.33, "max_time_ms": 817.33}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 817.33, "p50_ms": 817.33, "p95_ms": 817.33, "max_ms": 817.33, "frames": 16, "chunks": 1, "end_to_end_ms": 1799}, "grid": [[0.0, 20.267]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T022", "level": 1, "duration": 16.0, "src": "../dataset/test/videos/T022.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "fighting_or_violence", "start": 0.0, "end": 16.0, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1572, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 837.73, "average_time_ms": 837.73, "p50_time_ms": 837.73, "p95_time_ms": 837.73, "max_time_ms": 837.73}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 837.73, "p50_ms": 837.73, "p95_ms": 837.73, "max_ms": 837.73, "frames": 16, "chunks": 1, "end_to_end_ms": 1572}, "grid": [[0.0, 16.0]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T023", "level": 1, "duration": 20.0, "src": "../dataset/test/videos/T023.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 20.0, "localised": false, "description": "", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1783, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 903.61, "average_time_ms": 903.61, "p50_time_ms": 903.61, "p95_time_ms": 903.61, "max_time_ms": 903.61}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 903.61, "p50_ms": 903.61, "p95_ms": 903.61, "max_ms": 903.61, "frames": 16, "chunks": 1, "end_to_end_ms": 1783}, "grid": [[0.0, 20.0]], "tally": {"hits": 0, "misses": 1, "false_alarms": 0}}, {"id": "T024", "level": 1, "duration": 16.0, "src": "../dataset/test/videos/T024.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 16.0, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "loitering_or_suspicious_presence", "start": 11.0, "end": 16.0, "localised": true, "confidence": 0.95, "explanation": "A person in red clothing is seen walking near parked cars and then lying on the pavement.", "rejected": null, "from_window": [0.0, 16.0], "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.312}], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 6087, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 1, "total_time_ms": 5082.42, "average_time_ms": 5082.42, "p50_time_ms": 5082.42, "p95_time_ms": 5082.42, "max_time_ms": 5082.42}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 1, "mean_ms": 5082.42, "p50_ms": 5082.42, "p95_ms": 5082.42, "max_ms": 5082.42, "frames": 16, "chunks": 1, "end_to_end_ms": 6087}, "grid": [[0.0, 16.0]], "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T025", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T025.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 20.0, "end": 40.0, "localised": true, "description": "First separated traffic accident.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 60.0, "end": 80.0, "localised": true, "description": "Second separated traffic accident.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 100.0, "end": 120.0, "localised": true, "description": "Third separated traffic accident.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 140.0, "end": 160.0, "localised": true, "description": "Fourth separated traffic accident.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 180.0, "end": 200.0, "localised": true, "description": "Fifth separated traffic accident.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 220.0, "end": 240.0, "localised": true, "description": "Sixth separated traffic accident.", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 368, "chunks_processed": 23, "end_to_end_internal_time_ms": 33838, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 23, "total_time_ms": 18660.5, "average_time_ms": 811.33, "p50_time_ms": 714.72, "p95_time_ms": 725.22, "max_time_ms": 2880.71}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 23, "mean_ms": 811.33, "p50_ms": 714.72, "p95_ms": 725.22, "max_ms": 2880.71, "frames": 368, "chunks": 23, "end_to_end_ms": 33838}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0]], "tally": {"hits": 0, "misses": 6, "false_alarms": 0}}, {"id": "T026", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T026.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 10.0, "end": 40.367, "localised": true, "description": "A road accident occurs.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "vehicle_blocking_traffic", "start": 65.0, "end": 74.5, "localised": true, "description": "A vehicle illegally occupies the active road.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "road_spill_or_debris", "start": 105.0, "end": 125.8, "localised": true, "description": "Road debris or a spill obstructs the drivable area.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "fighting_or_violence", "start": 150.0, "end": 210.0, "localised": true, "description": "People fight in a public surveillance scene.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "traffic_accident", "start": 11.0, "end": 14.0, "localised": true, "confidence": 0.95, "explanation": "A white vehicle collides with a motorcycle, causing the motorcycle to be thrown onto the road.", "rejected": null, "from_window": [0.0, 20.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 107.0, "end": 116.0, "localised": true, "confidence": 0.95, "explanation": "A large truck crashes and its cargo collapses, causing a major traffic disruption with smoke and debris.", "rejected": null, "from_window": [100.0, 120.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "road_spill_or_debris", "start": 107.0, "end": 116.0, "localised": true, "confidence": 0.95, "explanation": "Debris and broken cargo from the truck crash scatter across the highway.", "rejected": null, "from_window": [100.0, 120.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "smoke", "start": 107.0, "end": 116.0, "localised": true, "confidence": 0.95, "explanation": "Smoke billows from the wreckage of the truck crash.", "rejected": null, "from_window": [100.0, 120.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 167.0, "end": 190.0, "localised": true, "confidence": 0.95, "explanation": "A person is seen falling or being struck on the road, followed by others approaching the scene.", "rejected": null, "from_window": [160.0, 180.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "fighting_or_violence", "start": 172.0, "end": 175.0, "localised": true, "confidence": 0.85, "explanation": "Two individuals are seen engaging in a physical altercation on the road.", "rejected": null, "from_window": [160.0, 180.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 368, "chunks_processed": 23, "end_to_end_internal_time_ms": 98234, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 23, "total_time_ms": 63787.39, "average_time_ms": 2773.36, "p50_time_ms": 763.85, "p95_time_ms": 7675.59, "max_time_ms": 11843.98}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 23, "mean_ms": 2773.36, "p50_ms": 763.85, "p95_ms": 7675.59, "max_ms": 11843.98, "frames": 368, "chunks": 23, "end_to_end_ms": 98234}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0]], "tally": {"hits": 0, "misses": 4, "false_alarms": 6}}, {"id": "T027", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T027.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_congestion", "start": 40.0, "end": 45.0, "localised": true, "description": "First heavy-traffic interval.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_congestion", "start": 55.0, "end": 60.0, "localised": true, "description": "Second heavy-traffic interval.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_congestion", "start": 65.0, "end": 125.0, "localised": true, "description": "Sustained heavy-traffic interval.", "verdict": "hit", "iou": 0.5384615384615384, "pair": 1}, {"class_name": "traffic_congestion", "start": 145.0, "end": 150.0, "localised": true, "description": "Fourth heavy-traffic interval.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "traffic_congestion", "start": 60.0, "end": 80.0, "localised": true, "confidence": 0.98, "explanation": "The highway is heavily congested with dense traffic flow.", "rejected": null, "from_window": [60.0, 80.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 90.0, "end": 130.0, "localised": true, "confidence": 0.98, "explanation": "The highway is heavily congested with dense traffic flow.", "rejected": null, "from_window": [90.0, 110.0], "verdict": "hit", "iou": 0.5384615384615384, "pair": 2, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 189.0, "end": 190.0, "localised": true, "confidence": 0.95, "explanation": "A red vehicle is seen lying on its side on the highway, indicating a crash.", "rejected": null, "from_window": [180.0, 200.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 368, "chunks_processed": 23, "end_to_end_internal_time_ms": 36971, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 23, "total_time_ms": 24697.04, "average_time_ms": 1073.78, "p50_time_ms": 748.6, "p95_time_ms": 2586.56, "max_time_ms": 2776.94}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 23, "mean_ms": 1073.78, "p50_ms": 748.6, "p95_ms": 2586.56, "max_ms": 2776.94, "frames": 368, "chunks": 23, "end_to_end_ms": 36971}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0]], "tally": {"hits": 1, "misses": 3, "false_alarms": 2}}, {"id": "T028", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T028.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 30.0, "end": 35.0, "localised": true, "description": "First Accident-Bench collision.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 90.0, "end": 95.0, "localised": true, "description": "Second Accident-Bench collision.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 150.0, "end": 155.0, "localised": true, "description": "Third Accident-Bench collision.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 210.0, "end": 215.0, "localised": true, "description": "Fourth Accident-Bench collision.", "verdict": "miss", "iou": null, "pair": null}], "model": [], "runtime": {"frames_processed": 368, "chunks_processed": 23, "end_to_end_internal_time_ms": 50630, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 23, "total_time_ms": 16675.05, "average_time_ms": 725.0, "p50_time_ms": 717.53, "p95_time_ms": 760.03, "max_time_ms": 770.01}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 23, "mean_ms": 725.0, "p50_ms": 717.53, "p95_ms": 760.03, "max_ms": 770.01, "frames": 368, "chunks": 23, "end_to_end_ms": 50630}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0]], "tally": {"hits": 0, "misses": 4, "false_alarms": 0}}, {"id": "T029", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T029.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [], "model": [], "runtime": {"frames_processed": 368, "chunks_processed": 23, "end_to_end_internal_time_ms": 148061, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 23, "total_time_ms": 16695.42, "average_time_ms": 725.89, "p50_time_ms": 725.74, "p95_time_ms": 752.18, "max_time_ms": 756.34}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 23, "mean_ms": 725.89, "p50_ms": 725.74, "p95_ms": 752.18, "max_ms": 756.34, "frames": 368, "chunks": 23, "end_to_end_ms": 148061}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0]], "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T030", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T030.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [], "model": [], "runtime": {"frames_processed": 368, "chunks_processed": 23, "end_to_end_internal_time_ms": 124491, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 23, "total_time_ms": 16918.4, "average_time_ms": 735.58, "p50_time_ms": 731.29, "p95_time_ms": 756.19, "max_time_ms": 779.36}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 23, "mean_ms": 735.58, "p50_ms": 731.29, "p95_ms": 756.19, "max_ms": 779.36, "frames": 368, "chunks": 23, "end_to_end_ms": 124491}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0]], "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T031", "level": 3, "duration": 360.0, "src": "../dataset/test/videos/T031.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_congestion", "start": 235.0, "end": 360.0, "localised": true, "description": "Traffic congestion develops and persists on a snowy highway segment.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "traffic_congestion", "start": 0.0, "end": 20.0, "localised": true, "confidence": 0.98, "explanation": "Heavy traffic with slow-moving or stopped vehicles across multiple lanes.", "rejected": null, "from_window": [0.0, 20.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 30.0, "end": 70.0, "localised": true, "confidence": 0.98, "explanation": "Heavy traffic with slow-moving or stopped vehicles on the highway.", "rejected": null, "from_window": [30.0, 50.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 100.0, "end": 200.0, "localised": true, "confidence": 0.98, "explanation": "Heavy traffic congestion with slow-moving or stopped vehicles on the highway.", "rejected": null, "from_window": [100.0, 120.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 230.0, "end": 280.0, "localised": true, "confidence": 0.98, "explanation": "Heavy traffic congestion with multiple lanes of vehicles moving slowly or stopped.", "rejected": null, "from_window": [230.0, 250.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 290.0, "end": 350.0, "localised": true, "confidence": 0.98, "explanation": "Heavy traffic congestion with slow-moving or stopped vehicles on the highway.", "rejected": null, "from_window": [290.0, 310.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 560, "chunks_processed": 35, "end_to_end_internal_time_ms": 89879, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 35, "total_time_ms": 70759.63, "average_time_ms": 2021.7, "p50_time_ms": 2553.46, "p95_time_ms": 3110.87, "max_time_ms": 3308.56}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 35, "mean_ms": 2021.7, "p50_ms": 2553.46, "p95_ms": 3110.87, "max_ms": 3308.56, "frames": 560, "chunks": 35, "end_to_end_ms": 89879}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0], [230.0, 250.0], [240.0, 260.0], [250.0, 270.0], [260.0, 280.0], [270.0, 290.0], [280.0, 300.0], [290.0, 310.0], [300.0, 320.0], [310.0, 330.0], [320.0, 340.0], [330.0, 350.0], [340.0, 360.0]], "tally": {"hits": 0, "misses": 1, "false_alarms": 5}}, {"id": "T032", "level": 3, "duration": 307.7, "src": "../dataset/test/videos/T032.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 29.3, "end": 66.9, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "loitering_or_suspicious_presence", "start": 135.8, "end": 149.5, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "loitering_or_suspicious_presence", "start": 194.8, "end": 197.4, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "loitering_or_suspicious_presence", "start": 267.4, "end": 286.9, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "loitering_or_suspicious_presence", "start": 23.0, "end": 24.0, "localised": true, "confidence": 0.85, "explanation": "A person is seen walking slowly near the building entrance, appearing to loiter.", "rejected": null, "from_window": [20.0, 40.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "stalled_or_broken_down_vehicle", "start": 48.0, "end": 60.0, "localised": true, "confidence": 0.95, "explanation": "A blue three-wheeled vehicle is stationary on the road near the crosswalk.", "rejected": null, "from_window": [40.0, 60.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "stalled_or_broken_down_vehicle", "start": 140.0, "end": 160.0, "localised": true, "confidence": 0.95, "explanation": "A blue three-wheeled vehicle is stationary on the road near the crosswalk, not moving throughout the segment.", "rejected": null, "from_window": [140.0, 160.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "stalled_or_broken_down_vehicle", "start": 182.0, "end": 183.0, "localised": true, "confidence": 0.95, "explanation": "A blue three-wheeled vehicle is stationary on the road near the crosswalk.", "rejected": null, "from_window": [170.0, 190.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "stalled_or_broken_down_vehicle", "start": 247.0, "end": 255.0, "localised": true, "confidence": 0.95, "explanation": "A black SUV is stopped at a crosswalk, appearing to be stalled or broken down near a parked scooter.", "rejected": null, "from_window": [240.0, 260.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 480, "chunks_processed": 30, "end_to_end_internal_time_ms": 128031, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 30, "total_time_ms": 46711.11, "average_time_ms": 1557.04, "p50_time_ms": 685.89, "p95_time_ms": 3024.99, "max_time_ms": 9534.54}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 30, "mean_ms": 1557.04, "p50_ms": 685.89, "p95_ms": 3024.99, "max_ms": 9534.54, "frames": 480, "chunks": 30, "end_to_end_ms": 128031}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0], [230.0, 250.0], [240.0, 260.0], [250.0, 270.0], [260.0, 280.0], [270.0, 290.0], [280.0, 300.0], [290.0, 307.7]], "tally": {"hits": 0, "misses": 4, "false_alarms": 5}}, {"id": "T033", "level": 3, "duration": 628.843, "src": "../dataset/test/videos/T033.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "traffic_accident", "start": 170.0, "end": 245.0, "localised": true, "description": "A collision occurs in a dashcam road scene and the vehicles stop after impact.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_accident", "start": 490.0, "end": 535.0, "localised": true, "description": "A second dashcam collision occurs in a different road environment.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "traffic_accident", "start": 9.0, "end": 18.0, "localised": true, "confidence": 0.95, "explanation": "A collision occurs between a white car and a silver van, causing significant damage to both vehicles.", "rejected": null, "from_window": [0.0, 20.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 50.0, "end": 56.0, "localised": true, "confidence": 0.95, "explanation": "A large truck crashes into the guardrail, emitting smoke and debris.", "rejected": null, "from_window": [40.0, 60.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 130.0, "end": 136.0, "localised": true, "confidence": 0.95, "explanation": "A vehicle collision is indicated by sudden motion blur and debris flying, suggesting an impact.", "rejected": null, "from_window": [120.0, 140.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 188.0, "end": 190.0, "localised": true, "confidence": 0.95, "explanation": "A black sports car veers off the road and crashes into a roadside barrier.", "rejected": null, "from_window": [180.0, 200.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 198.0, "end": 204.0, "localised": true, "confidence": 0.95, "explanation": "A collision occurs between a dark sedan and the vehicle capturing the footage, causing the camera to tilt and show the impact.", "rejected": null, "from_window": [190.0, 210.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 253.5, "end": 257.0, "localised": true, "confidence": 0.95, "explanation": "A blue sedan is seen colliding with another vehicle at an intersection, causing visible impact and movement.", "rejected": null, "from_window": [240.0, 260.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 265.0, "end": 280.0, "localised": true, "confidence": 0.95, "explanation": "A bus and a black SUV are involved in a collision, with smoke visible from the impact.", "rejected": null, "from_window": [260.0, 280.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 320.0, "end": 322.0, "localised": true, "confidence": 0.95, "explanation": "A silver sedan collides with a blue truck, causing visible damage to the sedan's front.", "rejected": null, "from_window": [310.0, 330.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 331.9, "end": 346.0, "localised": true, "confidence": 0.95, "explanation": "A white sedan loses control and crashes into a roadside barrier, creating a large dust cloud.", "rejected": null, "from_window": [330.0, 350.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 430.0, "end": 431.0, "localised": true, "confidence": 0.95, "explanation": "A large object falls from the truck, causing a sudden impact and debris on the road.", "rejected": null, "from_window": [420.0, 440.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 440.0, "end": 447.0, "localised": true, "confidence": 0.95, "explanation": "A car is shown with severe front-end damage on a tow truck, indicating a recent collision.", "rejected": null, "from_window": [430.0, 450.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 470.0, "end": 472.0, "localised": true, "confidence": 0.95, "explanation": "A person is seen walking across the road in front of a moving car, which appears to be in the process of stopping or swerving to avoid collision.", "rejected": null, "from_window": [460.0, 480.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 992, "chunks_processed": 62, "end_to_end_internal_time_ms": 218175, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 62, "total_time_ms": 177731.85, "average_time_ms": 2866.64, "p50_time_ms": 2723.81, "p95_time_ms": 8028.89, "max_time_ms": 14028.56}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 62, "mean_ms": 2866.64, "p50_ms": 2723.81, "p95_ms": 8028.89, "max_ms": 14028.56, "frames": 992, "chunks": 62, "end_to_end_ms": 218175}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0], [230.0, 250.0], [240.0, 260.0], [250.0, 270.0], [260.0, 280.0], [270.0, 290.0], [280.0, 300.0], [290.0, 310.0], [300.0, 320.0], [310.0, 330.0], [320.0, 340.0], [330.0, 350.0], [340.0, 360.0], [350.0, 370.0], [360.0, 380.0], [370.0, 390.0], [380.0, 400.0], [390.0, 410.0], [400.0, 420.0], [410.0, 430.0], [420.0, 440.0], [430.0, 450.0], [440.0, 460.0], [450.0, 470.0], [460.0, 480.0], [470.0, 490.0], [480.0, 500.0], [490.0, 510.0], [500.0, 520.0], [510.0, 530.0], [520.0, 540.0], [530.0, 550.0], [540.0, 560.0], [550.0, 570.0], [560.0, 580.0], [570.0, 590.0], [580.0, 600.0], [590.0, 610.0], [600.0, 620.0], [610.0, 628.843]], "tally": {"hits": 0, "misses": 2, "false_alarms": 12}}, {"id": "T034", "level": 3, "duration": 376.5, "src": "../dataset/test/videos/T034.mp4", "predicted": true, "state": "ok", "failed": null, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 22.5, "end": 31.9, "localised": true, "description": "Several people linger on the sidewalk for an anomalously prolonged period.", "verdict": "miss", "iou": null, "pair": null}], "model": [{"class_name": "stalled_or_broken_down_vehicle", "start": 198.0, "end": 202.0, "localised": true, "confidence": 0.95, "explanation": "A dark-colored vehicle is stationary in the center of the road, not moving as it passes by.", "rejected": null, "from_window": [190.0, 210.0], "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}], "runtime": {"frames_processed": 592, "chunks_processed": 37, "end_to_end_internal_time_ms": 103931, "model_runtimes": [{"model_name": "Qwen/Qwen3-VL-4B-Instruct", "call_count": 37, "total_time_ms": 27806.39, "average_time_ms": 751.52, "p50_time_ms": 698.2, "p95_time_ms": 767.14, "max_time_ms": 2928.11}]}, "timing": {"model_name": "Qwen/Qwen3-VL-4B-Instruct", "calls": 37, "mean_ms": 751.52, "p50_ms": 698.2, "p95_ms": 767.14, "max_ms": 2928.11, "frames": 592, "chunks": 37, "end_to_end_ms": 103931}, "grid": [[0.0, 20.0], [10.0, 30.0], [20.0, 40.0], [30.0, 50.0], [40.0, 60.0], [50.0, 70.0], [60.0, 80.0], [70.0, 90.0], [80.0, 100.0], [90.0, 110.0], [100.0, 120.0], [110.0, 130.0], [120.0, 140.0], [130.0, 150.0], [140.0, 160.0], [150.0, 170.0], [160.0, 180.0], [170.0, 190.0], [180.0, 200.0], [190.0, 210.0], [200.0, 220.0], [210.0, 230.0], [220.0, 240.0], [230.0, 250.0], [240.0, 260.0], [250.0, 270.0], [260.0, 280.0], [270.0, 290.0], [280.0, 300.0], [290.0, 310.0], [300.0, 320.0], [310.0, 330.0], [320.0, 340.0], [330.0, 350.0], [340.0, 360.0], [350.0, 370.0], [360.0, 376.5]], "tally": {"hits": 0, "misses": 1, "false_alarms": 1}}], "summary": [{"level": 1, "marks": 25.0, "videos_scored": 24, "videos_total": 24, "hits": 10, "misses": 10, "false_alarms": 12, "videos": 24, "precision": 0.45454545454545453, "recall": 0.5}, {"level": 2, "marks": 35.0, "videos_scored": 6, "videos_total": 6, "hits": 1, "misses": 17, "false_alarms": 8, "videos": 6, "precision": 0.1111111111111111, "recall": 0.05555555555555555}, {"level": 3, "marks": 40.0, "videos_scored": 4, "videos_total": 4, "hits": 0, "misses": 8, "false_alarms": 23, "videos": 4, "precision": 0.0, "recall": 0.0}]}</script>
 
-<div class="stage">
-  <div class="screen"><video id="video" playsinline muted preload="auto"></video><div class="state" id="state" hidden></div><div class="vignette"></div></div>
+<header class="top">
+  <h1>Anomaly monitor <i>·</i> <span id="modelName"></span></h1>
+  <span class="pill off" id="backendPill"><span class="dot"></span><span id="backendText">checking…</span></span>
+  <div class="sel">
+    <span class="tag">Source</span>
+    <select id="pick"></select>
+  </div>
+</header>
 
-  <div class="hud">
-    <span class="brand">Anomaly monitor <i>·</i> <span id="hudModel"></span></span>
-    <span class="chip live" id="hudLive">replay of recorded inference</span>
-    <span class="spacer"></span>
-    <div class="metric" id="hudMetric"></div>
+<div class="wrap">
+  <div class="cell">
+    <div class="vid">
+      <video id="video" playsinline muted preload="auto"></video>
+      <div class="badge"><span class="pill off" id="srcPill"><span class="dot"></span><span id="srcText">recorded</span></span></div>
+      <div class="state" id="state" hidden></div>
+    </div>
+    <div class="tl">
+      <div class="hd">
+        <span class="t" id="clock">0:00.0</span>
+        <span class="d" id="dur"></span>
+        <span class="w" id="winLabel"></span>
+      </div>
+      <div class="lane-row"><span class="tag lb">Windows</span><div class="lane g" id="laneGrid"></div></div>
+      <div class="lane-row"><span class="tag lb">Truth</span><div class="lane" id="laneTruth" data-seek></div></div>
+      <div class="lane-row"><span class="tag lb">Model</span><div class="lane" id="laneModel" data-seek><div class="ph" id="ph"></div></div></div>
+    </div>
   </div>
 
-  <div class="strip" id="strip">
-    <div class="row"><span class="tag">Windows</span><div class="lane grid" id="laneGrid"></div></div>
-    <div class="row"><span class="tag">Truth</span><div class="lane" id="laneTruth"></div></div>
-    <div class="row"><span class="tag">Model</span><div class="lane" id="laneModel"><div class="head" id="head"></div></div></div>
-    <div class="clock" id="clock"></div>
-  </div>
+  <aside class="cell side">
+    <div class="sec">
+      <h2>Run the model</h2>
+      <button class="run" id="runBtn">Run on the window under the playhead</button>
+      <div class="meta" id="runMeta"></div>
+      <div class="result" id="runResult" hidden></div>
+      <div class="bars" id="runBars" hidden></div>
+    </div>
+    <div class="sec" style="flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:0">
+      <h2>Alerts</h2>
+      <div class="feed" id="feed" style="margin:0 -16px;padding:0 16px 18px"></div>
+    </div>
+  </aside>
 
-  <div class="caption" id="caption"></div>
-  <div class="feed" id="feed"></div>
-  <div class="card" id="card" hidden></div>
-
-  <div class="foot">
-    <div class="dots" id="dots"></div>
-    <span id="footNote"></span>
-    <span class="keys"><kbd>→</kbd> next <kbd>←</kbd> back <kbd>space</kbd> play/pause
-      <kbd>R</kbd> replay scene <kbd>F</kbd> full screen</span>
-  </div>
+  <div class="strip" id="strip"></div>
 </div>
 
 <script>
 "use strict";
 const DATA = JSON.parse(document.getElementById("payload").textContent);
 const T = DATA.throughput || {};
-const HEX = {hit:"#2BE0B7", miss:"#F7B23F", false_alarm:"#FF3D71", pending:"#5E687A"};
-const LABEL = {hit:"matches ground truth", miss:"missed", false_alarm:"false alarm", pending:"not run"};
+const HEX = {hit:"#2BE0B7", miss:"#F7B23F", false_alarm:"#FF3D71", pending:"#5A6474"};
+const LAB = {hit:"matches truth", miss:"missed", false_alarm:"false alarm", pending:"not run"};
 const $ = id => document.getElementById(id);
-const byId = id => DATA.videos.find(v => v.id === id);
-const clamp01 = x => Math.max(0, Math.min(1, x));
-const tc = s => { const m = Math.floor(s/60), r = s - m*60; return m + ":" + (r<10?"0":"") + r.toFixed(1); };
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const c01 = x => Math.max(0, Math.min(1, x));
+const tc = s => { const m=Math.floor(s/60), r=s-m*60; return m+":"+(r<10?"0":"")+r.toFixed(1); };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-/* ---------------- the demo script ----------------
-   Each scene names a video and says what to watch for. Scenes whose video is missing from the
-   run are dropped, so a partial run still presents. */
-const SCRIPT = [
-  {kind:"title"},
-  {video:"T009", title:"It watches, and it reports.",
-   body:"A 20-second window of frames goes to the model. It answers with a class, a confidence and a sentence of its own reasoning. <b>Congestion, 0.98.</b>"},
-  {video:"T024", title:"Not only the obvious things.",
-   body:"A person lies down on the pavement beside parked cars. The model calls it <b>loitering or suspicious presence</b> — a category that needs context and duration, not just appearance."},
-  {video:"T012", title:"Two answers. Only one of them counts.",
-   body:"It reports <b>fire</b> and <b>smoke</b>. Both are visibly there. The answer key lists only fire, so the second one is scored as a false alarm. <b>Being right is not the same as scoring.</b>"},
-  {video:"T004", title:"And sometimes it is simply wrong.",
-   body:"Ground truth for this clip is empty — nothing is happening. The model reports congestion at 0.95 confidence. <b>This is the failure mode that costs the most marks.</b>"},
-  {video:"T027", title:"On long video it must also say <em>when</em>.",
-   body:"Four separate congestion events in four minutes. An answer only counts if the class is right <b>and</b> it overlaps the truth by at least half. One of four here.", from:30},
-  {video:"T033", title:"This is where we actually are.",
-   body:"Ten minutes of dashcam. Two real collisions. The model raises <b>twelve alerts and catches neither</b> — every one describes a plausible crash at the wrong moment.", from:0},
-  {kind:"score"},
-];
-const scenes = SCRIPT.filter(s => !s.video || byId(s.video));
-
-let i = 0, current = null, shown = new Set(), autoplay = true;
+let cur = DATA.videos.find(v => v.truth.length && v.model.length && v.level > 1)
+       || DATA.videos.find(v => v.model.length) || DATA.videos[0];
+let shown = new Set();
+let backends = {available: [], preferred: "none"};
 const video = $("video");
 
-/* ---------------- alerts on the video's own clock ---------------- */
-const latency = v => (((v.timing && v.timing.mean_ms) || T.mean_ms || 0) / 1000);
-const alertsFor = v => v.model
-  .map((e, idx) => ({e, idx, at: (e.from_window ? e.from_window[1] : e.end) + latency(v)}))
-  .sort((a, b) => a.at - b.at);
+/* ---------- backend status ---------- */
+async function checkBackends() {
+  try {
+    backends = await (await fetch("/api/backends")).json();
+  } catch { backends = {available: [], preferred: "none"}; }
+  const live = backends.available.length > 0;
+  const pill = $("backendPill");
+  pill.className = "pill " + (live ? "on" : "off");
+  $("backendText").textContent = live
+    ? "live · " + backends.available[0]
+    : "no live backend — recorded only";
+  $("runBtn").disabled = !live;
+  if (!live) $("runBtn").textContent = "No live backend available";
+}
 
-function alertCard(a, v) {
+/* ---------- lanes ---------- */
+function pos(a, b) {
+  return "left:" + c01(a/cur.duration)*100 + "%;width:" +
+         Math.max(.4, c01((b-a)/cur.duration)*100) + "%";
+}
+function draw() {
+  $("laneGrid").innerHTML = (cur.grid||[]).map((w,n) =>
+    '<div class="win" data-n="'+n+'" style="'+pos(w[0],w[1])+'"></div>').join("");
+  $("laneTruth").innerHTML = cur.truth.length
+    ? cur.truth.map(t => '<div class="seg" style="'+pos(t.start,t.end)+';background:'+
+        HEX[t.verdict==="hit"?"hit":"miss"]+'"></div>').join("")
+    : '<div style="position:absolute;inset:0;display:flex;align-items:center;padding-left:9px;'+
+      'font:10px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:#5A6474">'+
+      'no anomaly in ground truth</div>';
+  $("laneModel").innerHTML = '<div class="ph" id="ph"></div>' +
+    cur.model.map((m,n) => '<div class="seg hide" data-n="'+n+'" style="'+pos(m.start,m.end)+
+      ';background:'+HEX[m.verdict]+'"></div>').join("");
+  $("dur").textContent = "of " + tc(cur.duration) + " · D" + cur.level + " · " + cur.id;
+}
+
+/* ---------- which window is under the playhead ---------- */
+function activeWindow() {
+  const t = video.currentTime, g = cur.grid || [];
+  if (!g.length) return [0, Math.min(20, cur.duration)];
+  let best = g[0];
+  for (const w of g) if (w[0] <= t) best = w;
+  return best;
+}
+function paintWindowMark() {
+  const w = activeWindow();
+  $("winLabel").textContent = "window " + tc(w[0]) + " – " + tc(w[1]);
+  document.querySelectorAll("#laneGrid .win").forEach((el,n) => {
+    const g = (cur.grid||[])[n];
+    el.classList.toggle("sel", !!g && g[0] === w[0] && g[1] === w[1]);
+  });
+  $("runMeta").innerHTML = "window <b>" + tc(w[0]) + "–" + tc(w[1]) + "</b> · <b>16</b> frames · " +
+    cur.id;
+}
+
+/* ---------- recorded alerts on the video's clock ---------- */
+const lat = v => (((v.timing && v.timing.mean_ms) || T.mean_ms || 0) / 1000);
+const dueList = v => v.model.map((e,n) => ({e, n, at:(e.from_window?e.from_window[1]:e.end)+lat(v)}))
+                            .sort((a,b) => a.at - b.at);
+function syncFeed(t) {
+  const feed = $("feed");
+  const due = dueList(cur).filter(a => a.at <= t);
+  const keys = new Set(due.map(a => a.n));
+  if ([...shown].some(k => !keys.has(k))) { feed.innerHTML = ""; shown = new Set(); }
+  due.forEach(a => { if (!shown.has(a.n)) { shown.add(a.n); feed.prepend(card(a.e, false)); } });
+  if (!feed.children.length) feed.innerHTML = '<div class="idle">monitoring — no alert raised yet</div>';
+  else if (feed.children.length > 1) feed.querySelectorAll(".idle").forEach(n => n.remove());
+  document.querySelectorAll('#laneModel .seg').forEach(el =>
+    el.classList.toggle("hide", !keys.has(+el.dataset.n)));
+}
+function humanError(r) {
+  const raw = Object.values(r.errors || {}).join(" · ");
+  if (/429|Too Many Requests/i.test(raw)) return "the reference model is rate limited right now";
+  if (/timeout|timed out/i.test(raw)) return "the model did not answer in time";
+  if (!raw) return r.detail || "no backend configured";
+  return raw.replace(/^[A-Za-z]+Error: /, "");
+}
+function card(e, live) {
   const el = document.createElement("div");
   el.className = "alert";
-  el.style.borderLeftColor = HEX[a.e.verdict];
+  el.style.borderLeftColor = HEX[e.verdict] || HEX.false_alarm;
   el.innerHTML =
-    '<div class="top"><span class="t">' + tc(a.e.start) + '</span>' +
-      '<span class="c">' + (a.e.confidence != null ? "confidence " + Number(a.e.confidence).toFixed(2) : "") + '</span></div>' +
-    '<p class="cls">' + esc(a.e.class_name) + '</p>' +
-    (a.e.explanation ? '<p class="why">' + esc(a.e.explanation) + '</p>' : '') +
-    '<span class="v" style="background:' + HEX[a.e.verdict] + '">' + LABEL[a.e.verdict] + '</span>';
+    '<div class="r1"><span class="tm">'+tc(e.start)+'</span>'+
+      (live ? '<span class="pill on" style="padding:2px 7px;font-size:9px"><span class="dot"></span>live</span>' : '')+
+      '<span class="cf">'+(e.confidence!=null?"conf "+Number(e.confidence).toFixed(2):"")+'</span></div>'+
+    '<p class="cl">'+esc(e.class_name)+'</p>'+
+    (e.explanation?'<p class="wy">'+esc(e.explanation)+'</p>':'')+
+    (e.verdict?'<span class="vd" style="background:'+HEX[e.verdict]+'">'+LAB[e.verdict]+'</span>':'');
   return el;
 }
 
-function syncFeed(t) {
-  const feed = $("feed");
-  const due = alertsFor(current).filter(a => a.at <= t);
-  const keys = new Set(due.map(a => a.idx));
-  if ([...shown].some(k => !keys.has(k))) { feed.innerHTML = ""; shown = new Set(); }
-  due.forEach(a => {
-    if (shown.has(a.idx)) return;
-    shown.add(a.idx);
-    feed.appendChild(alertCard(a, current));
-    while (feed.children.length > 4) feed.removeChild(feed.firstChild);
-  });
-  if (!feed.children.length) {
-    feed.innerHTML = '<div class="idle">monitoring — no alert raised yet</div>';
-  } else {
-    feed.querySelectorAll(".idle").forEach(n => n.remove());
-  }
-  document.querySelectorAll("#laneModel .seg").forEach(el => {
-    el.classList.toggle("hidden", !keys.has(+el.dataset.i));
-  });
-}
-
-/* ---------------- lanes ---------------- */
-function drawLanes() {
-  const d = current.duration;
-  const pos = (a, b) => "left:" + clamp01(a/d)*100 + "%;width:" + Math.max(.4, clamp01((b-a)/d)*100) + "%";
-  $("laneGrid").innerHTML = (current.grid || [])
-    .map((w, n) => '<div class="win" data-i="' + n + '" style="' + pos(w[0], w[1]) + '"></div>').join("");
-  $("laneTruth").innerHTML = current.truth.length
-    ? current.truth.map(t => '<div class="seg" style="' + pos(t.start, t.end) +
-        ';background:' + HEX[t.verdict === "hit" ? "hit" : "miss"] + '"></div>').join("")
-    : '<div style="position:absolute;inset:0;display:flex;align-items:center;padding-left:10px;' +
-      'font:10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5E687A">' +
-      'nothing is happening in this clip</div>';
-  $("laneModel").innerHTML = '<div class="head" id="head"></div>' + current.model
-    .map((m, n) => '<div class="seg hidden" data-i="' + n + '" style="' + pos(m.start, m.end) +
-      ';background:' + HEX[m.verdict] + '"></div>').join("");
-}
-
+/* ---------- playback ---------- */
 function onTime() {
-  const t = video.currentTime, d = current.duration;
-  $("head").style.left = clamp01(t/d)*100 + "%";
-  $("clock").textContent = tc(t) + "  /  " + tc(d);
-  let done = 0;
-  (current.grid || []).forEach((w, n) => {
+  const t = video.currentTime;
+  $("clock").textContent = tc(t);
+  const ph = $("ph"); if (ph) ph.style.left = c01(t/cur.duration)*100 + "%";
+  (cur.grid||[]).forEach((w,n) => {
     const el = $("laneGrid").children[n];
-    if (el) { const on = t >= w[1]; el.classList.toggle("done", on); if (on) done++; }
+    if (el && el.classList) el.classList.toggle("done", t >= w[1]);
   });
-  const ms = (current.timing && current.timing.mean_ms) || T.mean_ms || 0;
-  $("hudMetric").innerHTML =
-    "window <b>" + done + "</b> of <b>" + (current.grid || []).length + "</b> scored" +
-    "<br><b>" + ms.toFixed(0) + " ms</b> per window · <b>" +
-    (T.realtime_mean ? T.realtime_mean.toFixed(1) + "×" : "—") + "</b> faster than real time";
+  paintWindowMark();
   syncFeed(t);
 }
-function setState(html, bad) {
-  const el = $("state");
-  el.hidden = !html;
-  el.className = "state" + (bad ? " bad" : "");
-  el.innerHTML = html || "";
-}
-video.addEventListener("waiting",  () => setState("<b>buffering</b>" + current.id));
-video.addEventListener("playing",  () => setState(""));
-video.addEventListener("canplay",  () => setState(""));
-video.addEventListener("error", () => {
-  const c = video.error ? video.error.code : 0;
-  setState("<b>could not load " + current.id + "</b>" +
-    "media error " + c + " · check the server is running and dataset/test/videos/" +
-    current.id + ".mp4 exists", true);
-});
 ["timeupdate","seeked","loadedmetadata"].forEach(e => video.addEventListener(e, onTime));
-window.addEventListener("resize", onTime);
-video.addEventListener("ended", () => { if (autoplay && i < scenes.length - 1) go(i + 1); });
 
-/* ---------------- cards ---------------- */
-function titleCard() {
-  return '<h1>Can a small model watch video <span>and tell you what just happened?</span></h1>' +
-    '<p class="lead">One <b>4-billion-parameter</b> vision-language model, one GPU, eleven kinds of ' +
-    'incident. It reads the video in overlapping windows and raises an alert the moment a window closes.</p>' +
-    '<div class="tiles">' +
-      tile((T.mean_ms || 0).toFixed(0) + " ms", "to score one window") +
-      tile("10 s", "before the next window closes") +
-      tile((T.realtime_mean ? T.realtime_mean.toFixed(1) : "—") + "×", "faster than real time", "var(--hit)") +
-      tile(T.windows || "—", "windows · " + (T.frames || "—") + " frames") +
-    '</div>';
+function setState(html, bad) {
+  const el = $("state"); el.hidden = !html;
+  el.className = "state" + (bad ? " bad" : ""); el.innerHTML = html || "";
 }
-const tile = (v, k, colour) => '<div class="tile"><div class="v"' +
-  (colour ? ' style="color:' + colour + '"' : "") + '>' + v + '</div><span class="k">' + k + '</span></div>';
+video.addEventListener("waiting", () => setState("<b>buffering</b>"));
+video.addEventListener("playing", () => setState(""));
+video.addEventListener("canplay", () => setState(""));
+video.addEventListener("error", () => setState("<b>could not load " + cur.id + "</b>" +
+  "check the server is running", true));
 
-function scoreCard() {
-  const s = DATA.summary;
-  const cell = (x) => '<div class="col"><h3>D' + x.level + ' · ' + x.marks + ' marks</h3>' +
-    '<div class="big" style="color:' + (x.hits ? "var(--hit)" : "var(--fa)") + '">' + x.hits + ' found</div>' +
-    '<div class="sub">' + x.misses + ' missed · <span style="color:var(--fa)">' + x.false_alarms +
-    ' false alarms</span></div></div>';
-  return '<h1>Honest scoreboard. <span>Zero-shot, no fine-tuning yet.</span></h1>' +
-    '<p class="lead">Short clips mostly work. Long video does not — and long video is <b>75 of the 100 marks</b>. ' +
-    'False alarms, not blindness, are what is costing us.</p>' +
-    '<div class="score">' + s.map(cell).join("") + '</div>' +
-    '<p class="lead" style="margin-top:26px;font-size:19px">Measured on 34 public videos with the same ' +
-    'matcher that scores the leaderboard. 24 videos and 20 positives, so ±1 detection moves recall about 5 points.</p>';
-}
+document.querySelectorAll("[data-seek]").forEach(el => el.addEventListener("click", e => {
+  const r = el.getBoundingClientRect();
+  video.currentTime = ((e.clientX - r.left) / r.width) * cur.duration;
+}));
 
-/* ---------------- navigation ---------------- */
-function go(n) {
-  i = Math.max(0, Math.min(scenes.length - 1, n));
-  const sc = scenes[i];
-  shown = new Set(); $("feed").innerHTML = "";
-  $("dots").querySelectorAll("i").forEach((d, k) => {
-    d.className = k === i ? "on" : (k < i ? "seen" : "");
-  });
-  const isCard = !!sc.kind;
-  $("card").hidden = !isCard;
-  ["strip","caption","feed"].forEach(id => $(id).style.display = isCard ? "none" : "");
-  $("hudLive").style.display = isCard ? "none" : "";
-  document.querySelector(".hud .metric").style.display = isCard ? "none" : "";
-  if (isCard) {
-    video.pause(); video.removeAttribute("src"); video.load();
-    $("card").innerHTML = sc.kind === "title" ? titleCard() : scoreCard();
-    $("footNote").textContent = sc.kind === "title"
-      ? "press → to start" : "end of demo — press ← to go back";
+/* ---------- run the model for real ---------- */
+$("runBtn").addEventListener("click", async () => {
+  const w = activeWindow();
+  const btn = $("runBtn");
+  btn.disabled = true; btn.textContent = "Running…";
+  $("runResult").hidden = true; $("runBars").hidden = true;
+  const t0 = performance.now();
+  let r;
+  try {
+    r = await (await fetch("/api/infer", {method:"POST", headers:{"content-type":"application/json"},
+      body: JSON.stringify({video_id: cur.id, start: w[0], end: w[1], frames: 16})})).json();
+  } catch (err) { r = {events: [], live: false, errors: {network: String(err)}}; }
+  const wall = Math.round(performance.now() - t0);
+
+  btn.disabled = false;
+  btn.textContent = "Run on the window under the playhead";
+  const res = $("runResult"); res.hidden = false;
+
+  if (!r.live) {
+    res.style.borderLeftColor = "var(--fa)";
+    res.innerHTML = '<p class="cls" style="color:var(--fa)">no live backend answered</p>' +
+      '<p class="none">' + esc(humanError(r)) + '</p>' +
+      '<p class="none" style="margin-top:6px">The timeline below is the recorded run.</p>';
     return;
   }
-  current = byId(sc.video);
-  $("caption").innerHTML = '<span class="step">' + current.id + " · difficulty " + current.level +
-    " · " + Math.round(current.duration) + " seconds</span><h2>" + sc.title + "</h2><p>" + sc.body + "</p>";
-  $("footNote").textContent = "scene " + i + " of " + (scenes.length - 2);
-  setState("<b>loading " + current.id + "</b>" + Math.round(current.duration) + " seconds");
-  video.src = current.src;
-  video.load();
-  video.addEventListener("loadedmetadata", function once() {
-    setState("");
-    video.removeEventListener("loadedmetadata", once);
-    drawLanes();
-    if (sc.from) video.currentTime = sc.from;
-    onTime();
-    if (autoplay) video.play().catch(() => {});
-  });
-}
 
-$("hudModel").textContent = (T.model_name || DATA.run.name || "").replace(/^.*\//, "");
-$("dots").innerHTML = scenes.map((_, k) => '<i data-k="' + k + '"></i>').join("");
-$("dots").addEventListener("click", e => { if (e.target.dataset.k) go(+e.target.dataset.k); });
+  // live answer
+  $("srcPill").className = "pill on"; $("srcText").textContent = "live · " + r.backend;
+  res.style.borderLeftColor = r.events.length ? "var(--fa)" : "var(--hit)";
+  res.innerHTML = r.events.length
+    ? r.events.map(e => '<p class="cls">' + esc(e.class_name) + '</p>' +
+        '<p class="why">' + esc(e.explanation || "") + '</p>' +
+        '<p class="none" style="margin-top:6px">' + tc(e.start) + " – " + tc(e.end) +
+        " · confidence " + Number(e.confidence).toFixed(2) + "</p>").join("")
+    : '<p class="cls" style="color:var(--hit)">nothing anomalous</p>' +
+      '<p class="none">the model reported no event in this window</p>';
+  $("feed").querySelectorAll(".idle").forEach(n => n.remove());
+  r.events.forEach(e => $("feed").prepend(card(e, true)));
 
-document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); go(i + 1); }
-  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
-  else if (e.key === " ") { e.preventDefault(); video.paused ? video.play() : video.pause(); }
-  else if (e.key === "r" || e.key === "R") { e.preventDefault(); go(i); }
-  else if (e.key === "f" || e.key === "F") {
-    e.preventDefault();
-    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
-  }
+  const bars = $("runBars"); bars.hidden = false;
+  const mx = Math.max(r.ms || 0, r.sample_ms || 0, 1);
+  const bar = (k, v, colour) => '<div class="bar"><span class="k">'+k+'</span>' +
+    '<span class="t"><i style="width:'+(v/mx*100)+'%;background:'+colour+'"></i></span>' +
+    '<span class="v">'+v+' ms</span></div>';
+  bars.innerHTML =
+    (r.sample_ms != null ? bar("frames", r.sample_ms, "#4E6180") : "") +
+    bar("model", r.ms || 0, "#2BE0B7") +
+    bar("total", wall, "#8E99AC") +
+    '<div class="meta" style="margin-top:9px">' +
+      (r.runtime_legal
+        ? '<span style="color:var(--hit)">runtime-legal model</span>'
+        : '<span style="color:var(--miss)">reference model — not runtime-legal for submission</span>') +
+      '<span>' + esc(r.model || "") + '</span></div>';
 });
 
-go(0);
+/* ---------- metrics strip ---------- */
+function strip() {
+  const el = $("strip");
+  const st = (v,k,c) => '<div class="st"><span class="v"'+(c?' style="color:'+c+'"':'')+'>'+v+
+    '</span><span class="k">'+k+'</span></div>';
+  let html = "";
+  DATA.summary.forEach(s => {
+    html += '<div class="m"><div class="h">D'+s.level+' · '+s.marks+' marks</div><div class="row">'+
+      st(s.hits,"found","var(--hit)")+st(s.misses,"missed","var(--miss)")+
+      st(s.false_alarms,"false alarm","var(--fa)")+
+      st(s.precision==null?"—":(s.precision*100).toFixed(0)+"%","precision")+
+      st(s.recall==null?"—":(s.recall*100).toFixed(0)+"%","recall")+'</div></div>';
+  });
+  if (T.windows) html += '<div class="m"><div class="h">Cost · whole run</div><div class="row">'+
+    st(T.windows,"windows")+st(T.frames,"frames")+st(T.mean_ms.toFixed(0),"ms/window")+
+    st((T.realtime_mean||0).toFixed(1)+"×","vs real time","var(--hit)")+
+    st((T.realtime_p95||0).toFixed(1)+"×","at p95")+'</div></div>';
+
+  // per-class false alarms, the thing that costs us most
+  const byClass = {};
+  DATA.videos.forEach(v => v.model.forEach(m => {
+    byClass[m.class_name] = byClass[m.class_name] || {hit:0, fa:0};
+    byClass[m.class_name][m.verdict === "hit" ? "hit" : "fa"]++;
+  }));
+  const names = Object.keys(byClass).sort((a,b) => byClass[b].fa - byClass[a].fa).slice(0, 8);
+  const top = Math.max(1, ...names.map(n => byClass[n].fa + byClass[n].hit));
+  html += '<div class="m" style="flex:1"><div class="h">Predictions by class · red is false alarm</div>' +
+    '<div class="cls-bars">' + names.map(n => {
+      const b = byClass[n], h = (b.hit + b.fa) / top * 34;
+      return '<div class="c" title="'+n+' — '+b.hit+' correct, '+b.fa+' false" style="height:'+h+'px">'+
+        '<i style="height:'+(b.fa/(b.hit+b.fa)*100)+'%;background:var(--fa)"></i></div>';
+    }).join("") + '</div></div>';
+  el.innerHTML = html;
+}
+
+/* ---------- source picker ---------- */
+function selectVideo(id) {
+  cur = DATA.videos.find(v => v.id === id);
+  shown = new Set(); $("feed").innerHTML = "";
+  $("srcPill").className = "pill off"; $("srcText").textContent = "recorded";
+  draw(); onTime();                       // data first, independent of the video
+  setState("<b>loading " + cur.id + "</b>" + Math.round(cur.duration) + " seconds");
+  video.src = cur.src; video.load();
+  video.addEventListener("loadedmetadata", function once() {
+    video.removeEventListener("loadedmetadata", once);
+    setState(""); draw(); onTime(); video.play().catch(() => {});
+  });
+}
+$("pick").innerHTML = DATA.videos.map(v =>
+  '<option value="'+v.id+'">'+v.id+' · D'+v.level+' · '+Math.round(v.duration)+'s · '+
+  (v.tally.false_alarms?v.tally.false_alarms+" FA":"clean")+'</option>').join("");
+$("pick").addEventListener("change", e => selectVideo(e.target.value));
+
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "SELECT") return;
+  if (e.key === " ") { e.preventDefault(); video.paused ? video.play() : video.pause(); }
+  else if (e.key === "ArrowLeft")  { e.preventDefault(); video.currentTime -= 5; }
+  else if (e.key === "ArrowRight") { e.preventDefault(); video.currentTime += 5; }
+  else if (e.key === "Enter") { e.preventDefault(); $("runBtn").click(); }
+});
+
+$("modelName").textContent = (T.model_name || "").replace(/^.*\//, "") || DATA.run.name;
+strip(); checkBackends(); setInterval(checkBackends, 15000);
+$("pick").value = cur.id;
+selectVideo(cur.id);
 </script>
 </body>
 </html>

@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anomaly monitor</title>
+<style>
+:root{
+  --ink:#070A0F; --panel:#0F141D; --raised:#18202C; --line:#243040; --line-s:#1B2432;
+  --text:#EEF2F8; --muted:#8E99AC; --dim:#5A6474;
+  --hit:#2BE0B7; --miss:#F7B23F; --fa:#FF3D71; --live:#2BE0B7; --rec:#8E99AC;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--ink);color:var(--text);font:14px/1.5 var(--sans);overflow:hidden;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--hit);outline-offset:2px}
+.tag{font:700 10px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* header */
+.top{display:flex;align-items:center;gap:18px;padding:11px 18px;background:var(--panel);
+  border-bottom:1px solid var(--line);flex:0 0 auto}
+.top h1{margin:0;font:700 15px/1 var(--sans);letter-spacing:-.01em}
+.top h1 i{font-style:normal;color:var(--hit)}
+.pill{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:20px;
+  border:1px solid var(--line);font:700 10px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--dim)}
+.pill.on{border-color:var(--live);color:var(--live)} .pill.on .dot{background:var(--live);
+  animation:pulse 1.6s ease-in-out infinite}
+.pill.off{color:var(--rec)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.top .sel{margin-left:auto;display:flex;align-items:center;gap:10px}
+select{background:var(--raised);color:var(--text);border:1px solid var(--line);border-radius:5px;
+  padding:6px 9px;font:12px/1 var(--mono)}
+
+/* grid */
+.wrap{flex:1;display:grid;grid-template-columns:1fr 396px;grid-template-rows:1fr auto;
+  gap:1px;background:var(--line-s);min-height:0}
+.cell{background:var(--ink);min-height:0;min-width:0;display:flex;flex-direction:column}
+
+/* video */
+.vid{position:relative;flex:1;min-height:0;background:#000;display:flex}
+.vid video{width:100%;height:100%;object-fit:contain;background:#000}
+.badge{position:absolute;top:12px;left:14px;z-index:5;display:flex;gap:8px}
+.state{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;font:13px/1.5 var(--mono);color:var(--dim);pointer-events:none;
+  text-align:center;padding:20px}
+.state b{font:600 16px/1.4 var(--sans);color:var(--text)}
+.state.bad b{color:var(--fa)}
+
+/* timeline */
+.tl{flex:0 0 auto;padding:12px 16px 14px;background:var(--panel);border-top:1px solid var(--line)}
+.tl .hd{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.tl .hd .t{font:700 15px/1 var(--mono)}
+.tl .hd .d{font:11px/1 var(--mono);color:var(--dim)}
+.tl .hd .w{margin-left:auto;font:11px/1 var(--mono);color:var(--hit)}
+.lane-row{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.lane-row .lb{width:52px;flex:0 0 auto;text-align:right}
+.lane{position:relative;flex:1;height:20px;background:var(--raised);border-radius:3px;
+  overflow:hidden;cursor:col-resize}
+.lane.g{height:9px;cursor:default}
+.seg{position:absolute;top:0;bottom:0;border-radius:2px;transition:opacity .2s}
+.seg.hide{opacity:.1}
+.win{position:absolute;top:2px;height:5px;border-radius:1px;background:#2A3648}
+.win.done{background:#4E6180}
+.win.sel{background:var(--hit)}
+.ph{position:absolute;top:0;bottom:0;width:2px;background:#fff;pointer-events:none;z-index:3}
+.mark{position:absolute;top:-3px;bottom:-3px;border:1px solid var(--hit);border-radius:3px;
+  background:rgba(43,224,183,.10);pointer-events:none;z-index:2}
+
+/* right column */
+.side{background:var(--panel);overflow:hidden;display:flex;flex-direction:column}
+.sec{border-bottom:1px solid var(--line);padding:14px 16px}
+.sec h2{margin:0 0 10px;font:700 11px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim)}
+button.run{width:100%;padding:13px;border-radius:6px;border:0;cursor:pointer;
+  background:var(--hit);color:#06090D;font:700 13px/1 var(--sans);letter-spacing:.01em}
+button.run:hover{filter:brightness(1.08)}
+button.run:disabled{background:var(--raised);color:var(--dim);cursor:default}
+.meta{display:flex;gap:14px;margin-top:10px;font:11px/1.4 var(--mono);color:var(--dim)}
+.meta b{color:var(--text);font-weight:600}
+.result{margin-top:12px;border-left:3px solid var(--line);padding-left:11px}
+.result .cls{font:700 14px/1.3 var(--mono);margin:0 0 5px;word-break:break-all}
+.result .why{margin:0;font:13px/1.45 var(--sans);color:var(--muted)}
+.result .none{font:13px/1.4 var(--mono);color:var(--dim)}
+.bars{margin-top:12px}
+.bar{display:flex;align-items:center;gap:9px;margin-bottom:5px;font:11px/1 var(--mono)}
+.bar .k{width:56px;color:var(--dim);text-align:right;flex:0 0 auto}
+.bar .t{flex:1;height:8px;background:var(--raised);border-radius:4px;overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:4px}
+.bar .v{width:62px;text-align:right;color:var(--text)}
+
+.feed{flex:1;overflow-y:auto;padding:12px 16px 18px}
+.alert{border:1px solid var(--line);border-left:3px solid var(--fa);border-radius:6px;
+  padding:10px 12px;margin-bottom:8px;background:var(--raised);animation:in .35s ease}
+@keyframes in{from{transform:translateX(16px);opacity:0}to{transform:none;opacity:1}}
+.alert .r1{display:flex;align-items:baseline;gap:9px;margin-bottom:4px}
+.alert .tm{font:700 12px/1 var(--mono)} .alert .cf{margin-left:auto;font:11px/1 var(--mono);color:var(--dim)}
+.alert .cl{font:700 13px/1.3 var(--mono);margin:0 0 5px;word-break:break-all}
+.alert .wy{margin:0;font:12.5px/1.4 var(--sans);color:var(--muted)}
+.alert .vd{display:inline-block;margin-top:7px;padding:2px 7px;border-radius:3px;
+  font:700 9px/1.5 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:#06090D}
+.feed .idle{color:var(--dim);font:12px/1.6 var(--mono)}
+
+/* metrics strip */
+.strip{grid-column:1/-1;background:var(--panel);border-top:1px solid var(--line);
+  display:flex;align-items:stretch;overflow-x:auto}
+.m{padding:11px 18px;border-right:1px solid var(--line-s);white-space:nowrap}
+.m .h{font:700 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  margin-bottom:8px}
+.m .row{display:flex;gap:16px}
+.m .st{display:flex;flex-direction:column;gap:4px}
+.m .st .v{font:700 19px/1 var(--mono)}
+.m .st .k{font:9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.cls-bars{display:flex;gap:5px;align-items:flex-end;height:36px}
+.cls-bars .c{width:13px;background:var(--raised);border-radius:2px 2px 0 0;position:relative}
+.cls-bars .c i{position:absolute;bottom:0;left:0;right:0;border-radius:2px 2px 0 0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<script id="payload" type="application/json">__DATA__</script>
+
+<header class="top">
+  <h1>Anomaly monitor <i>·</i> <span id="modelName"></span></h1>
+  <span class="pill off" id="backendPill"><span class="dot"></span><span id="backendText">checking…</span></span>
+  <div class="sel">
+    <span class="tag">Source</span>
+    <select id="pick"></select>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="cell">
+    <div class="vid">
+      <video id="video" playsinline muted preload="auto"></video>
+      <div class="badge"><span class="pill off" id="srcPill"><span class="dot"></span><span id="srcText">recorded</span></span></div>
+      <div class="state" id="state" hidden></div>
+    </div>
+    <div class="tl">
+      <div class="hd">
+        <span class="t" id="clock">0:00.0</span>
+        <span class="d" id="dur"></span>
+        <span class="w" id="winLabel"></span>
+      </div>
+      <div class="lane-row"><span class="tag lb">Windows</span><div class="lane g" id="laneGrid"></div></div>
+      <div class="lane-row"><span class="tag lb">Truth</span><div class="lane" id="laneTruth" data-seek></div></div>
+      <div class="lane-row"><span class="tag lb">Model</span><div class="lane" id="laneModel" data-seek><div class="ph" id="ph"></div></div></div>
+    </div>
+  </div>
+
+  <aside class="cell side">
+    <div class="sec">
+      <h2>Run the model</h2>
+      <button class="run" id="runBtn">Run on the window under the playhead</button>
+      <div class="meta" id="runMeta"></div>
+      <div class="result" id="runResult" hidden></div>
+      <div class="bars" id="runBars" hidden></div>
+    </div>
+    <div class="sec" style="flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:0">
+      <h2>Alerts</h2>
+      <div class="feed" id="feed" style="margin:0 -16px;padding:0 16px 18px"></div>
+    </div>
+  </aside>
+
+  <div class="strip" id="strip"></div>
+</div>
+
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("payload").textContent);
+const T = DATA.throughput || {};
+const HEX = {hit:"#2BE0B7", miss:"#F7B23F", false_alarm:"#FF3D71", pending:"#5A6474"};
+const LAB = {hit:"matches truth", miss:"missed", false_alarm:"false alarm", pending:"not run"};
+const $ = id => document.getElementById(id);
+const c01 = x => Math.max(0, Math.min(1, x));
+const tc = s => { const m=Math.floor(s/60), r=s-m*60; return m+":"+(r<10?"0":"")+r.toFixed(1); };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let cur = DATA.videos.find(v => v.truth.length && v.model.length && v.level > 1)
+       || DATA.videos.find(v => v.model.length) || DATA.videos[0];
+let shown = new Set();
+let backends = {available: [], preferred: "none"};
+const video = $("video");
+
+/* ---------- backend status ---------- */
+async function checkBackends() {
+  try {
+    backends = await (await fetch("/api/backends")).json();
+  } catch { backends = {available: [], preferred: "none"}; }
+  const live = backends.available.length > 0;
+  const pill = $("backendPill");
+  pill.className = "pill " + (live ? "on" : "off");
+  $("backendText").textContent = live
+    ? "live · " + backends.available[0]
+    : "no live backend — recorded only";
+  $("runBtn").disabled = !live;
+  if (!live) $("runBtn").textContent = "No live backend available";
+}
+
+/* ---------- lanes ---------- */
+function pos(a, b) {
+  return "left:" + c01(a/cur.duration)*100 + "%;width:" +
+         Math.max(.4, c01((b-a)/cur.duration)*100) + "%";
+}
+function draw() {
+  $("laneGrid").innerHTML = (cur.grid||[]).map((w,n) =>
+    '<div class="win" data-n="'+n+'" style="'+pos(w[0],w[1])+'"></div>').join("");
+  $("laneTruth").innerHTML = cur.truth.length
+    ? cur.truth.map(t => '<div class="seg" style="'+pos(t.start,t.end)+';background:'+
+        HEX[t.verdict==="hit"?"hit":"miss"]+'"></div>').join("")
+    : '<div style="position:absolute;inset:0;display:flex;align-items:center;padding-left:9px;'+
+      'font:10px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:#5A6474">'+
+      'no anomaly in ground truth</div>';
+  $("laneModel").innerHTML = '<div class="ph" id="ph"></div>' +
+    cur.model.map((m,n) => '<div class="seg hide" data-n="'+n+'" style="'+pos(m.start,m.end)+
+      ';background:'+HEX[m.verdict]+'"></div>').join("");
+  $("dur").textContent = "of " + tc(cur.duration) + " · D" + cur.level + " · " + cur.id;
+}
+
+/* ---------- which window is under the playhead ---------- */
+function activeWindow() {
+  const t = video.currentTime, g = cur.grid || [];
+  if (!g.length) return [0, Math.min(20, cur.duration)];
+  let best = g[0];
+  for (const w of g) if (w[0] <= t) best = w;
+  return best;
+}
+function paintWindowMark() {
+  const w = activeWindow();
+  $("winLabel").textContent = "window " + tc(w[0]) + " – " + tc(w[1]);
+  document.querySelectorAll("#laneGrid .win").forEach((el,n) => {
+    const g = (cur.grid||[])[n];
+    el.classList.toggle("sel", !!g && g[0] === w[0] && g[1] === w[1]);
+  });
+  $("runMeta").innerHTML = "window <b>" + tc(w[0]) + "–" + tc(w[1]) + "</b> · <b>16</b> frames · " +
+    cur.id;
+}
+
+/* ---------- recorded alerts on the video's clock ---------- */
+const lat = v => (((v.timing && v.timing.mean_ms) || T.mean_ms || 0) / 1000);
+const dueList = v => v.model.map((e,n) => ({e, n, at:(e.from_window?e.from_window[1]:e.end)+lat(v)}))
+                            .sort((a,b) => a.at - b.at);
+function syncFeed(t) {
+  const feed = $("feed");
+  const due = dueList(cur).filter(a => a.at <= t);
+  const keys = new Set(due.map(a => a.n));
+  if ([...shown].some(k => !keys.has(k))) { feed.innerHTML = ""; shown = new Set(); }
+  due.forEach(a => { if (!shown.has(a.n)) { shown.add(a.n); feed.prepend(card(a.e, false)); } });
+  if (!feed.children.length) feed.innerHTML = '<div class="idle">monitoring — no alert raised yet</div>';
+  else if (feed.children.length > 1) feed.querySelectorAll(".idle").forEach(n => n.remove());
+  document.querySelectorAll('#laneModel .seg').forEach(el =>
+    el.classList.toggle("hide", !keys.has(+el.dataset.n)));
+}
+function humanError(r) {
+  const raw = Object.values(r.errors || {}).join(" · ");
+  if (/429|Too Many Requests/i.test(raw)) return "the reference model is rate limited right now";
+  if (/timeout|timed out/i.test(raw)) return "the model did not answer in time";
+  if (!raw) return r.detail || "no backend configured";
+  return raw.replace(/^[A-Za-z]+Error: /, "");
+}
+function card(e, live) {
+  const el = document.createElement("div");
+  el.className = "alert";
+  el.style.borderLeftColor = HEX[e.verdict] || HEX.false_alarm;
+  el.innerHTML =
+    '<div class="r1"><span class="tm">'+tc(e.start)+'</span>'+
+      (live ? '<span class="pill on" style="padding:2px 7px;font-size:9px"><span class="dot"></span>live</span>' : '')+
+      '<span class="cf">'+(e.confidence!=null?"conf "+Number(e.confidence).toFixed(2):"")+'</span></div>'+
+    '<p class="cl">'+esc(e.class_name)+'</p>'+
+    (e.explanation?'<p class="wy">'+esc(e.explanation)+'</p>':'')+
+    (e.verdict?'<span class="vd" style="background:'+HEX[e.verdict]+'">'+LAB[e.verdict]+'</span>':'');
+  return el;
+}
+
+/* ---------- playback ---------- */
+function onTime() {
+  const t = video.currentTime;
+  $("clock").textContent = tc(t);
+  const ph = $("ph"); if (ph) ph.style.left = c01(t/cur.duration)*100 + "%";
+  (cur.grid||[]).forEach((w,n) => {
+    const el = $("laneGrid").children[n];
+    if (el && el.classList) el.classList.toggle("done", t >= w[1]);
+  });
+  paintWindowMark();
+  syncFeed(t);
+}
+["timeupdate","seeked","loadedmetadata"].forEach(e => video.addEventListener(e, onTime));
+
+function setState(html, bad) {
+  const el = $("state"); el.hidden = !html;
+  el.className = "state" + (bad ? " bad" : ""); el.innerHTML = html || "";
+}
+video.addEventListener("waiting", () => setState("<b>buffering</b>"));
+video.addEventListener("playing", () => setState(""));
+video.addEventListener("canplay", () => setState(""));
+video.addEventListener("error", () => setState("<b>could not load " + cur.id + "</b>" +
+  "check the server is running", true));
+
+document.querySelectorAll("[data-seek]").forEach(el => el.addEventListener("click", e => {
+  const r = el.getBoundingClientRect();
+  video.currentTime = ((e.clientX - r.left) / r.width) * cur.duration;
+}));
+
+/* ---------- run the model for real ---------- */
+$("runBtn").addEventListener("click", async () => {
+  const w = activeWindow();
+  const btn = $("runBtn");
+  btn.disabled = true; btn.textContent = "Running…";
+  $("runResult").hidden = true; $("runBars").hidden = true;
+  const t0 = performance.now();
+  let r;
+  try {
+    r = await (await fetch("/api/infer", {method:"POST", headers:{"content-type":"application/json"},
+      body: JSON.stringify({video_id: cur.id, start: w[0], end: w[1], frames: 16})})).json();
+  } catch (err) { r = {events: [], live: false, errors: {network: String(err)}}; }
+  const wall = Math.round(performance.now() - t0);
+
+  btn.disabled = false;
+  btn.textContent = "Run on the window under the playhead";
+  const res = $("runResult"); res.hidden = false;
+
+  if (!r.live) {
+    res.style.borderLeftColor = "var(--fa)";
+    res.innerHTML = '<p class="cls" style="color:var(--fa)">no live backend answered</p>' +
+      '<p class="none">' + esc(humanError(r)) + '</p>' +
+      '<p class="none" style="margin-top:6px">The timeline below is the recorded run.</p>';
+    return;
+  }
+
+  // live answer
+  $("srcPill").className = "pill on"; $("srcText").textContent = "live · " + r.backend;
+  res.style.borderLeftColor = r.events.length ? "var(--fa)" : "var(--hit)";
+  res.innerHTML = r.events.length
+    ? r.events.map(e => '<p class="cls">' + esc(e.class_name) + '</p>' +
+        '<p class="why">' + esc(e.explanation || "") + '</p>' +
+        '<p class="none" style="margin-top:6px">' + tc(e.start) + " – " + tc(e.end) +
+        " · confidence " + Number(e.confidence).toFixed(2) + "</p>").join("")
+    : '<p class="cls" style="color:var(--hit)">nothing anomalous</p>' +
+      '<p class="none">the model reported no event in this window</p>';
+  $("feed").querySelectorAll(".idle").forEach(n => n.remove());
+  r.events.forEach(e => $("feed").prepend(card(e, true)));
+
+  const bars = $("runBars"); bars.hidden = false;
+  const mx = Math.max(r.ms || 0, r.sample_ms || 0, 1);
+  const bar = (k, v, colour) => '<div class="bar"><span class="k">'+k+'</span>' +
+    '<span class="t"><i style="width:'+(v/mx*100)+'%;background:'+colour+'"></i></span>' +
+    '<span class="v">'+v+' ms</span></div>';
+  bars.innerHTML =
+    (r.sample_ms != null ? bar("frames", r.sample_ms, "#4E6180") : "") +
+    bar("model", r.ms || 0, "#2BE0B7") +
+    bar("total", wall, "#8E99AC") +
+    '<div class="meta" style="margin-top:9px">' +
+      (r.runtime_legal
+        ? '<span style="color:var(--hit)">runtime-legal model</span>'
+        : '<span style="color:var(--miss)">reference model — not runtime-legal for submission</span>') +
+      '<span>' + esc(r.model || "") + '</span></div>';
+});
+
+/* ---------- metrics strip ---------- */
+function strip() {
+  const el = $("strip");
+  const st = (v,k,c) => '<div class="st"><span class="v"'+(c?' style="color:'+c+'"':'')+'>'+v+
+    '</span><span class="k">'+k+'</span></div>';
+  let html = "";
+  DATA.summary.forEach(s => {
+    html += '<div class="m"><div class="h">D'+s.level+' · '+s.marks+' marks</div><div class="row">'+
+      st(s.hits,"found","var(--hit)")+st(s.misses,"missed","var(--miss)")+
+      st(s.false_alarms,"false alarm","var(--fa)")+
+      st(s.precision==null?"—":(s.precision*100).toFixed(0)+"%","precision")+
+      st(s.recall==null?"—":(s.recall*100).toFixed(0)+"%","recall")+'</div></div>';
+  });
+  if (T.windows) html += '<div class="m"><div class="h">Cost · whole run</div><div class="row">'+
+    st(T.windows,"windows")+st(T.frames,"frames")+st(T.mean_ms.toFixed(0),"ms/window")+
+    st((T.realtime_mean||0).toFixed(1)+"×","vs real time","var(--hit)")+
+    st((T.realtime_p95||0).toFixed(1)+"×","at p95")+'</div></div>';
+
+  // per-class false alarms, the thing that costs us most
+  const byClass = {};
+  DATA.videos.forEach(v => v.model.forEach(m => {
+    byClass[m.class_name] = byClass[m.class_name] || {hit:0, fa:0};
+    byClass[m.class_name][m.verdict === "hit" ? "hit" : "fa"]++;
+  }));
+  const names = Object.keys(byClass).sort((a,b) => byClass[b].fa - byClass[a].fa).slice(0, 8);
+  const top = Math.max(1, ...names.map(n => byClass[n].fa + byClass[n].hit));
+  html += '<div class="m" style="flex:1"><div class="h">Predictions by class · red is false alarm</div>' +
+    '<div class="cls-bars">' + names.map(n => {
+      const b = byClass[n], h = (b.hit + b.fa) / top * 34;
+      return '<div class="c" title="'+n+' — '+b.hit+' correct, '+b.fa+' false" style="height:'+h+'px">'+
+        '<i style="height:'+(b.fa/(b.hit+b.fa)*100)+'%;background:var(--fa)"></i></div>';
+    }).join("") + '</div></div>';
+  el.innerHTML = html;
+}
+
+/* ---------- source picker ---------- */
+function selectVideo(id) {
+  cur = DATA.videos.find(v => v.id === id);
+  shown = new Set(); $("feed").innerHTML = "";
+  $("srcPill").className = "pill off"; $("srcText").textContent = "recorded";
+  draw(); onTime();                       // data first, independent of the video
+  setState("<b>loading " + cur.id + "</b>" + Math.round(cur.duration) + " seconds");
+  video.src = cur.src; video.load();
+  video.addEventListener("loadedmetadata", function once() {
+    video.removeEventListener("loadedmetadata", once);
+    setState(""); draw(); onTime(); video.play().catch(() => {});
+  });
+}
+$("pick").innerHTML = DATA.videos.map(v =>
+  '<option value="'+v.id+'">'+v.id+' · D'+v.level+' · '+Math.round(v.duration)+'s · '+
+  (v.tally.false_alarms?v.tally.false_alarms+" FA":"clean")+'</option>').join("");
+$("pick").addEventListener("change", e => selectVideo(e.target.value));
+
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "SELECT") return;
+  if (e.key === " ") { e.preventDefault(); video.paused ? video.play() : video.pause(); }
+  else if (e.key === "ArrowLeft")  { e.preventDefault(); video.currentTime -= 5; }
+  else if (e.key === "ArrowRight") { e.preventDefault(); video.currentTime += 5; }
+  else if (e.key === "Enter") { e.preventDefault(); $("runBtn").click(); }
+});
+
+$("modelName").textContent = (T.model_name || "").replace(/^.*\//, "") || DATA.run.name;
+strip(); checkBackends(); setInterval(checkBackends, 15000);
+$("pick").value = cur.id;
+selectVideo(cur.id);
+</script>
+</body>
+</html>
