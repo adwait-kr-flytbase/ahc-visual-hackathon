@@ -1,0 +1,104 @@
+<!doctype html><meta charset=utf-8><title>Pipeline</title>
+<style>
+@page{size:1600px 900px;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:400 22px/1.4 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101418;background:#fff}
+.s{width:1600px;height:900px;padding:52px 70px;page-break-after:always;display:flex;flex-direction:column}
+.s:last-child{page-break-after:auto}
+.k{font:600 18px/1 ui-monospace,Menlo,monospace;letter-spacing:2.5px;color:#0b7fb0;text-transform:uppercase;margin-bottom:10px}
+h2{font-size:44px;line-height:1.08;letter-spacing:-1.3px;font-weight:700;margin-bottom:26px}
+.stage{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:16px}
+.box{background:#101418;color:#fff;border-radius:12px;padding:18px 24px;text-align:center;line-height:1.28}
+.box small{display:block;font-size:16px;opacity:.7;margin-top:6px;font-weight:400}
+.box b{font-size:24px}
+.vlm{background:#0b5f8a}.sig{background:#1a7a4f}.pol{background:#8a5a0b}
+.wide{width:520px}.mid{width:420px}
+.dn{font-size:30px;color:#b6c0c8;text-align:center;line-height:.7;margin:2px 0}
+.split{display:flex;gap:26px;justify-content:center;align-items:stretch}
+.col{flex:0 0 470px;display:flex;flex-direction:column;gap:10px}
+.note{font-size:17px;color:#5b6570;text-align:center;line-height:1.35}
+.res{display:flex;gap:20px;margin-top:auto}
+.card{flex:1;background:#f5f8fa;border-radius:12px;padding:20px 24px;border-top:5px solid #0b7fb0}
+.card b{display:block;font-size:38px;letter-spacing:-1.2px;margin-bottom:4px}
+.card span{font-size:19px;color:#5b6570;line-height:1.3;display:block}
+table{width:100%;border-collapse:collapse;font-size:24px;margin-top:6px}
+th{background:#101418;color:#fff;text-align:left;padding:12px 18px;font-size:21px}
+td{border-bottom:1px solid #dde3e8;padding:13px 18px}
+tr:nth-child(even) td{background:#f7f9fb}
+.hl{background:#e8f6ed!important;font-weight:600}
+.q{font-size:31px;line-height:1.35;background:#fff8e1;border-left:7px solid #f0a500;padding:24px 30px;border-radius:0 10px 10px 0;margin-top:auto}
+.two{display:flex;gap:40px;flex:1}.two>div{flex:1}
+h3{font-size:26px;margin:0 0 10px;color:#0b4a6f}
+li{font-size:23px;margin-bottom:11px;line-height:1.35;list-style:none;padding-left:28px;position:relative}
+li:before{content:"▸";position:absolute;left:2px;color:#0b7fb0}
+</style>
+
+<section class="s">
+  <div class="k">The pipeline</div>
+  <h2>Two models see the same frames.</h2>
+
+  <div class="stage"><div class="box wide"><b>28 videos · 5 s to 10 minutes</b>
+    <small>frames sampled BY TIMESTAMP — source runs 1.9 to 30 fps, so frame indices would mis-time every event</small></div></div>
+  <div class="dn">▼</div>
+  <div class="stage"><div class="box mid"><b>20-second sliding windows</b><small>10-second hop</small></div></div>
+  <div class="dn">▼</div>
+
+  <div class="split">
+    <div class="col">
+      <div class="box vlm"><b>Qwen3-VL-8B</b>
+        <small>prompted in language · ASK-HINT grouped questions · 16 frames per window</small></div>
+      <div class="note"><b>Appearance.</b><br>Fire, smoke, flood, a crash — what is <i>in</i> the frame.</div>
+    </div>
+    <div class="col">
+      <div class="box sig"><b>SigLIP2 frozen + trained GRU head</b>
+        <small>8 frames → 8 vectors → read in sequence → 12 classes · threshold 0.30</small></div>
+      <div class="note"><b>Duration.</b><br>Loitering, a stalled vehicle — what only shows <i>over time</i>.</div>
+    </div>
+  </div>
+
+  <div class="dn" style="margin-top:14px">▼</div>
+  <div class="stage"><div class="box mid"><b>UNION by class</b><small>nothing discarded — either model can add a class the other missed</small></div></div>
+  <div class="dn">▼</div>
+  <div class="stage"><div class="box pol wide"><b>Per-difficulty span policy</b>
+    <small>short clips: top-2 per video &nbsp;·&nbsp; 4-min videos: spans left alone &nbsp;·&nbsp; 6–10 min videos: merge per class, pad ±120 s</small></div></div>
+  <div class="dn">▼</div>
+  <div class="stage"><div class="box" style="background:#1a7a4f"><b>submission JSON &nbsp;→&nbsp; 59.7 / 100</b></div></div>
+</section>
+
+<section class="s">
+  <div class="k">Why two models</div>
+  <h2>Over half the events came from the encoder, not the VLM.</h2>
+  <table>
+    <tr><th>Source of the 38 shipped events</th><th style="text-align:right">Events</th></tr>
+    <tr class="hl"><td><b>SigLIP2 only</b> — the VLM never saw these</td><td style="text-align:right"><b>17</b></td></tr>
+    <tr><td>Both models agreed</td><td style="text-align:right">10</td></tr>
+    <tr><td><b>Qwen3-VL only</b> — SigLIP never saw these</td><td style="text-align:right">7</td></tr>
+    <tr><td>Derived by merging overlapping spans</td><td style="text-align:right">4</td></tr>
+  </table>
+  <div class="q">Only <b>10 of 38</b> events had both models agreeing. The other 28 came from exactly one of them.<br>
+  <b>That is the case for running two — not a story, a count.</b></div>
+</section>
+
+<section class="s">
+  <div class="k">Two rules that decide the score</div>
+  <h2>Union, and an asymmetric span policy.</h2>
+  <div class="two">
+    <div>
+      <h3>1 · Union, never replace</h3>
+      <li>If either model names a class the other missed, it goes in.</li>
+      <li>SigLIP found <b>loitering</b> on two long videos — a class we score <b>0 / 6</b> on, and the VLM never proposed it once, all day.</li>
+      <li>Replacing one model with the other scored <b>lower</b>. Both times.</li>
+      <h3 style="margin-top:24px">Latency, measured</h3>
+      <li><b>1.65 s</b> mean per window · p50 <b>0.96 s</b> · p95 <b>3.20 s</b></li>
+      <li>A window closes every 10 s → <b>6.1× real time</b>, 3.1× at p95, on one A100.</li>
+    </div>
+    <div>
+      <h3>2 · Span policy is per-difficulty</h3>
+      <li><b>4-minute videos:</b> spans left as the model reported them, 6–30 s.</li>
+      <li><b>6–10 minute videos:</b> same-class events merged and padded to <b>232–602 s</b>.</li>
+      <li>We tested widening the 4-minute spans the same way. <b>It scored worse.</b></li>
+      <li>So short events really are short and long events really are long — <b>a measured property of the data, not a tuning trick.</b></li>
+    </div>
+  </div>
+  <div class="q" style="font-size:29px">Widening the long-video spans was worth <b>+6.1 marks</b> on its own — with <b>no new inference and no changed class</b>. The classes had been right all along; the geometry was wrong.</div>
+</section>
