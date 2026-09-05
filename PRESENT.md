@@ -148,7 +148,7 @@ Pick two or three of these to tell:
 We did. LoRA on Qwen3-VL-4B, 300 steps, loss converged. It scored **42.4** replacing the baseline and **49.2** added to it — both **below** the 49.9 zero-shot. It trained on 2,610 rows instead of the full set because an upload failed, and 71% of its targets were empty, teaching it to stay silent when our problem was recall.
 
 **"Is it real-time?"**
-Measured, not asserted. **A window closes every 10 seconds and is scored in 1.83 seconds — 5.5× headroom, 2.8× at p95.** Self-reported latency, instrumented from the first call.
+Measured, not asserted. **A window closes every 10 seconds and is scored in 1.83 seconds — 3.4× headroom, 2.8× at p95.** Self-reported latency, instrumented from the first call.
 
 **"What would you do next?"**
 1. **GRPO with a tIoU-shaped reward** — the literature says it beats SFT on temporal grounding, and 75 of the 100 marks are IoU-gated.

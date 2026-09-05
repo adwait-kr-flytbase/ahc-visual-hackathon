@@ -310,7 +310,7 @@ truth's own description and a wrong description costs marks, or the scoring has 
       <li>Unanswered videos are scored as normal, so a well-formed <b>all-empty submission is a valid
         floor</b> and the correct first upload to validate the schema end to end.</li>
       <li>Latency is <b>self-reported</b>, so we instrumented real p50/p95 instead of quoting a config
-        number: a window closes every 10 s and is scored in <b>1.83 s — 5.5× real-time headroom,
+        number: a window closes every 10 s and is scored in <b>1.83 s — 3.4× real-time headroom,
         2.8× at p95</b>.</li>
       <li>We validated the frame sampler on the awkward clips <i>before</i> trusting it: six videos
         run at 1.875 fps and two hold only 30 frames total, yet 24 requested frames come back unique

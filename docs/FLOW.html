@@ -89,8 +89,8 @@ li:before{content:"▸";position:absolute;left:2px;color:#0b7fb0}
       <li>SigLIP found <b>loitering</b> on two long videos — a class we score <b>0 / 6</b> on, and the VLM never proposed it once, all day.</li>
       <li>Replacing one model with the other scored <b>lower</b>. Both times.</li>
       <h3 style="margin-top:24px">Latency, measured</h3>
-      <li><b>1.65 s</b> mean per window · p50 <b>0.96 s</b> · p95 <b>3.20 s</b></li>
-      <li>A window closes every 10 s → <b>6.1× real time</b>, 3.1× at p95, on one A100.</li>
+      <li><b>3.08 s</b> end-to-end per window (model 1.65 s + frame decode)</li>
+      <li>A window closes every 10 s → <b>3.4× real time</b>, 3.1× at p95, on one A100.</li>
     </div>
     <div>
       <h3>2 · Span policy is per-difficulty</h3>
