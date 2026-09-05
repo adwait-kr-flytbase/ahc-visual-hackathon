@@ -58,6 +58,15 @@ li:last-child{border-bottom:0}
 .sb.v{border-color:#0b5f8a;color:#0b5f8a}.sb.g{border-color:#1a7a4f;color:#1a7a4f}.sb.o{border-color:#8a5a0b;color:#8a5a0b}
 .sa{color:#9aa4ad;font-size:20px}
 .stk{display:flex;flex-direction:column;gap:6px}
+
+.tt{width:100%;border-collapse:collapse;font-size:19px}
+.tt th{background:#101418;color:#fff;padding:8px 12px;font-size:17px;text-align:left}
+.tt td{border-bottom:1px solid #e2e8ec;padding:7px 12px;vertical-align:top}
+.tt td:first-child{font-weight:600;white-space:nowrap;width:150px}
+.tt tr:nth-child(even) td{background:#f7f9fb}
+.pill{display:inline-block;background:#101418;color:#fff;border-radius:20px;padding:5px 15px;font-size:17px;font-weight:600;margin-bottom:9px}
+.pill.g{background:#1a7a4f}.pill.b{background:#0b5f8a}
+.chain{background:#101418;color:#fff;border-radius:9px;padding:12px 16px;font:600 18px/1.4 ui-monospace,Menlo,monospace;text-align:center;margin:9px 0}
 </style>
 
 <section class="s">
@@ -145,6 +154,70 @@ li:last-child{border-bottom:0}
   <b>SigLIP was marked "rejected" in our own ledger, on theory.</b> It became one of the two things that actually moved our score.</div>
 </section>
 
+<section class="s">
+  <div class="k">Training · 1 of 2</div>
+  <h2>The fine-tune: we bolted on an adapter, not a new model.</h2>
+  <div class="two">
+    <div>
+      <div class="pill b">LoRA on Qwen3-VL-4B</div>
+      <p style="font-size:22px;line-height:1.4;margin-bottom:12px">The 4-billion-parameter model stays <b>frozen</b>. We train a few small extra matrices alongside it — roughly <b>1% of the parameters move</b>. Rewriting a textbook versus adding sticky notes.</p>
+      <table class="tt">
+        <tr><th>Setting</th><th>Why</th></tr>
+        <tr><td>rank 16</td><td>Adapter capacity. 8 is the usual default; ~2,600 examples made 16 affordable</td></tr>
+        <tr><td>froze the eye</td><td>Vision encoder + adapter layer frozen. Only the <i>reasoning</i> needed to change</td></tr>
+        <tr><td>1 epoch · 300 steps</td><td>One hour of GPU. One pass — more risks memorising 2,600 examples</td></tr>
+        <tr><td>lr 1e-4</td><td>10× a full fine-tune's rate, standard for LoRA — you move a small piece</td></tr>
+        <tr><td>batch 1 × accum 8</td><td>A 24-frame video is huge in memory. One at a time, pretending it's 8</td></tr>
+        <tr><td>24 frames</td><td>Default was 16 — over a 20 s window that is 0.8 fps, too coarse for a 5 s crash</td></tr>
+        <tr><td>save every 100</td><td>So a usable adapter existed even if the run died. It nearly did</td></tr>
+      </table>
+      <p style="font-size:19px;color:#5b6570;margin-top:9px">63 minutes on an A100-80GB · loss fell to <b>0.124</b> and flattened — it converged properly</p>
+    </div>
+    <div>
+      <div class="pill">What it trained on</div>
+      <p style="font-size:22px;line-height:1.4">2,610 examples — and <b>71% were negatives</b>, windows where the right answer is <i>"nothing here"</i>.</p>
+      <p style="font-size:20px;color:#5b6570;line-height:1.4;margin-top:9px">Deliberate: sliding a 20 s window over a 4-minute video, ~90% of windows genuinely contain nothing. A model never taught to say "nothing" fires on everything.</p>
+      <div class="pill" style="margin-top:20px;background:#8a2b2b">And it lost</div>
+      <table class="tt">
+        <tr><td>Replacing the baseline</td><td><b>42.4</b></td></tr>
+        <tr><td>Added to the baseline</td><td><b>49.2</b></td></tr>
+        <tr class="hl"><td>Zero-shot, no fine-tune</td><td><b>49.9</b></td></tr>
+      </table>
+      <p style="font-size:20px;line-height:1.4;margin-top:12px"><b>Two honest reasons.</b> It was <b>starved</b> — a 13 GB upload died unnoticed, so it got less than half its intended data. And we <b>over-corrected</b>: 71% negatives taught it to stay quiet, when our real problem was already <i>missing</i> events.</p>
+    </div>
+  </div>
+  <div class="q" style="font-size:26px">A fine-tune that trains cleanly can still be <b>the wrong fine-tune.</b></div>
+</section>
+<section class="s">
+  <div class="k">Training · 2 of 2</div>
+  <h2>SigLIP: we never touched the model. Only what sits on top.</h2>
+  <div class="chain">8 frames → <span style="color:#7fd4a8">FROZEN SigLIP2</span> → 8 vectors → LayerNorm → bidirectional GRU (256) → Dropout → 12 classes</div>
+  <div class="two">
+    <div>
+      <div class="pill g">A few hundred thousand parameters</div>
+      <p style="font-size:21px;line-height:1.4">Against Qwen's <b>4 billion</b>. SigLIP is a lens we never adjust — we trained a tiny brain to read what comes through it.</p>
+      <table class="tt" style="margin-top:12px">
+        <tr><th>Setting</th><th>Why</th></tr>
+        <tr><td>8 frames</td><td>The GRU needs a <i>sequence</i>. Eight is enough to see "still there"</td></tr>
+        <tr><td>bidirectional</td><td>Reads forwards <i>and</i> backwards, so frame 3 is read knowing frame 7</td></tr>
+        <tr><td>20–30 epochs</td><td>Cheap — embeddings are cached, so an epoch takes seconds</td></tr>
+        <tr><td>dropout 0.3</td><td>Aggressive, because 660 examples overfits easily</td></tr>
+        <tr><td>class weights</td><td>√inverse-frequency — without it, it learns to always say "normal"</td></tr>
+        <tr><td>threshold 0.30</td><td><b>Tuned, not default.</b> 0.22 cost us ~15 marks</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="pill">Trained on 660 clips — of 3,173 available</div>
+      <p style="font-size:21px;line-height:1.4">Not a design choice. The full dataset never uploaded, so we built a class-balanced subset that fit the time we had. <b>55 per class.</b></p>
+      <p style="font-size:21px;line-height:1.4;margin-top:12px">~<b>68% validation accuracy</b> — a real number, best epoch kept, 10% held out.</p>
+      <p style="font-size:19px;line-height:1.35;margin-top:12px;background:#fff1f1;border-left:4px solid #8a2b2b;padding:11px 14px;border-radius:0 8px 8px 0">
+        The <b>first</b> SigLIP run reported <b>"100% validation accuracy"</b>. Meaningless — 77 embeddings, validated on <b>7 samples</b>, because an upload had died unnoticed. One of our ten silent failures.</p>
+      <div class="pill g" style="margin-top:16px">It earned its place</div>
+      <p style="font-size:21px;line-height:1.4"><b>17 of our 38 shipped events</b> — more than the VLM contributed. And it found <b>loitering</b>, a class we score 0/6 on that no VLM proposed all day.</p>
+    </div>
+  </div>
+  <div class="q" style="font-size:26px">It saw a fifth of the available data and still contributed <b>more events than the 8-billion-parameter VLM.</b> The cheap thing outperformed the expensive thing.</div>
+</section>
 <section class="s">
   <div class="k">The breakthrough · final hour</div>
   <h2>+9.8 marks. We changed no model.</h2>
