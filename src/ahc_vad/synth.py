@@ -42,12 +42,24 @@ TEST_PROFILES = [
 
 @dataclass(frozen=True)
 class Segment:
-    """One trimmed piece of a source clip, placed on the output timeline."""
+    """One trimmed piece of a source clip, placed on the output timeline.
+
+    `label_start` / `label_duration` mark which part of the rendered segment actually
+    carries the event. They exist to decouple the event boundary from the scene cut: a
+    segment can render unlabelled lead-in footage before the event begins, so the cut
+    lands seconds BEFORE the label rather than exactly on it.
+    """
 
     source: Path
     source_start: float
     duration: float
     class_name: str | None  # None -> normal filler
+    label_start: float = 0.0
+    label_duration: float | None = None  # None -> runs to the end of the segment
+
+    @property
+    def label_end(self) -> float:
+        return self.duration if self.label_duration is None else self.label_start + self.label_duration
 
 
 @dataclass
@@ -61,17 +73,27 @@ class Composition:
         return sum(s.duration for s in self.segments)
 
     def events(self) -> list[dict]:
-        """Absolute-time events on the output timeline, in order."""
-        out, t = [], 0.0
+        """Absolute-time events on the output timeline, in order.
+
+        Consecutive segments of the same class are merged into ONE event: an interior
+        jump cut splits an event across several segments but it is still one occurrence.
+        """
+        spans: list[dict] = []
+        t = 0.0
         for segment in self.segments:
             if segment.class_name is not None:
-                out.append({
-                    "class_name": segment.class_name,
-                    "start": round(t, 3),
-                    "end": round(t + segment.duration, 3),
-                })
+                start = t + segment.label_start
+                end = t + segment.label_end
+                if spans and spans[-1]["class_name"] == segment.class_name and \
+                        start - spans[-1]["end"] < 0.75:
+                    spans[-1]["end"] = end
+                else:
+                    spans.append({"class_name": segment.class_name, "start": start, "end": end})
             t += segment.duration
-        return out
+        return [
+            {"class_name": s["class_name"], "start": round(s["start"], 3), "end": round(s["end"], 3)}
+            for s in spans if s["end"] - s["start"] > 0.5
+        ]
 
 
 def _load_real_durations(meta_tsv: Path) -> dict[str, float]:
@@ -153,6 +175,61 @@ def _trim_window(clip: dict, want: float, rng: random.Random) -> tuple[float, fl
     return source_start, max(0.5, duration)
 
 
+def _event_segments(
+    clip: dict,
+    source_start: float,
+    duration: float,
+    class_name: str,
+    rng: random.Random,
+    lead_in_prob: float,
+) -> list[Segment]:
+    """Render one event, decoupling its boundary from the scene cut where possible.
+
+    Two mechanisms, because they cover different classes:
+
+    1. UNLABELLED LEAD-IN, where the source clip has footage before the event starts.
+       The cut then lands 2-8 s before the label. Honest -- that footage genuinely is not
+       the event. Available for road_spill (139/151), wrong_way (152/162),
+       vehicle_blocking (135/148), stalled (122/223), traffic_accident (130/565).
+
+    2. INTERIOR JUMP CUT, for the classes where the labelled event IS the whole clip and
+       no honest lead-in exists (loitering 0/300, waterlogging 0/95, fire 7/77, smoke
+       15/85, fighting 8/124, congestion 28/268). The event is rendered as two pieces from
+       the same clip with a small forward skip, so a cut occurs INSIDE the event. That
+       breaks the "a cut marks a boundary" inference even when the boundary is still a cut.
+
+    `Composition.events()` merges consecutive same-class segments, so a jump-cut event is
+    still a single event in the ground truth.
+    """
+    real = clip["real_duration"]
+    event_start = clip["event_start"] if clip["event_start"] is not None else 0.0
+    available_lead = max(0.0, min(source_start, event_start) - 0.1)
+
+    event_end = clip["event_end"] if clip["event_end"] is not None else real
+    available_tail = max(0.0, real - max(event_end, source_start + duration) - 0.1)
+
+    if (available_lead > 1.5 or available_tail > 1.5) and rng.random() < lead_in_prob:
+        lead = min(rng.uniform(2.0, 8.0), available_lead) if available_lead > 1.5 else 0.0
+        tail = min(rng.uniform(2.0, 8.0), available_tail) if available_tail > 1.5 else 0.0
+        return [Segment(
+            clip["path"], round(source_start - lead, 3), round(duration + lead + tail, 3),
+            class_name, label_start=round(lead, 3), label_duration=round(duration, 3),
+        )]
+
+    # No honest lead-in: split the event with an interior jump so cuts also occur mid-event.
+    if duration > 6.0 and rng.random() < 0.5:
+        first = round(duration * rng.uniform(0.35, 0.65), 3)
+        skip = rng.uniform(0.5, 2.0)
+        second_start = round(source_start + first + skip, 3)
+        second = round(min(duration - first, max(0.5, real - second_start)), 3)
+        if second > 1.0:
+            return [
+                Segment(clip["path"], source_start, first, class_name),
+                Segment(clip["path"], second_start, second, class_name),
+            ]
+    return [Segment(clip["path"], source_start, duration, class_name)]
+
+
 def compose(
     video_id: str,
     level: int,
@@ -163,6 +240,7 @@ def compose(
     *,
     event_duration_range: tuple[float, float] = (4.0, 60.0),
     filler_cut_range: tuple[float, float] = (8.0, 45.0),
+    lead_in_prob: float = 1.0,
 ) -> Composition:
     """Lay out one long video: filler, event, filler, event, ... filler.
 
@@ -203,7 +281,7 @@ def compose(
         add_filler(per_gap)
         clip = rng.choice(pool[name])
         source_start, duration = _trim_window(clip, want, rng)
-        segments.append(Segment(clip["path"], source_start, duration, name))
+        segments.extend(_event_segments(clip, source_start, duration, name, rng, lead_in_prob))
     add_filler(per_gap)
 
     # Events are clamped to their source clip's real length, so the planned event budget

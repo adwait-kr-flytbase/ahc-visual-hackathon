@@ -80,3 +80,37 @@ def test_public_ground_truth_matches_the_measured_profile():
     for vid, events in gt.items():
         by_level[manifest[vid].level] += len(events)
     assert by_level == {1: 20, 2: 18, 3: 8}
+
+
+def test_zero_length_event_rows_are_skipped_not_fatal(tmp_path):
+    # 49 of 2,200 localised rows in dataset/train have end <= start.
+    path = _write(tmp_path, """
+        video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+        TR1,true,traffic_accident,16.917,16.917,zero length
+        TR1,true,traffic_accident,20.0,25.0,valid
+    """)
+    gt = load_ground_truth(path)
+    assert len(gt["TR1"]) == 1
+    assert gt["TR1"][0].span == (20.0, 25.0)
+    assert load_ground_truth.skipped == 1
+
+
+def test_strict_mode_raises_on_a_malformed_row(tmp_path):
+    path = _write(tmp_path, """
+        video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
+        TR1,true,traffic_accident,16.917,16.917,zero length
+    """)
+    with pytest.raises(ValueError):
+        load_ground_truth(path, strict=True)
+
+
+@pytest.mark.integration
+def test_real_train_pack_skip_count_is_known():
+    import glob
+    total = 0
+    for p in sorted(glob.glob(str(DATASET / "train" / "*" / "ground_truth.csv"))):
+        load_ground_truth(p)
+        total += load_ground_truth.skipped
+    if not total and not (DATASET / "train").exists():
+        pytest.skip("dataset pack not present")
+    assert total == 49

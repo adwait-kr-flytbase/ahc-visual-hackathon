@@ -43,13 +43,19 @@ def _parse_optional_float(raw: str | None) -> float | None:
     return float(raw) if raw else None
 
 
-def load_ground_truth(path: str | Path) -> dict[str, list[Event]]:
+def load_ground_truth(path: str | Path, *, strict: bool = False) -> dict[str, list[Event]]:
     """Map video_id -> list of ground-truth Events.
 
     A row whose class_name is `normal` contributes no events, but the video still appears
     in the mapping with an empty list -- normal videos are scoreable false-alarm traps.
+
+    49 of the 2,200 localised rows in dataset/train have `end_time_sec <= start_time_sec`
+    (zero-length or inverted events -- stalled 16, accident 11, wrong_way 10, blocking 5,
+    spill 3, smoke 3, congestion 1). dataset/test has none. Those rows are skipped and
+    counted in `load_ground_truth.skipped` unless `strict=True`, which raises instead.
     """
     result: dict[str, list[Event]] = {}
+    skipped = 0
     with Path(path).open(newline="", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
             video_id = row["video_id"].strip()
@@ -58,12 +64,21 @@ def load_ground_truth(path: str | Path) -> dict[str, list[Event]]:
             if class_name == NORMAL_CLASS:
                 continue
             description = (row.get("description_summary") or "").strip()
-            events.append(
-                Event(
-                    class_name=class_name,
-                    start_time_sec=_parse_optional_float(row.get("start_time_sec")),
-                    end_time_sec=_parse_optional_float(row.get("end_time_sec")),
-                    explanation=description or None,
+            try:
+                events.append(
+                    Event(
+                        class_name=class_name,
+                        start_time_sec=_parse_optional_float(row.get("start_time_sec")),
+                        end_time_sec=_parse_optional_float(row.get("end_time_sec")),
+                        explanation=description or None,
+                    )
                 )
-            )
+            except ValueError:
+                if strict:
+                    raise
+                skipped += 1
+    load_ground_truth.skipped = skipped
     return result
+
+
+load_ground_truth.skipped = 0
