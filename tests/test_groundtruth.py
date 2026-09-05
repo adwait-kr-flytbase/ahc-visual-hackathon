@@ -114,3 +114,48 @@ def test_real_train_pack_skip_count_is_known():
     if not total and not (DATASET / "train").exists():
         pytest.skip("dataset pack not present")
     assert total == 46
+
+
+@pytest.mark.integration
+def test_every_train_folder_is_pure_except_wrong_way_driving():
+    """Guard against silent relabelling.
+
+    The organisers relabelled `wrong_way_driving/` mid-event on 2026-09-05: 108 of its 164
+    rows became `normal`. Code that keys clips by DIRECTORY name then splices normal footage
+    in as wrong-way events -- poisoning the class with exactly one public-test example, and
+    silently, because nothing crashes.
+
+    If this test fails, a folder's contents changed. Re-read it before trusting any pool,
+    SFT set or synthetic video built from it.
+    """
+    import csv as _csv
+    train = DATASET / "train"
+    if not train.exists():
+        pytest.skip("dataset pack not present")
+
+    mixed = {}
+    for class_dir in sorted(p for p in train.iterdir() if p.is_dir()):
+        gt = class_dir / "ground_truth.csv"
+        if not gt.exists():
+            continue
+        labels = {r["class_name"].strip() for r in _csv.DictReader(gt.open(newline=""))}
+        unexpected = labels - {class_dir.name, "normal"}
+        assert not unexpected, f"{class_dir.name}/ contains foreign labels {unexpected}"
+        if "normal" in labels and class_dir.name != "normal":
+            mixed[class_dir.name] = sorted(labels)
+
+    assert mixed == {"wrong_way_driving": ["normal", "wrong_way_driving"]}, (
+        f"folder purity changed: {mixed}. A new mixed folder means clip pools, SFT rows and "
+        f"synthetic videos must be rebuilt -- see .context/06-decisions.md"
+    )
+
+
+@pytest.mark.integration
+def test_wrong_way_driving_counts_match_the_relabelling():
+    import csv as _csv
+    gt = DATASET / "train" / "wrong_way_driving" / "ground_truth.csv"
+    if not gt.exists():
+        pytest.skip("dataset pack not present")
+    labels = [r["class_name"].strip() for r in _csv.DictReader(gt.open(newline=""))]
+    assert labels.count("wrong_way_driving") == 56
+    assert labels.count("normal") == 108
