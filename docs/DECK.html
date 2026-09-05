@@ -51,6 +51,13 @@ li:last-child{border-bottom:0}
 .tech.new b{color:#12653f}
 .legend{display:flex;gap:26px;font-size:17px;color:#5b6570;margin-top:10px;justify-content:center}
 .dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px}
+
+.simple{display:flex;align-items:center;justify-content:center;gap:11px;margin:2px 0 16px;
+        background:#f5f8fa;border-radius:11px;padding:14px 18px}
+.sb{background:#fff;border:2px solid #101418;border-radius:8px;padding:9px 16px;font-size:19px;font-weight:700;white-space:nowrap}
+.sb.v{border-color:#0b5f8a;color:#0b5f8a}.sb.g{border-color:#1a7a4f;color:#1a7a4f}.sb.o{border-color:#8a5a0b;color:#8a5a0b}
+.sa{color:#9aa4ad;font-size:20px}
+.stk{display:flex;flex-direction:column;gap:6px}
 </style>
 
 <section class="s">
@@ -67,6 +74,14 @@ li:last-child{border-bottom:0}
 <section class="s">
   <div class="k">Architecture</div>
   <h2>What runs, and what is new at each stage.</h2>
+  <div class="simple">
+    <div class="sb">video</div><div class="sa">▶</div>
+    <div class="sb">20 s windows</div><div class="sa">▶</div>
+    <div class="stk"><div class="sb v">VLM — appearance</div><div class="sb g">encoder — duration</div></div>
+    <div class="sa">▶</div>
+    <div class="sb o">merge + reshape spans</div><div class="sa">▶</div>
+    <div class="sb">alerts with timestamps</div>
+  </div>
   <div class="arch">
     <div class="stg">
       <div class="hd">Ingest<small>28 videos · 5 s – 10 min</small></div>
