@@ -87,3 +87,11 @@ belongs to the other lane.** See `HANDOFF.md`.
 
 Cross-check: both scorers agree on Lane B's `out/fake.events.jsonl` — L1 20/0/0, L2 17 found /1 FA
 /1 miss, L3 8/0/0. That submission also passes `validate_submission` with zero schema problems.
+
+### 2026-09-05 · Clip pools key on `class_name`, never on the folder name **[measured]**
+The organisers relabelled `dataset/train/wrong_way_driving/`: 108 of its 164 rows became `normal`.
+It is now the only mixed folder. `ahc_vad.synth.load_clip_pool` keyed by directory and so offered
+162 "wrong-way" clips instead of 56 — it would have spliced ordinary traffic into synthetic videos as
+wrong-way events, poisoning the class with exactly one public-test example. Fixed; synthetic sets
+regenerated. **Reverses if:** never — the folder is not authoritative, the CSV is.
+Also: malformed (end<=start) rows fell 49 -> 46 as a side effect.

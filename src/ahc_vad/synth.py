@@ -116,6 +116,12 @@ def load_clip_pool(dataset_root: Path, meta_tsv: Path | None = None) -> dict[str
     `real_duration` is the clip's true length. Requesting more than that from ffmpeg
     silently yields a shorter segment, which desynchronises every downstream timestamp --
     so it is required, and clips without it are dropped.
+
+    Clips are keyed by the row's `class_name`, NOT by the folder they live in. The two
+    diverge: dataset/train/wrong_way_driving/ holds 164 rows of which only 56 are labelled
+    `wrong_way_driving` -- the other 108 were relabelled `normal` (their descriptions are
+    ordinary lane-keeping traffic). Keying by folder would splice normal footage in as
+    wrong-way events and poison the rarest class in the test set.
     """
     meta_tsv = meta_tsv or (dataset_root.parent / ".context" / "artifacts" / "videometa.tsv")
     real = _load_real_durations(meta_tsv)
@@ -127,25 +133,25 @@ def load_clip_pool(dataset_root: Path, meta_tsv: Path | None = None) -> dict[str
         if not gt_path.exists():
             continue
         rows = list(csv.DictReader(gt_path.open(newline="", encoding="utf-8")))
-        clips = []
         for row in rows:
             path = class_dir / "videos" / f"{row['video_id']}.mp4"
             if not path.exists():
+                continue
+            label = row["class_name"].strip()
+            if not label:
                 continue
             duration = real.get(row["video_id"])
             if duration is None or duration < 1.0:
                 continue
             start = (row.get("start_time_sec") or "").strip()
             end = (row.get("end_time_sec") or "").strip()
-            clips.append({
+            pool.setdefault(label, []).append({
                 "path": path,
                 "real_duration": duration,
                 "event_start": float(start) if start else None,
                 "event_end": float(end) if end else None,
                 "description": (row.get("description_summary") or "").strip(),
             })
-        if clips:
-            pool[class_dir.name] = clips
     return pool
 
 

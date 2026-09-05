@@ -83,7 +83,7 @@ def test_public_ground_truth_matches_the_measured_profile():
 
 
 def test_zero_length_event_rows_are_skipped_not_fatal(tmp_path):
-    # 49 of 2,200 localised rows in dataset/train have end <= start.
+    # 46 of 2,092 localised rows in dataset/train have end <= start.
     path = _write(tmp_path, """
         video_id,is_anomaly,class_name,start_time_sec,end_time_sec,description_summary
         TR1,true,traffic_accident,16.917,16.917,zero length
@@ -113,4 +113,4 @@ def test_real_train_pack_skip_count_is_known():
         total += load_ground_truth.skipped
     if not total and not (DATASET / "train").exists():
         pytest.skip("dataset pack not present")
-    assert total == 49
+    assert total == 46

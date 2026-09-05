@@ -20,12 +20,12 @@ learns clip-level classification, which is D1 only — **25 of 100 marks**.
 
 | class | videos | total | p50 dur | max |
 |---|---:|---:|---:|---:|
-| normal | **973** | 509 min | 19.9 s | 3599 s |
+| normal | **1,081** (973 + 108 from wrong_way) | 509 min | 19.9 s | 3599 s |
 | traffic_accident | 565 | 84 min | **5.0 s** | 155 s |
 | loitering_or_suspicious_presence | 300 | 149 min | 29.9 s | 29.9 s |
 | traffic_congestion | 268 | 36 min | 5.4 s | 20 s |
 | stalled_or_broken_down_vehicle | 223 | 70 min | 12.3 s | 271 s |
-| wrong_way_driving | 164 | 40 min | 11.0 s | 210 s |
+| wrong_way_driving | **56** (164 clips, 108 relabelled `normal`) | 40 min | 11.0 s | 210 s |
 | road_spill_or_debris | 151 | 28 min | 7.2 s | 128 s |
 | vehicle_blocking_traffic | 148 | 43 min | 11.6 s | 230 s |
 | fighting_or_violence | 124 | 44 min | 30.0 s | 187 s |
@@ -33,7 +33,7 @@ learns clip-level classification, which is D1 only — **25 of 100 marks**.
 | smoke | 85 | 20 min | 5.8 s | 195 s |
 | fire | 77 | 15 min | 5.8 s | 58 s |
 
-Anomaly:normal = 2,200 : 973. **Not** the <1% rarity assumed in `05-research-agenda.md` §13 —
+Anomaly:normal = 2,092 : 1,081 (after the 2026-09-05 wrong-way relabelling). **Not** the <1% rarity assumed in `05-research-agenda.md` §13 —
 anomalies are *over*represented in train, the opposite of deployment. Rarest classes (`fire` 77,
 `smoke` 85, `waterlogging` 95) are also the ones with near-zero duration variance — see below.
 
@@ -142,15 +142,33 @@ Share of train rows where `end−start` equals the clip duration (±0.5 s):
 → For 7 of 11 classes **train carries no within-clip boundary supervision at all** — the label is
 just "this clip is class X". Only 4 classes have genuine sub-spans.
 
-### 49 malformed ground-truth rows in train — silently poisonous
-**49 of the 2,200 localised rows in `dataset/train` have `end_time_sec <= start_time_sec`** —
-zero-length or inverted events. `dataset/test` has **zero**.
+### ⚠️ `wrong_way_driving/` is a MIXED folder — class_name ≠ folder name
+**Relabelled by the organisers on 2026-09-05.** `dataset/train/wrong_way_driving/` holds 164 rows,
+but only **56 are labelled `wrong_way_driving`** — the other **108 were relabelled `normal`** with
+their timestamps cleared. Their descriptions are plainly ordinary traffic ("maintains a steady pace
+and a consistent lane position, following the general flow of traffic"), so the originals were
+mislabelled and this is a correction.
+
+**Every other folder is pure** — `class_name` matches the folder for all 11 others.
+
+**Consequence: key clips by the row's `class_name`, never by the directory name.** Keying by folder
+splices normal footage in as wrong-way events and poisons the rarest class in the public test set
+(`wrong_way_driving` has exactly **one** test example). This bit `ahc_vad.synth.load_clip_pool`,
+which returned 162 wrong-way clips instead of 56 until it was fixed.
+
+Revised effective counts: **`wrong_way_driving` 56 anomalous** (not 164) and **`normal` 1,081**
+(973 + 108). Anomaly:normal is therefore ~2,092 : 1,081, not 2,200 : 973.
+
+### 46 malformed ground-truth rows in train — silently poisonous
+**46 of the 2,092 localised rows in `dataset/train` have `end_time_sec <= start_time_sec`** —
+zero-length or inverted events. `dataset/test` has **zero**. (Was 49 before the wrong-way
+relabelling cleared 3 of them.)
 
 | class | bad rows |
 |---|---|
 | `stalled_or_broken_down_vehicle` | 16 |
 | `traffic_accident` | 11 |
-| `wrong_way_driving` | 10 |
+| `wrong_way_driving` | 7 |
 | `vehicle_blocking_traffic` | 5 |
 | `road_spill_or_debris` | 3 |
 | `smoke` | 3 |
