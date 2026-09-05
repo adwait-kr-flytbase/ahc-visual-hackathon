@@ -1,13 +1,13 @@
 # Step 7 — Instrumentation, Demo and the Two-Slide Deck
 
-> ## ⚠️ STATUS: `DRAFT` — DO NOT IMPLEMENT
+> ## ✅ STATUS: `BUILT` — implemented in `src/vad/`, do NOT re-implement
 >
-> This is a **brief**, not a spec. It records intent and the open questions, nothing more.
-> Before any code is written, the open questions below must be closed with the user and this
-> file rewritten to the standard of [`step-01-scoring-harness.md`](step-01-scoring-harness.md):
-> exact files, exact interfaces, real test code, bite-sized TDD steps, no placeholders.
+> This brief was written before the inference session built the code. It exists now and is
+> CPU-tested. **Adopt it and add tests, or bin it — but do not build both.**
+> Several "open questions" below are already answered by working code; they are kept for the
+> record. See [`../HANDOFF.md`](../HANDOFF.md).
 >
-> **If you are an agent and you were told to "do step 7", stop and ask instead.**
+> Modules: `vad/runtime.py` — timers to `model_runtimes[]` with p50/p95/max
 
 **Goal:** Produce honest latency numbers for the self-reported bonus, a live demo, and the two-slide
 deck — which the organisers say **carries high weight in the final judging**.

@@ -1,13 +1,13 @@
 # Step 6 — Precision and Threshold Tuning
 
-> ## ⚠️ STATUS: `DRAFT` — DO NOT IMPLEMENT
+> ## ✅ STATUS: `BUILT` — implemented in `src/vad/`, do NOT re-implement
 >
-> This is a **brief**, not a spec. It records intent and the open questions, nothing more.
-> Before any code is written, the open questions below must be closed with the user and this
-> file rewritten to the standard of [`step-01-scoring-harness.md`](step-01-scoring-harness.md):
-> exact files, exact interfaces, real test code, bite-sized TDD steps, no placeholders.
+> This brief was written before the inference session built the code. It exists now and is
+> CPU-tested. **Adopt it and add tests, or bin it — but do not build both.**
+> Several "open questions" below are already answered by working code; they are kept for the
+> record. See [`../HANDOFF.md`](../HANDOFF.md).
 >
-> **If you are an agent and you were told to "do step 6", stop and ask instead.**
+> Modules: `vad/sweep.py` — re-merges cached window predictions over ~72 configs and scores each, no GPU, no re-inference
 
 **Goal:** Decide how confident the system must be before it speaks. On this leaderboard that is
 worth more than better detection.

@@ -9,21 +9,28 @@ Each step is one spec file. A spec is only safe to implement when its **Status**
 
 | Status | Meaning |
 |---|---|
-| `READY` | Fully specified. An engineer with no prior context can execute it top-to-bottom. |
-| `DRAFT` | A brief only. **Do not implement.** Open questions must be closed with the user first. |
-| `BLOCKED` | Waiting on a named dependency or decision. |
+| `DONE` | Implemented and committed. |
+| `BUILT` | **Code exists already — do not re-implement from spec.** Needs tests and review only. |
+| `READY` | Fully specified, safe to execute. |
+| `DRAFT` | A brief only. Open questions must be closed first. |
+
+> **Process note, 2026-09-05 13:15 — the original bar has been dropped.**
+> This folder originally required every spec to be executable "by an engineer with no prior
+> context", red-green-commit TDD throughout. That is a multi-day standard and the build closes at
+> 18:00. From here: **build directly with tests alongside, and spec only what is genuinely unclear.**
+> Steps 3/5/6/7 are already implemented in `src/vad/` — they are `BUILT`, not `DRAFT`.
 
 ## Steps
 
 | # | Spec | Status | Depends on | Marks at stake |
 |---|---|---|---|---|
 | 1 | [Scoring harness & submission emitter](step-01-scoring-harness.md) | ✅ **DONE** (Task 7 pending portal) | — | Unlocks all measurement; ~13.5 floor |
-| 2 | [Long-video synthesizer](step-02-long-video-synthesizer.md) | `DRAFT` | 1 | Unlocks 75 |
-| 3 | [Zero-shot VLM baseline](step-03-zero-shot-baseline.md) | `DRAFT` | 1 | Establishes the number to beat |
-| 4 | [SFT on short clips (D1)](step-04-sft-short-clips.md) | `DRAFT` | 1 | 25 |
-| 5 | [Long-video inference & merge (D2/D3)](step-05-long-video-inference.md) | `DRAFT` | 1, 2, 4 | 75 |
-| 6 | [Precision & threshold tuning](step-06-precision-tuning.md) | `DRAFT` | 1, 2, 5 | 5–15 recovered |
-| 7 | [Instrumentation, demo & deck](step-07-instrumentation-and-deck.md) | `DRAFT` | 5 | Latency bonus + host judging |
+| 2 | [Long-video synthesizer](step-02-long-video-synthesizer.md) | **IN PROGRESS** | 1 | Unlocks 75 |
+| 3 | [Zero-shot VLM baseline](step-03-zero-shot-baseline.md) | **BUILT** (`src/vad/`) | 1 | Establishes the number to beat |
+| 4 | [SFT on short clips (D1)](step-04-sft-short-clips.md) | `DRAFT` — **blocked on GPU** | 1, 2 | 25 |
+| 5 | [Long-video inference & merge (D2/D3)](step-05-long-video-inference.md) | **BUILT** (`src/vad/`) | 1, 2, 4 | 75 |
+| 6 | [Precision & threshold tuning](step-06-precision-tuning.md) | **BUILT** (`src/vad/`) | 1, 2, 5 | 5–15 recovered |
+| 7 | [Instrumentation, demo & deck](step-07-instrumentation-and-deck.md) | **BUILT** (`src/vad/`) | 5 | Latency bonus + host judging |
 
 ## Conventions for every spec in this folder
 
@@ -55,3 +62,9 @@ A **public code repository is itself a graded deliverable** (`.context/07-platfo
    `level` column at all.
 3. **All time is in seconds as float**, never frame indices. Source frame rates span 1.875–30 fps.
 4. **If a spec is `DRAFT`, stop and ask.** Do not infer the missing half.
+5. **Ownership is by directory. Cross-boundary changes are requested, not made.**
+   `src/ahc_vad/`, `plans/`, `scripts/`, `tests/` — this session. `src/vad/`, `bootstrap_gpu.sh` —
+   the inference session. See [`../HANDOFF.md`](../HANDOFF.md).
+6. **Never hand-roll the training prompt.** Build SFT rows with
+   `from vad.prompts import build_sft_sample`. If the training and inference templates drift by one
+   token the fine-tuned model scores worse than zero-shot. Highest-risk integration point in the build.
