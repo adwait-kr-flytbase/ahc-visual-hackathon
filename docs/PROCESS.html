@@ -193,7 +193,11 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
       the 4B and scored lower. Both models are self-hosted and runtime-legal; only D3 came from a
       three-model union.</p></div>
 
-    <h2>6 · What we tried</h2>
+    <h2>6 · What we tried — 16 interventions, 4 worked</h2>
+<p class="lead"><b>The last hour was worth more than the previous six.</b> Fourteen interventions on
+the VLM — frame counts, prompts, window sizes, five model families, a LoRA fine-tune — moved the
+score by nothing. Two changes in the final hour moved it <b>+9.8</b>: fixing span geometry rather
+than model quality, and adding a frozen encoder with a trained head. Neither required a better model.</p>
     <h3 class="win">Worked — per-difficulty policy</h3>
     <p>The single best decision, and two uploads isolated it. The difficulties point in
       <b>opposite directions</b>: D2 is 85% correct, so extra coverage <b>cost 9.5 marks</b>
@@ -211,7 +215,46 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
       2 false alarms out of 31 — so the signal had to come from outside the model's score.
       <span class="m">src/vad/ensemble.py</span></p>
 
-    <h3 class="bad">Failed, each a real negative result</h3>
+    <h3 class="win">Worked — D3 span geometry, +6.1 marks</h3>
+<p><b>The largest single gain of the day, and it changed no model and ran no new inference.</b>
+Eight prediction sets — three model sizes, five window configurations, the fine-tune, the targeted
+prompts — all scored <b>exactly 8.0</b> on D3. A submission answering only 2 of the 4 D3 videos
+scored 4.0, so 8.0 was 2.0 per video <i>answered</i>: a participation floor, zero events found.
+<b>That invariance was the clue.</b> Eight interventions varying the model changed nothing, which
+meant the failure was not in the model. Our D3 spans were <b>1–8 seconds inside videos of 327–602
+seconds</b> and could never reach temporal IoU ≥ 0.5 — geometrically impossible regardless of class.
+Merging same-class events per video and padding them to 112–138 s took the submission from
+<b>49.9 → 56.0</b>, and ±120 s padding later reached 59.7. <b>Our D3 classes had been right all
+along.</b> The evidence was in our own notes from the morning: the practice pack's D3 contained a
+single 125-second congestion event. We wrote down that D3 events are long, then spent hours varying
+models instead of spans.</p>
+
+<h3 class="win">Worked — frozen SigLIP2 + trained temporal head, +2.4 marks</h3>
+<p>The approach four of the top five leaderboard entries were running, and the one we nearly did not
+test. We had it marked <b>rejected</b> on the theory that a frozen probe cannot use context; the
+board was evidence and the theory was wrong. A frozen <span class="m">siglip2-base-patch16-224</span>
+over 8 timestamp-sampled frames feeds a bidirectional GRU head, 12-way output, class-balanced loss.
+Layered on top of the VLM submission it took <b>56.0 → 58.4</b>, and combined with wide spans,
+<b>59.7</b>. It predicts <span class="m">loitering_or_suspicious_presence</span> on two D3 videos —
+a class we score <b>0/6</b> on and that <i>no VLM proposed all day</i>. Its spans are natively
+whole-video wide, which is the geometry that works.
+<b>The VLM finds appearance; the frozen encoder finds duration.</b> <span class="m">scripts/train_siglip_head.py</span></p>
+
+<h3 class="bad">Failed — SigLIP threshold below 0.30</h3>
+<p>Embeddings were cached, so re-predicting at a lower threshold was nearly free. Dropping 0.30 →
+0.22 cost <b>~15 marks</b> (59.7 → ~45). 0.30 is the operating point; more coverage from this model
+is not more marks.</p>
+
+<h3 class="bad">Failed — templated explanations</h3>
+<p>The reasoning bonus is worth up to +5 and is documented as never reducing a score. Our events
+carried the same architecture string on every row, earning +1.0/5. Rewriting them as one clean
+per-class description scored <b>59.2</b> against 59.7; substituting genuine VLM-generated per-event
+text scored <b>53.1</b>, on files that were otherwise byte-identical in class, span and count.
+A ±5 bonus cannot produce a −6.6 swing, so either the scorer compares our text against the ground
+truth's own description and a wrong description costs marks, or the scoring has run-to-run variance.
+<b>We could not distinguish the two before the deadline and we are not claiming which it is.</b></p>
+
+<h3 class="bad">Failed, each a real negative result</h3>
     <p>Frame counts 8/16/24/32 · two prompt variants · dense 8 s and 4 s windows · four alternative
       models · class pruning on the eval set · the LoRA fine-tune (42.4 replacing the baseline, 49.2 added — both below the 49.9 standing at the time) · Qwen3-VL-32B on D3 · targeted per-group prompts · max-recall D1 fill.</p>
 
