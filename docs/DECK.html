@@ -251,15 +251,3 @@ li:last-child{border-bottom:0}
   </ul>
 </section>
 
-<section class="s">
-  <div class="k">What we learned</div>
-  <h2>Ten failures in one day. None of them crashed.</h2>
-  <ul>
-    <li><b>ffmpeg's seek silently returns more than you ask for.</b> A 468 s video rendered as 241 s — every timestamp after it was wrong.</li>
-    <li><b>The fix for one bug caused another.</b> We stopped one bad video killing a 34-video run; it then wrote 10 failures to disk as confident, plausible "nothing here".</li>
-    <li><b>A model reported 100% validation accuracy.</b> It had 7 validation samples, because an upload had died unnoticed.</li>
-    <li><b>We deleted 125 videos we had already rendered</b> — a third of our synthetic training data — rather than train on labels we could not verify.</li>
-    <li><b>We retracted our own headline finding</b> before it shipped. The retraction was load-bearing: keeping it meant shipping the weaker model.</li>
-  </ul>
-  <div class="q">In a seven-hour build, <b>every failure that mattered was silent.</b><br>So we validated intermediate artifacts — not outputs.</div>
-</section>
