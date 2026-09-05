@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anomaly review</title>
+<style>
+:root{
+  --ink:#0B0E13; --panel:#141922; --raised:#1B212C; --line:#262E3B; --line-soft:#1E2531;
+  --text:#E4E9F1; --muted:#7E8899; --dim:#4B5464;
+  --hit:#35D6B0; --miss:#F2A93B; --fa:#FF4D7D; --pending:#4B5464;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--ink);color:var(--text);font:14px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow:hidden;
+}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px;border-radius:2px}
+
+/* ---- micro-label: the page's one repeated typographic device ---- */
+.tag{font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.num{font:12px/1 var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---- header ---- */
+.bar{
+  display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;
+  padding:11px 18px;border-bottom:1px solid var(--line);background:var(--panel);flex:0 0 auto;
+}
+.bar h1{margin:0;font:600 14px/1 var(--sans);letter-spacing:-.01em}
+.bar .run{font:600 12px/1 var(--mono);color:var(--text)}
+.bar .meta{font:11px/1 var(--mono);color:var(--muted)}
+.bar .spacer{flex:1}
+.legend{display:flex;gap:14px;align-items:center}
+.legend span{display:flex;align-items:center;gap:6px;font:11px/1 var(--mono);color:var(--muted)}
+.legend i{width:9px;height:9px;border-radius:2px;display:block}
+
+/* ---- shell ---- */
+.shell{flex:1;display:flex;min-height:0}
+
+/* ---- roster ---- */
+.roster{
+  width:216px;flex:0 0 auto;border-right:1px solid var(--line);background:var(--panel);
+  overflow-y:auto;padding:8px 0 20px;
+}
+.roster .group{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:baseline}
+.roster .group .tag{color:var(--dim)}
+.roster button{
+  width:100%;display:flex;align-items:center;gap:8px;padding:6px 14px;background:none;border:0;
+  border-left:2px solid transparent;color:var(--muted);font:12px/1 var(--mono);cursor:pointer;text-align:left;
+}
+.roster button:hover{background:var(--raised);color:var(--text)}
+.roster button[aria-current="true"]{background:var(--raised);color:var(--text);border-left-color:var(--text)}
+.roster .id{width:38px;flex:0 0 auto}
+.roster .chips{display:flex;gap:3px;flex:1;flex-wrap:wrap}
+.roster .dot{width:6px;height:6px;border-radius:50%;display:block}
+.roster .unrun{font:10px/1 var(--mono);color:var(--dim);letter-spacing:.04em}
+
+/* ---- stage ---- */
+.stage{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
+.viewer{display:flex;gap:0;flex:1;min-height:0;border-bottom:1px solid var(--line)}
+.screen{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;background:#05070A;padding:12px}
+video{max-width:100%;max-height:100%;display:block;background:#000}
+
+/* ---- detail ---- */
+.detail{
+  width:308px;flex:0 0 auto;border-left:1px solid var(--line);background:var(--panel);
+  overflow-y:auto;padding:16px 16px 24px;
+}
+.detail h2{margin:0 0 3px;font:600 13px/1.3 var(--sans)}
+.detail .cls{font:600 13px/1.4 var(--mono);word-break:break-all;margin:0 0 2px}
+.detail .why{margin:10px 0 0;font-size:13px;line-height:1.55;color:var(--text)}
+.detail .placeholder{color:var(--dim);font-size:12px;line-height:1.6}
+.verdict{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:3px;
+  font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.facts{margin:14px 0 0;border-top:1px solid var(--line-soft)}
+.facts div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
+.facts dt{font:10px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.facts dd{margin:0;font:12px/1.6 var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+.note{margin:14px 0 0;padding:9px 11px;background:var(--raised);border-left:2px solid var(--dim);
+  font-size:11.5px;line-height:1.5;color:var(--muted)}
+.note.warn{border-left-color:var(--fa);color:var(--text)}
+
+/* ---- the field: two lanes on one axis ---- */
+.field{flex:0 0 auto;background:var(--panel);padding:12px 18px 16px;position:relative}
+.fieldhead{display:flex;align-items:baseline;gap:16px;margin-bottom:10px}
+.fieldhead .tc{font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums}
+.fieldhead .dur{font:11px/1 var(--mono);color:var(--dim)}
+.fieldhead .hint{margin-left:auto;font:10px/1 var(--mono);letter-spacing:.06em;color:var(--dim)}
+
+.axis{position:relative;display:grid;grid-template-columns:64px 1fr;gap:0 12px;align-items:center}
+.axis .tag{padding-bottom:2px;text-align:right}
+.lane{position:relative;height:26px;background:var(--raised);border-radius:3px;overflow:hidden}
+.ribbons{position:relative;height:44px}
+.ribbons svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ruler{position:relative;height:16px;margin-top:5px}
+.ruler .tick{position:absolute;top:0;border-left:1px solid var(--line);height:5px}
+.ruler .tick b{position:absolute;top:6px;left:3px;font:9px/1 var(--mono);color:var(--dim);font-weight:400;white-space:nowrap}
+
+.span{
+  position:absolute;top:0;bottom:0;border-radius:2px;border:0;padding:0 5px;cursor:pointer;
+  display:flex;align-items:center;overflow:hidden;font:10px/1 var(--mono);letter-spacing:.02em;
+  color:#0B0E13;min-width:3px;transition:filter .12s ease;
+}
+.span:hover{filter:brightness(1.18)}
+.span.live{box-shadow:inset 0 0 0 2px var(--text)}
+.span.picked{box-shadow:inset 0 0 0 2px var(--text)}
+.span.classonly{
+  color:var(--muted);
+  background-image:repeating-linear-gradient(-45deg,transparent 0 5px,rgba(0,0,0,.22) 5px 10px);
+}
+.span.rejected{background:var(--dim)!important;color:var(--text)}
+.span b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.playhead{position:absolute;top:0;bottom:0;width:1px;background:var(--text);pointer-events:none;z-index:5}
+.playhead::before{content:"";position:absolute;top:-3px;left:-3px;width:7px;height:7px;
+  background:var(--text);border-radius:50%}
+.scrub{position:absolute;inset:0;cursor:col-resize;z-index:4}
+
+.empty{position:absolute;inset:0;display:flex;align-items:center;padding-left:9px;
+  font:10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+
+/* ---- tally ---- */
+.tally{flex:0 0 auto;display:flex;align-items:stretch;border-top:1px solid var(--line);
+  background:var(--panel);overflow-x:auto}
+.tally .cell{padding:10px 18px;border-right:1px solid var(--line-soft);min-width:0;white-space:nowrap}
+.tally .cell:last-child{border-right:0}
+.tally .head{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+.tally .head .tag{color:var(--muted)}
+.tally .head .of{font:10px/1 var(--mono);color:var(--dim)}
+.tally .row{display:flex;gap:16px}
+.tally .stat{display:flex;flex-direction:column;gap:3px}
+.tally .stat .v{font:600 15px/1 var(--mono);font-variant-numeric:tabular-nums}
+.tally .stat .k{font:9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.tally .caveat{margin-left:auto;display:flex;align-items:center;padding:10px 18px;
+  font:11px/1.5 var(--mono);color:var(--muted);border-left:1px solid var(--line-soft);white-space:normal;max-width:340px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:1080px){
+  .detail{width:250px}.roster{width:180px}
+}
+</style>
+</head>
+<body>
+<script id="payload" type="application/json">{"run": {"name": "fake.events", "events_path": "out/fake.events.jsonl", "built_at": "2026-09-05 14:01 IST", "videos_predicted": 34, "videos_total": 34}, "problems": [], "videos": [{"id": "T001", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T001.mp4", "predicted": true, "truth": [], "model": [], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T002", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T002.mp4", "predicted": true, "truth": [], "model": [], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T003", "level": 1, "duration": 14.0, "src": "../dataset/test/videos/T003.mp4", "predicted": true, "truth": [], "model": [], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T004", "level": 1, "duration": 14.0, "src": "../dataset/test/videos/T004.mp4", "predicted": true, "truth": [], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T005", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T005.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 0.0, "end": 5.7, "localised": false, "description": "Crashed and burned cars and trucks while a civil-defense team examines the accident.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_accident", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.81, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T006", "level": 1, "duration": 17.0, "src": "../dataset/test/videos/T006.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 0.0, "end": 17.0, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_accident", "start": 0.81, "end": 16.33, "localised": true, "confidence": 0.92, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.913}], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T007", "level": 1, "duration": 22.7, "src": "../dataset/test/videos/T007.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 0.0, "end": 22.7, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_accident", "start": 0.0, "end": 22.7, "localised": true, "confidence": 0.68, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T008", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T008.mp4", "predicted": true, "truth": [{"class_name": "traffic_congestion", "start": 0.0, "end": 5.7, "localised": false, "description": "A road crowded with cars and surrounded by trees.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_congestion", "start": 0.0, "end": 5.24, "localised": true, "confidence": 0.78, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.919}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T009", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T009.mp4", "predicted": true, "truth": [{"class_name": "traffic_congestion", "start": 0.0, "end": 5.8, "localised": false, "description": "A bridge crowded with cars crosses a river surrounded by trees.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "traffic_congestion", "start": 0.16, "end": 5.8, "localised": true, "confidence": 0.92, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.972}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T010", "level": 1, "duration": 13.2, "src": "../dataset/test/videos/T010.mp4", "predicted": true, "truth": [{"class_name": "stalled_or_broken_down_vehicle", "start": 0.0, "end": 13.2, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "stalled_or_broken_down_vehicle", "start": 0.0, "end": 13.2, "localised": true, "confidence": 0.95, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T011", "level": 1, "duration": 11.2, "src": "../dataset/test/videos/T011.mp4", "predicted": true, "truth": [{"class_name": "vehicle_blocking_traffic", "start": 0.0, "end": 11.2, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "vehicle_blocking_traffic", "start": 0.0, "end": 11.2, "localised": true, "confidence": 0.89, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T012", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T012.mp4", "predicted": true, "truth": [{"class_name": "fire", "start": 0.0, "end": 5.8, "localised": false, "description": "A huge fire burning among buildings.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "fire", "start": 0.79, "end": 4.2, "localised": true, "confidence": 0.78, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.588}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T013", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T013.mp4", "predicted": true, "truth": [{"class_name": "fire", "start": 0.0, "end": 5.8, "localised": false, "description": "A fire burning between buildings with black smoke rising.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "fire", "start": 0.0, "end": 5.8, "localised": true, "confidence": 0.79, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T014", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T014.mp4", "predicted": true, "truth": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": false, "description": "Thick white smoke rising over the scene.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "smoke", "start": 0.0, "end": 4.3, "localised": true, "confidence": 0.93, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.741}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T015", "level": 1, "duration": 5.8, "src": "../dataset/test/videos/T015.mp4", "predicted": true, "truth": [{"class_name": "smoke", "start": 0.0, "end": 5.8, "localised": false, "description": "Smoke rising from trees next to several houses.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "smoke", "start": 0.0, "end": 4.84, "localised": true, "confidence": 0.72, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.834}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T016", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T016.mp4", "predicted": true, "truth": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": false, "description": "Streets in a residential neighborhood flooded with water.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.91, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T017", "level": 1, "duration": 5.7, "src": "../dataset/test/videos/T017.mp4", "predicted": true, "truth": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": false, "description": "Green land and bushes submerged by excess water.", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "waterlogging_or_flood", "start": 0.0, "end": 5.7, "localised": true, "confidence": 0.82, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T018", "level": 1, "duration": 11.1, "src": "../dataset/test/videos/T018.mp4", "predicted": true, "truth": [{"class_name": "wrong_way_driving", "start": 0.0, "end": 11.1, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "wrong_way_driving", "start": 0.0, "end": 10.74, "localised": true, "confidence": 0.78, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.968}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T019", "level": 1, "duration": 13.3, "src": "../dataset/test/videos/T019.mp4", "predicted": true, "truth": [{"class_name": "road_spill_or_debris", "start": 0.0, "end": 13.3, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "road_spill_or_debris", "start": 0.0, "end": 13.3, "localised": true, "confidence": 0.79, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T020", "level": 1, "duration": 26.1, "src": "../dataset/test/videos/T020.mp4", "predicted": true, "truth": [{"class_name": "road_spill_or_debris", "start": 0.0, "end": 26.1, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "road_spill_or_debris", "start": 0.79, "end": 24.74, "localised": true, "confidence": 0.79, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.918}], "runtime": {"frames_processed": 80, "chunks_processed": 5, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T021", "level": 1, "duration": 20.267, "src": "../dataset/test/videos/T021.mp4", "predicted": true, "truth": [{"class_name": "fighting_or_violence", "start": 0.0, "end": 20.267, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "fighting_or_violence", "start": 0.0, "end": 20.27, "localised": true, "confidence": 0.85, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T022", "level": 1, "duration": 16.0, "src": "../dataset/test/videos/T022.mp4", "predicted": true, "truth": [{"class_name": "fighting_or_violence", "start": 0.0, "end": 16.0, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "fighting_or_violence", "start": 0.0, "end": 16.0, "localised": true, "confidence": 0.87, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T023", "level": 1, "duration": 20.0, "src": "../dataset/test/videos/T023.mp4", "predicted": true, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 20.0, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 18.06, "localised": true, "confidence": 0.93, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 0.903}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T024", "level": 1, "duration": 16.0, "src": "../dataset/test/videos/T024.mp4", "predicted": true, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 16.0, "localised": false, "description": "", "verdict": "hit", "iou": 1.0, "pair": 0}], "model": [{"class_name": "loitering_or_suspicious_presence", "start": 0.0, "end": 16.0, "localised": true, "confidence": 0.79, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 1.0, "pair": 0, "iou_untimed": 1.0}], "runtime": {"frames_processed": 64, "chunks_processed": 4, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T025", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T025.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 20.0, "end": 40.0, "localised": true, "description": "First separated traffic accident.", "verdict": "hit", "iou": 0.8485362749257533, "pair": 0}, {"class_name": "traffic_accident", "start": 60.0, "end": 80.0, "localised": true, "description": "Second separated traffic accident.", "verdict": "hit", "iou": 0.8779631255487267, "pair": 1}, {"class_name": "traffic_accident", "start": 100.0, "end": 120.0, "localised": true, "description": "Third separated traffic accident.", "verdict": "hit", "iou": 0.9324009324009322, "pair": 2}, {"class_name": "traffic_accident", "start": 140.0, "end": 160.0, "localised": true, "description": "Fourth separated traffic accident.", "verdict": "hit", "iou": 0.91491308325709, "pair": 3}, {"class_name": "traffic_accident", "start": 180.0, "end": 200.0, "localised": true, "description": "Fifth separated traffic accident.", "verdict": "hit", "iou": 0.9095043201455203, "pair": 4}, {"class_name": "traffic_accident", "start": 220.0, "end": 240.0, "localised": true, "description": "Sixth separated traffic accident.", "verdict": "hit", "iou": 0.9246417013407306, "pair": 5}], "model": [{"class_name": "traffic_accident", "start": 18.09, "end": 41.66, "localised": true, "confidence": 0.87, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.8485362749257533, "pair": 0, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 58.62, "end": 81.4, "localised": true, "confidence": 0.6, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.8779631255487267, "pair": 1, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 98.82, "end": 120.27, "localised": true, "confidence": 0.89, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9324009324009322, "pair": 2, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 139.98, "end": 161.84, "localised": true, "confidence": 0.79, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.91491308325709, "pair": 3, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 179.5, "end": 201.49, "localised": true, "confidence": 0.62, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9095043201455203, "pair": 4, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 218.37, "end": 240.0, "localised": true, "confidence": 0.7, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9246417013407306, "pair": 5, "iou_untimed": null}], "runtime": {"frames_processed": 224, "chunks_processed": 14, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 6, "misses": 0, "false_alarms": 0}}, {"id": "T026", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T026.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 10.0, "end": 40.367, "localised": true, "description": "A road accident occurs.", "verdict": "hit", "iou": 0.9567422810333962, "pair": 0}, {"class_name": "vehicle_blocking_traffic", "start": 65.0, "end": 74.5, "localised": true, "description": "A vehicle illegally occupies the active road.", "verdict": "hit", "iou": 0.7462686567164181, "pair": 1}, {"class_name": "road_spill_or_debris", "start": 105.0, "end": 125.8, "localised": true, "description": "Road debris or a spill obstructs the drivable area.", "verdict": "hit", "iou": 0.9130816505706758, "pair": 2}, {"class_name": "fighting_or_violence", "start": 150.0, "end": 210.0, "localised": true, "description": "People fight in a public surveillance scene.", "verdict": "hit", "iou": 0.971974728657055, "pair": 3}], "model": [{"class_name": "traffic_accident", "start": 8.72, "end": 40.46, "localised": true, "confidence": 0.58, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9567422810333962, "pair": 0, "iou_untimed": null}, {"class_name": "vehicle_blocking_traffic", "start": 63.4, "end": 76.13, "localised": true, "confidence": 0.74, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.7462686567164181, "pair": 1, "iou_untimed": null}, {"class_name": "road_spill_or_debris", "start": 104.92, "end": 127.7, "localised": true, "confidence": 0.72, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9130816505706758, "pair": 2, "iou_untimed": null}, {"class_name": "fighting_or_violence", "start": 149.21, "end": 210.94, "localised": true, "confidence": 0.91, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.971974728657055, "pair": 3, "iou_untimed": null}], "runtime": {"frames_processed": 128, "chunks_processed": 8, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 4, "misses": 0, "false_alarms": 0}}, {"id": "T027", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T027.mp4", "predicted": true, "truth": [{"class_name": "traffic_congestion", "start": 40.0, "end": 45.0, "localised": true, "description": "First heavy-traffic interval.", "verdict": "miss", "iou": null, "pair": null}, {"class_name": "traffic_congestion", "start": 55.0, "end": 60.0, "localised": true, "description": "Second heavy-traffic interval.", "verdict": "hit", "iou": 0.8601398601398607, "pair": 1}, {"class_name": "traffic_congestion", "start": 65.0, "end": 125.0, "localised": true, "description": "Sustained heavy-traffic interval.", "verdict": "hit", "iou": 0.9603072983354672, "pair": 2}, {"class_name": "traffic_congestion", "start": 145.0, "end": 150.0, "localised": true, "description": "Fourth heavy-traffic interval.", "verdict": "hit", "iou": 0.6105006105006107, "pair": 3}], "model": [{"class_name": "traffic_congestion", "start": 38.24, "end": 43.34, "localised": true, "confidence": 0.85, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "false_alarm", "iou": null, "pair": null, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 55.08, "end": 60.72, "localised": true, "confidence": 0.75, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.8601398601398607, "pair": 1, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 64.47, "end": 126.95, "localised": true, "confidence": 0.69, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9603072983354672, "pair": 2, "iou_untimed": null}, {"class_name": "traffic_congestion", "start": 143.26, "end": 151.45, "localised": true, "confidence": 0.83, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.6105006105006107, "pair": 3, "iou_untimed": null}], "runtime": {"frames_processed": 128, "chunks_processed": 8, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 3, "misses": 1, "false_alarms": 1}}, {"id": "T028", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T028.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 30.0, "end": 35.0, "localised": true, "description": "First Accident-Bench collision.", "verdict": "hit", "iou": 0.8064516129032259, "pair": 0}, {"class_name": "traffic_accident", "start": 90.0, "end": 95.0, "localised": true, "description": "Second Accident-Bench collision.", "verdict": "hit", "iou": 0.7340425531914893, "pair": 1}, {"class_name": "traffic_accident", "start": 150.0, "end": 155.0, "localised": true, "description": "Third Accident-Bench collision.", "verdict": "hit", "iou": 0.8976660682226223, "pair": 2}, {"class_name": "traffic_accident", "start": 210.0, "end": 215.0, "localised": true, "description": "Fourth Accident-Bench collision.", "verdict": "hit", "iou": 0.6861538461538473, "pair": 3}], "model": [{"class_name": "traffic_accident", "start": 29.99, "end": 36.19, "localised": true, "confidence": 0.81, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.8064516129032259, "pair": 0, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 88.42, "end": 94.83, "localised": true, "confidence": 0.79, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.7340425531914893, "pair": 1, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 149.69, "end": 155.26, "localised": true, "confidence": 0.82, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.8976660682226223, "pair": 2, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 210.54, "end": 216.5, "localised": true, "confidence": 0.95, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.6861538461538473, "pair": 3, "iou_untimed": null}], "runtime": {"frames_processed": 144, "chunks_processed": 9, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 4, "misses": 0, "false_alarms": 0}}, {"id": "T029", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T029.mp4", "predicted": true, "truth": [], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T030", "level": 2, "duration": 240.0, "src": "../dataset/test/videos/T030.mp4", "predicted": true, "truth": [], "model": [], "runtime": {"frames_processed": 16, "chunks_processed": 1, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 0, "misses": 0, "false_alarms": 0}}, {"id": "T031", "level": 3, "duration": 360.0, "src": "../dataset/test/videos/T031.mp4", "predicted": true, "truth": [{"class_name": "traffic_congestion", "start": 235.0, "end": 360.0, "localised": true, "description": "Traffic congestion develops and persists on a snowy highway segment.", "verdict": "hit", "iou": 0.9863489307977591, "pair": 0}], "model": [{"class_name": "traffic_congestion", "start": 233.27, "end": 360.0, "localised": true, "confidence": 0.9, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9863489307977591, "pair": 0, "iou_untimed": null}], "runtime": {"frames_processed": 32, "chunks_processed": 2, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}, {"id": "T032", "level": 3, "duration": 307.7, "src": "../dataset/test/videos/T032.mp4", "predicted": true, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 29.3, "end": 66.9, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "hit", "iou": 0.9506737859140606, "pair": 0}, {"class_name": "loitering_or_suspicious_presence", "start": 135.8, "end": 149.5, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "hit", "iou": 0.8737244897959172, "pair": 1}, {"class_name": "loitering_or_suspicious_presence", "start": 194.8, "end": 197.4, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "hit", "iou": 0.5338809034907581, "pair": 2}, {"class_name": "loitering_or_suspicious_presence", "start": 267.4, "end": 286.9, "localised": true, "description": "A person remains beside an open suitcase by the roadside.", "verdict": "hit", "iou": 0.937049495434887, "pair": 3}], "model": [{"class_name": "loitering_or_suspicious_presence", "start": 27.57, "end": 66.69, "localised": true, "confidence": 0.89, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9506737859140606, "pair": 0, "iou_untimed": null}, {"class_name": "loitering_or_suspicious_presence", "start": 135.29, "end": 150.97, "localised": true, "confidence": 0.76, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.8737244897959172, "pair": 1, "iou_untimed": null}, {"class_name": "loitering_or_suspicious_presence", "start": 192.93, "end": 197.8, "localised": true, "confidence": 0.87, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.5338809034907581, "pair": 2, "iou_untimed": null}, {"class_name": "loitering_or_suspicious_presence", "start": 267.11, "end": 287.92, "localised": true, "confidence": 0.94, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.937049495434887, "pair": 3, "iou_untimed": null}], "runtime": {"frames_processed": 176, "chunks_processed": 11, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 4, "misses": 0, "false_alarms": 0}}, {"id": "T033", "level": 3, "duration": 628.843, "src": "../dataset/test/videos/T033.mp4", "predicted": true, "truth": [{"class_name": "traffic_accident", "start": 170.0, "end": 245.0, "localised": true, "description": "A collision occurs in a dashcam road scene and the vehicles stop after impact.", "verdict": "hit", "iou": 0.9934692789550845, "pair": 0}, {"class_name": "traffic_accident", "start": 490.0, "end": 535.0, "localised": true, "description": "A second dashcam collision occurs in a different road environment.", "verdict": "hit", "iou": 0.9359400998336109, "pair": 1}], "model": [{"class_name": "traffic_accident", "start": 169.97, "end": 244.54, "localised": true, "confidence": 0.88, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9934692789550845, "pair": 0, "iou_untimed": null}, {"class_name": "traffic_accident", "start": 488.66, "end": 536.74, "localised": true, "confidence": 0.93, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9359400998336109, "pair": 1, "iou_untimed": null}], "runtime": {"frames_processed": 112, "chunks_processed": 7, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 2, "misses": 0, "false_alarms": 0}}, {"id": "T034", "level": 3, "duration": 376.5, "src": "../dataset/test/videos/T034.mp4", "predicted": true, "truth": [{"class_name": "loitering_or_suspicious_presence", "start": 22.5, "end": 31.9, "localised": true, "description": "Several people linger on the sidewalk for an anomalously prolonged period.", "verdict": "hit", "iou": 0.9401260504201681, "pair": 0}], "model": [{"class_name": "loitering_or_suspicious_presence", "start": 22.38, "end": 31.45, "localised": true, "confidence": 0.57, "explanation": "A clear instance of the event is visible in the segment.", "rejected": null, "verdict": "hit", "iou": 0.9401260504201681, "pair": 0, "iou_untimed": null}], "runtime": {"frames_processed": 48, "chunks_processed": 3, "end_to_end_internal_time_ms": 1234, "model_runtimes": [{"model_name": "fake", "call_count": 4, "total_time_ms": 1200.0, "average_time_ms": 300.0, "p50_time_ms": 290.0, "p95_time_ms": 410.0, "max_time_ms": 420.0}]}, "tally": {"hits": 1, "misses": 0, "false_alarms": 0}}], "summary": [{"level": 1, "marks": 25.0, "videos_scored": 24, "videos_total": 24, "hits": 20, "misses": 0, "false_alarms": 0, "videos": 24, "precision": 1.0, "recall": 1.0}, {"level": 2, "marks": 35.0, "videos_scored": 6, "videos_total": 6, "hits": 17, "misses": 1, "false_alarms": 1, "videos": 6, "precision": 0.9444444444444444, "recall": 0.9444444444444444}, {"level": 3, "marks": 40.0, "videos_scored": 4, "videos_total": 4, "hits": 8, "misses": 0, "false_alarms": 0, "videos": 4, "precision": 1.0, "recall": 1.0}]}</script>
+
+<header class="bar">
+  <h1>Anomaly review</h1>
+  <span class="run" id="runName"></span>
+  <span class="meta" id="runMeta"></span>
+  <span class="spacer"></span>
+  <div class="legend">
+    <span><i style="background:var(--hit)"></i>found</span>
+    <span><i style="background:var(--miss)"></i>missed</span>
+    <span><i style="background:var(--fa)"></i>false alarm</span>
+    <span><i style="background:var(--pending)"></i>not yet run</span>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="roster" id="roster" aria-label="Videos"></nav>
+
+  <section class="stage">
+    <div class="viewer">
+      <div class="screen"><video id="video" preload="metadata" controls playsinline></video></div>
+      <aside class="detail" id="detail"></aside>
+    </div>
+
+    <div class="field">
+      <div class="fieldhead">
+        <span class="tc" id="clock">0:00.0</span>
+        <span class="dur" id="dur"></span>
+        <span class="hint">space play &nbsp;·&nbsp; ←→ 5s &nbsp;·&nbsp; [ ] event &nbsp;·&nbsp; ↑↓ video</span>
+      </div>
+      <div class="axis">
+        <span class="tag">Truth</span>
+        <div class="lane" id="laneTruth"><div class="scrub" data-scrub></div></div>
+        <span></span>
+        <div class="ribbons" id="ribbons"><svg preserveAspectRatio="none"></svg></div>
+        <span class="tag">Model</span>
+        <div class="lane" id="laneModel"><div class="scrub" data-scrub></div></div>
+        <span></span>
+        <div class="ruler" id="ruler"></div>
+      </div>
+      <div class="playhead" id="playhead" hidden></div>
+    </div>
+  </section>
+</div>
+
+<footer class="tally" id="tally"></footer>
+
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("payload").textContent);
+const VERDICT = {hit:"--hit", miss:"--miss", false_alarm:"--fa", pending:"--pending"};
+const HEX     = {hit:"#35D6B0", miss:"#F2A93B", false_alarm:"#FF4D7D", pending:"#4B5464"};
+const LABEL   = {hit:"found", miss:"missed", false_alarm:"false alarm", pending:"not yet run"};
+const $ = id => document.getElementById(id);
+
+let current = DATA.videos[0];
+let picked = null;   // {lane, index}
+
+const clamp01 = x => Math.max(0, Math.min(1, x));
+const pct = (v, d) => (clamp01(v / d) * 100) + "%";
+const tc = s => {
+  if (!isFinite(s)) return "--:--";
+  const m = Math.floor(s / 60), r = s - m * 60;
+  return m + ":" + (r < 10 ? "0" : "") + r.toFixed(1);
+};
+const tcShort = s => {
+  const m = Math.floor(s / 60), r = Math.floor(s - m * 60);
+  return m + ":" + (r < 10 ? "0" : "") + r;
+};
+
+/* ---------- header ---------- */
+$("runName").textContent = DATA.run.name;
+$("runMeta").textContent =
+  DATA.run.events_path + "  ·  " + DATA.run.videos_predicted + "/" + DATA.run.videos_total +
+  " videos have a prediction  ·  built " + DATA.run.built_at;
+
+/* ---------- roster ---------- */
+function buildRoster() {
+  const nav = $("roster");
+  let level = null;
+  DATA.videos.forEach(v => {
+    if (v.level !== level) {
+      level = v.level;
+      const head = document.createElement("div");
+      head.className = "group";
+      const n = DATA.videos.filter(x => x.level === level).length;
+      head.innerHTML = '<span class="tag">D' + level + '</span><span class="tag">' + n + '</span>';
+      nav.appendChild(head);
+    }
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.id = v.id;
+    const chips = [];
+    if (!v.predicted) {
+      chips.push('<span class="unrun">not run</span>');
+    } else {
+      for (let i = 0; i < v.tally.hits; i++)         chips.push(dot("hit"));
+      for (let i = 0; i < v.tally.misses; i++)       chips.push(dot("miss"));
+      for (let i = 0; i < v.tally.false_alarms; i++) chips.push(dot("false_alarm"));
+      if (!chips.length) chips.push('<span class="unrun">clean</span>');
+    }
+    b.innerHTML = '<span class="id">' + v.id + '</span><span class="chips">' + chips.join("") + '</span>';
+    b.addEventListener("click", () => select(v.id));
+    nav.appendChild(b);
+  });
+}
+const dot = v => '<span class="dot" style="background:var(' + VERDICT[v] + ')"></span>';
+
+/* ---------- lanes ---------- */
+function spanEl(item, lane, index) {
+  const el = document.createElement("button");
+  el.type = "button";
+  el.className = "span" + (item.localised ? "" : " classonly") + (item.rejected ? " rejected" : "");
+  el.style.left = pct(item.start, current.duration);
+  el.style.width = Math.max(0.35, clamp01((item.end - item.start) / current.duration) * 100) + "%";
+  el.style.background = "var(" + VERDICT[item.verdict] + ")";
+  el.dataset.lane = lane;
+  el.dataset.index = index;
+  el.innerHTML = "<b>" + item.class_name + "</b>";
+  el.title = item.class_name + "  " + LABEL[item.verdict] +
+             (item.localised ? "  " + tc(item.start) + "–" + tc(item.end) : "  (class only)");
+  el.addEventListener("click", e => { e.stopPropagation(); pick(lane, index); seek(item.start + .05); });
+  return el;
+}
+
+function drawLanes() {
+  [["laneTruth", "truth"], ["laneModel", "model"]].forEach(([id, lane]) => {
+    const box = $(id);
+    box.querySelectorAll(".span,.empty").forEach(n => n.remove());
+    const items = current[lane];
+    if (!items.length) {
+      const e = document.createElement("div");
+      e.className = "empty";
+      e.textContent = lane === "truth"
+        ? "no anomaly in ground truth"
+        : (current.predicted ? "model predicted normal" : "not yet run");
+      box.appendChild(e);
+      return;
+    }
+    items.forEach((item, i) => box.appendChild(spanEl(item, lane, i)));
+  });
+}
+
+/* ---------- ribbons: truth-to-prediction, the shape is the timing error ---------- */
+function drawRibbons() {
+  const svg = $("ribbons").querySelector("svg");
+  svg.innerHTML = "";
+  svg.setAttribute("viewBox", "0 0 1000 44");
+  const X = t => clamp01(t / current.duration) * 1000;
+  const add = (d, fill, opacity, dash) => {
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", d); p.setAttribute("fill", fill); p.setAttribute("fill-opacity", opacity);
+    if (dash) { p.setAttribute("stroke", fill); p.setAttribute("stroke-opacity", ".55");
+                p.setAttribute("stroke-dasharray", "3 3"); p.setAttribute("stroke-width", "1"); }
+    svg.appendChild(p);
+  };
+
+  if (current.level === 1) {
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", 500); t.setAttribute("y", 26); t.setAttribute("text-anchor", "middle");
+    t.setAttribute("fill", "#4B5464");
+    t.setAttribute("style", "font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em");
+    t.textContent = "D1 — MATCHED ON CLASS, TIMING NOT SCORED";
+    svg.appendChild(t);
+    return;
+  }
+
+  current.truth.forEach((g, i) => {
+    if (g.pair === null || g.pair === undefined) {
+      // Truth the model never reached: the ribbon runs out before it lands.
+      add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + ((X(g.start) + X(g.end)) / 2) + ",30 Z",
+          HEX.miss, ".20", true);
+      return;
+    }
+    const p = current.model[g.pair];
+    add("M" + X(g.start) + ",0 L" + X(g.end) + ",0 L" + X(p.end) + ",44 L" + X(p.start) + ",44 Z",
+        HEX.hit, ".22");
+  });
+  current.model.forEach(p => {
+    if (p.pair !== null && p.pair !== undefined) return;
+    // A prediction with no truth above it: the ribbon starts from nothing.
+    add("M" + ((X(p.start) + X(p.end)) / 2) + ",14 L" + X(p.end) + ",44 L" + X(p.start) + ",44 Z",
+        HEX.false_alarm, ".20", true);
+  });
+}
+
+/* ---------- ruler ---------- */
+function drawRuler() {
+  const r = $("ruler"); r.innerHTML = "";
+  const d = current.duration;
+  const step = d <= 20 ? 5 : d <= 60 ? 10 : d <= 300 ? 30 : 60;
+  for (let t = 0; t <= d + .001; t += step) {
+    const el = document.createElement("div");
+    el.className = "tick"; el.style.left = pct(t, d);
+    el.innerHTML = "<b>" + tcShort(t) + "</b>";
+    r.appendChild(el);
+  }
+}
+
+/* ---------- detail ---------- */
+function renderDetail() {
+  const box = $("detail");
+  if (!picked) {
+    const lines = [];
+    lines.push("<h2>" + current.id + " &middot; D" + current.level + "</h2>");
+    lines.push('<p class="placeholder">Pick a segment on either lane to see the class, the timing error, and what the model said.</p>');
+    if (!current.predicted) {
+      lines.push('<div class="note warn">No prediction row for ' + current.id +
+        " in this run. That is not the same as predicting normal, and it is not scored as a miss.</div>");
+    }
+    if (current.truth.length && current.level === 1) {
+      lines.push('<div class="note">D1 ground truth carries no timestamps. The bar spans the whole clip because the class is all that is scored here.</div>');
+    }
+    box.innerHTML = lines.join("");
+    return;
+  }
+  const item = current[picked.lane][picked.index];
+  const other = (item.pair !== null && item.pair !== undefined)
+    ? current[picked.lane === "truth" ? "model" : "truth"][item.pair] : null;
+  const rows = [];
+  const fact = (k, v) => rows.push("<div><dt>" + k + "</dt><dd>" + v + "</dd></div>");
+
+  fact("lane", picked.lane === "truth" ? "ground truth" : "model");
+  fact("span", item.localised ? tc(item.start) + " – " + tc(item.end) : "whole clip (class only)");
+  if (item.localised) fact("duration", (item.end - item.start).toFixed(1) + "s");
+  if (item.confidence !== null && item.confidence !== undefined)
+    fact("confidence", Number(item.confidence).toFixed(2));
+  if (item.iou !== null && item.iou !== undefined) fact("iou", Number(item.iou).toFixed(3));
+  if (item.iou_untimed !== null && item.iou_untimed !== undefined)
+    fact("overlap (unscored)", Number(item.iou_untimed).toFixed(3));
+  if (other && other.localised && item.localised) {
+    fact("start error", (item.start - other.start >= 0 ? "+" : "") + (item.start - other.start).toFixed(1) + "s");
+    fact("end error", (item.end - other.end >= 0 ? "+" : "") + (item.end - other.end).toFixed(1) + "s");
+  }
+
+  const colour = "var(" + VERDICT[item.verdict] + ")";
+  const out = [
+    '<div class="verdict" style="background:' + colour + ';color:#0B0E13">' + LABEL[item.verdict] + "</div>",
+    '<p class="cls">' + item.class_name + "</p>",
+    '<dl class="facts">' + rows.join("") + "</dl>",
+  ];
+  if (item.explanation) out.push('<p class="why">&ldquo;' + escapeHtml(item.explanation) + '&rdquo;</p>');
+  else if (item.description) out.push('<p class="why">' + escapeHtml(item.description) + "</p>");
+  if (item.rejected)
+    out.push('<div class="note warn">Rejected before scoring: ' + escapeHtml(item.rejected) + "</div>");
+  if (item.verdict === "false_alarm")
+    out.push('<div class="note">Nothing in the ground truth matches this at IoU ≥ 0.5 with the same class. On the portal it costs precision.</div>');
+  if (item.verdict === "miss")
+    out.push('<div class="note">The model produced nothing that matches this event’s class and timing.</div>');
+  box.innerHTML = out.join("");
+}
+const escapeHtml = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- selection ---------- */
+function pick(lane, index) {
+  picked = {lane, index};
+  document.querySelectorAll(".span.picked").forEach(n => n.classList.remove("picked"));
+  const el = document.querySelector('.span[data-lane="' + lane + '"][data-index="' + index + '"]');
+  if (el) el.classList.add("picked");
+  renderDetail();
+}
+
+function select(id) {
+  current = DATA.videos.find(v => v.id === id);
+  picked = null;
+  document.querySelectorAll("#roster button").forEach(b =>
+    b.setAttribute("aria-current", String(b.dataset.id === id)));
+  const video = $("video");
+  video.src = current.src;
+  video.load();
+  $("dur").textContent = "of " + tc(current.duration) + "  ·  D" + current.level;
+  $("playhead").hidden = true;
+  drawLanes(); drawRibbons(); drawRuler(); renderDetail();
+}
+
+/* ---------- playback ---------- */
+const video = $("video");
+function seek(t) { video.currentTime = Math.max(0, Math.min(current.duration - .05, t)); }
+
+function onTime() {
+  const t = video.currentTime;
+  $("clock").textContent = tc(t);
+  const head = $("playhead");
+  const lane = $("laneTruth"), field = document.querySelector(".field");
+  const x = lane.getBoundingClientRect().left - field.getBoundingClientRect().left
+          + clamp01(t / current.duration) * lane.clientWidth;
+  head.hidden = false;
+  head.style.left = x + "px";
+  head.style.top = (lane.offsetTop) + "px";
+  head.style.height = ($("laneModel").offsetTop + $("laneModel").offsetHeight - lane.offsetTop) + "px";
+  document.querySelectorAll(".span").forEach(el => {
+    const item = current[el.dataset.lane][+el.dataset.index];
+    el.classList.toggle("live", t >= item.start && t <= item.end);
+  });
+}
+video.addEventListener("timeupdate", onTime);
+video.addEventListener("seeked", onTime);
+video.addEventListener("loadedmetadata", onTime);
+window.addEventListener("resize", onTime);
+
+document.querySelectorAll("[data-scrub]").forEach(el => {
+  el.addEventListener("click", e => {
+    const r = el.getBoundingClientRect();
+    seek(((e.clientX - r.left) / r.width) * current.duration);
+  });
+});
+
+/* ---------- keyboard ---------- */
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input,textarea")) return;
+  const ids = DATA.videos.map(v => v.id);
+  const i = ids.indexOf(current.id);
+  if (e.key === " ") { e.preventDefault(); video.paused ? video.play() : video.pause(); }
+  else if (e.key === "ArrowLeft")  { e.preventDefault(); seek(video.currentTime - 5); }
+  else if (e.key === "ArrowRight") { e.preventDefault(); seek(video.currentTime + 5); }
+  else if (e.key === "ArrowUp")    { e.preventDefault(); if (i > 0) select(ids[i - 1]); }
+  else if (e.key === "ArrowDown")  { e.preventDefault(); if (i < ids.length - 1) select(ids[i + 1]); }
+  else if (e.key === "[" || e.key === "]") {
+    e.preventDefault();
+    const marks = [...current.truth, ...current.model].map(x => x.start).sort((a, b) => a - b);
+    const t = video.currentTime;
+    const next = e.key === "]" ? marks.find(m => m > t + .2)
+                               : [...marks].reverse().find(m => m < t - .2);
+    if (next !== undefined) seek(next + .05);
+  }
+});
+
+/* ---------- tally ---------- */
+function buildTally() {
+  const foot = $("tally");
+  const rate = v => v === null ? "—" : (v * 100).toFixed(0) + "%";
+  DATA.summary.forEach(s => {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    const scored = s.videos_scored === s.videos_total
+      ? s.videos_total + " videos"
+      : s.videos_scored + " of " + s.videos_total + " videos run";
+    cell.innerHTML =
+      '<div class="head"><span class="tag">D' + s.level + '</span>' +
+      '<span class="of">' + s.marks + ' marks · ' + scored + '</span></div>' +
+      '<div class="row">' +
+        stat(s.hits, "found", "--hit") +
+        stat(s.misses, "missed", "--miss") +
+        stat(s.false_alarms, "false alarm", "--fa") +
+        stat(rate(s.precision), "precision") +
+        stat(rate(s.recall), "recall") +
+      "</div>";
+    foot.appendChild(cell);
+  });
+  const caveat = document.createElement("div");
+  caveat.className = "caveat";
+  caveat.textContent = DATA.run.videos_predicted < DATA.run.videos_total
+    ? "Partial run: " + (DATA.run.videos_total - DATA.run.videos_predicted) +
+      " videos have no prediction and are excluded from these counts, not counted as normal."
+    : "Counts come from the same matcher that scores the run: class match at D1, class match and IoU ≥ 0.5 at D2/D3.";
+  foot.appendChild(caveat);
+}
+const stat = (v, k, colour) =>
+  '<div class="stat"><span class="v"' + (colour ? ' style="color:var(' + colour + ')"' : "") + ">" +
+  v + '</span><span class="k">' + k + "</span></div>";
+
+buildRoster();
+buildTally();
+select(DATA.videos[0].id);
+if (DATA.problems.length) console.warn("build reported problems:\n" + DATA.problems.join("\n"));
+</script>
+</body>
+</html>
