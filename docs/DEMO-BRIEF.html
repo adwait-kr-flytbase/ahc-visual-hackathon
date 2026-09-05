@@ -1,0 +1,98 @@
+<!doctype html><meta charset=utf-8><title>Demo run sheet</title><style>
+@page{size:A4;margin:14mm}
+*{box-sizing:border-box}
+body{font:11pt/1.45 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#14171a;margin:0}
+h1{font-size:20pt;margin:0 0 2pt;letter-spacing:-.4pt}
+h1+p{color:#5b6570;margin:0 0 14pt;font-size:10pt}
+h2{font-size:13pt;margin:16pt 0 5pt;padding-top:7pt;border-top:2px solid #14171a;letter-spacing:-.2pt;page-break-after:avoid}
+h3{font-size:11pt;margin:11pt 0 3pt;color:#0b4a6f;page-break-after:avoid}
+p,li{margin:0 0 5pt}
+ul,ol{margin:0 0 7pt;padding-left:16pt}
+table{border-collapse:collapse;width:100%;margin:6pt 0 9pt;font-size:9.5pt;page-break-inside:avoid}
+th{background:#14171a;color:#fff;text-align:left;padding:4pt 6pt;font-weight:600}
+td{border-bottom:1px solid #dde2e6;padding:4pt 6pt;vertical-align:top}
+tr:nth-child(even) td{background:#f7f9fa}
+code{background:#eef2f5;padding:1pt 3pt;border-radius:2px;font-size:9pt;font-family:ui-monospace,Menlo,monospace}
+pre{background:#14171a;color:#e8eef2;padding:8pt 10pt;border-radius:4px;font-size:8.5pt;line-height:1.4;overflow:hidden;page-break-inside:avoid}
+pre code{background:none;color:inherit;padding:0}
+blockquote{margin:7pt 0;padding:7pt 11pt;background:#fff8e1;border-left:3px solid #f0a500;font-size:10.5pt}
+blockquote p{margin:0}
+strong{color:#0b1a24}
+hr{border:0;border-top:1px solid #dde2e6;margin:12pt 0}
+</style><h1>Demo brief — run sheet</h1>
+<p><strong>http://127.0.0.1:8800</strong> · an operations console: video left, alerts right, scoreboard bottom, and a
+button that <strong>runs the real model on an A100 while the audience watches</strong>.</p>
+<h2>Before you present — 3 minutes</h2>
+<pre><code class="language-sh">.venv/bin/modal deploy demo/modal_live.py    # prints the URL
+# put it in .env as MODAL_INFER_URL=...
+.venv/bin/python demo/server.py              # http://127.0.0.1:8800
+</code></pre>
+<ol>
+<li>Open <code>/health</code> — confirms the backends are live.</li>
+<li><strong>Press Run once, privately.</strong> First call pays a <strong>~50 s cold start</strong> while the model loads.
+   After that a window takes <strong>~9 s</strong>. Never let the audience watch the cold start.</li>
+<li>Afterwards: <code>.venv/bin/modal app stop ahc-demo-live</code>.</li>
+</ol>
+<h2>The 4 minutes on stage</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Do</th>
+<th>Say</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Play a short clip with a clean hit</td>
+<td>"Frames sampled by timestamp, 20-second window, one call."</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Point at the <strong>timeline</strong></td>
+<td>"Top row is what the model was shown. Middle is truth. Bottom is what it reported."</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Press Enter</strong> on a window</td>
+<td>"That's not a recording — that's an A100 answering right now."</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Point at the <strong>timing breakdown</strong></td>
+<td>"1.8 seconds of model time against a 10-second window. 5.5× real time."</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Show a <strong>false alarm</strong> (red)</td>
+<td>"We show our misses. False alarms are the thing this problem punishes."</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Scoreboard</td>
+<td>"59.7 out of 100. D2 is first of 28."</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Keyboard:</strong> <code>space</code> play/pause · <code>←/→</code> 5 s · <code>Enter</code> runs the model.</p>
+<h2>The honesty features — worth pointing out</h2>
+<ul>
+<li><strong>Every alert says live or recorded.</strong> A pill in the header names which backend answered. Nothing
+  on the page implies GPU work that did not happen.</li>
+<li><strong>The live endpoint reuses <code>vad.frames.sample</code> and <code>vad.prompts</code> verbatim</strong> — the same 16 frames
+  over the same 20-second window as the scored runs. It is the same system, not a demo mock-up.</li>
+<li><strong>Three states are never blurred:</strong> no prediction = <em>not run</em> · <code>"failed"</code> = the run broke ·
+  <code>"events": []</code> = the model genuinely said normal, and <em>is</em> scored.</li>
+<li>Gemini is available as a fallback but labelled <strong>amber, not runtime-legal</strong> — a hosted model
+  cannot be in the submission's runtime path.</li>
+</ul>
+<h2>If it breaks</h2>
+<ul>
+<li><strong>Button hangs</strong> → per-backend deadlines fire (Modal 120 s, Gemini 12 s). It fails and says why.</li>
+<li><strong>Modal down</strong> → falls back to the recorded run and states it on screen. The demo still works.</li>
+<li><strong>Video won't play</strong> → you must use <code>demo/server.py</code>, not <code>python -m http.server</code>, which ignores
+  HTTP Range and hangs the player.</li>
+</ul>
+<h2>Other pages</h2>
+<p><code>/review</code> — all 34 videos, every prediction scored · <code>/slides</code> — the two submission slides</p>

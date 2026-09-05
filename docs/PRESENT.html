@@ -1,0 +1,268 @@
+<!doctype html><meta charset=utf-8><title>Presentation prep</title><style>
+@page{size:A4;margin:14mm}
+*{box-sizing:border-box}
+body{font:11pt/1.45 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#14171a;margin:0}
+h1{font-size:20pt;margin:0 0 2pt;letter-spacing:-.4pt}
+h1+p{color:#5b6570;margin:0 0 14pt;font-size:10pt}
+h2{font-size:13pt;margin:16pt 0 5pt;padding-top:7pt;border-top:2px solid #14171a;letter-spacing:-.2pt;page-break-after:avoid}
+h3{font-size:11pt;margin:11pt 0 3pt;color:#0b4a6f;page-break-after:avoid}
+p,li{margin:0 0 5pt}
+ul,ol{margin:0 0 7pt;padding-left:16pt}
+table{border-collapse:collapse;width:100%;margin:6pt 0 9pt;font-size:9.5pt;page-break-inside:avoid}
+th{background:#14171a;color:#fff;text-align:left;padding:4pt 6pt;font-weight:600}
+td{border-bottom:1px solid #dde2e6;padding:4pt 6pt;vertical-align:top}
+tr:nth-child(even) td{background:#f7f9fa}
+code{background:#eef2f5;padding:1pt 3pt;border-radius:2px;font-size:9pt;font-family:ui-monospace,Menlo,monospace}
+pre{background:#14171a;color:#e8eef2;padding:8pt 10pt;border-radius:4px;font-size:8.5pt;line-height:1.4;overflow:hidden;page-break-inside:avoid}
+pre code{background:none;color:inherit;padding:0}
+blockquote{margin:7pt 0;padding:7pt 11pt;background:#fff8e1;border-left:3px solid #f0a500;font-size:10.5pt}
+blockquote p{margin:0}
+strong{color:#0b1a24}
+hr{border:0;border-top:1px solid #dde2e6;margin:12pt 0}
+</style><h1>Presentation prep — read this before you go up</h1>
+<p><strong>Score: 59.7 / 100.</strong> D1 12.1/25 · D2 29.8/35 (<strong>1st of 28</strong>) · D3 14.2+/40
+Started the day at 0. Was 49.9 an hour before the end.</p>
+<hr />
+<h2>1. What we built — say this first</h2>
+<blockquote>
+<p><strong>A windowed vision-language pipeline that watches long video and reports anomalies with timestamps —
+plus a frozen-encoder classifier that catches what the VLM is blind to.</strong></p>
+</blockquote>
+<pre><code>video ──► sample frames BY TIMESTAMP ──► 20s sliding windows
+             │                              │
+             ▼                              ▼
+      SigLIP2 + trained GRU head      Qwen3-VL-8B (prompted)
+      &quot;what is this, over time&quot;       &quot;what is happening here&quot;
+             │                              │
+             └──────────► merge ◄───────────┘
+                            │
+                    per-difficulty policy
+                            │
+                     submission JSON
+</code></pre>
+<p><strong>The one-sentence version of why it works:</strong>
+<strong>The VLM finds <em>appearance</em> — fire, smoke, flood, crashes. The frozen encoder finds <em>duration</em> — loitering, stalled vehicles.</strong> Neither does both.</p>
+<hr />
+<h2>2. The three-agent system — how we actually worked</h2>
+<p>Three Claude Code sessions, on <strong>one repository</strong>, talking to each other by direct message.</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Role</th>
+<th>Owned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent 1</strong> (coordinator)</td>
+<td>Research, strategy, all GPU runs, all commits</td>
+<td><code>src/vad/</code>, <code>modal_app.py</code>, <code>status/</code></td>
+</tr>
+<tr>
+<td><strong>Agent 2</strong> (builder)</td>
+<td>Data pipeline, synthetic video generation, training, scoring code</td>
+<td><code>src/ahc_vad/</code>, <code>scripts/</code>, <code>tests/</code></td>
+</tr>
+<tr>
+<td><strong>Agent 3</strong> (comms)</td>
+<td>Demo, slides, process doc</td>
+<td><code>demo/</code>, <code>slides/</code>, <code>docs/</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The rule that made it work: ownership by directory.</strong> No agent edits another's files. Cross-boundary changes are <em>requested</em>, not made.</p>
+<p><strong>We learned that the hard way.</strong> Early on, Agent 1 and Agent 2 both built the same four modules — scoring, submission, event types. We threw away Agent 1's copies. After that, one rule fixed it.</p>
+<p><strong>One committer.</strong> Agent 1 reviewed and pushed everything. The repo is a graded deliverable; three agents committing in parallel would have made the history unreadable.</p>
+<p><strong>They corrected each other, out loud.</strong> Real examples worth quoting:
+- Agent 2 caught Agent 1 using <strong>first-fit instead of best-IoU</strong> matching in the scorer — silently wrong whenever predictions overlap.
+- Agent 3 caught a <strong>Gemini run that exited "successfully"</strong> having done 6 of 34 videos, writing the 28 failures to disk as confident "normal" predictions.
+- Agent 1 published <em>"bigger is worse, 4B beats 8B"</em>, then <strong>retracted it</strong> when asked for the mechanism — the models differ on 3 videos out of 24, p = 0.25. <strong>That retraction was load-bearing: the 8B produced our best score.</strong></p>
+<hr />
+<h2>3. The knowledge factory — how three agents stayed coherent</h2>
+<p>Nothing important lived in chat. Everything went into files.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.context/</code></td>
+<td><strong>Shared memory.</strong> Problem, dataset, prior art, decisions. Every finding written down, with provenance: <em>measured</em>, <em>read in a paper</em>, or <em>assumed</em>.</td>
+</tr>
+<tr>
+<td><code>status/ledger.md</code></td>
+<td><strong>The experiment ledger.</strong> Every technique across 7 tiers — input, prompting, decoding, frozen heads, fine-tuning, RL, cascades — marked ✅ done / 🔄 running / ⬜ planned / ⛔ rejected <strong>with the reason</strong>.</td>
+</tr>
+<tr>
+<td><code>status/models.md</code></td>
+<td>Why each model was chosen, what it was compared against, what we rejected before testing.</td>
+</tr>
+<tr>
+<td><code>status/experiments.md</code></td>
+<td>Every run and its verdict, including the failures.</td>
+</tr>
+<tr>
+<td><code>plans/</code></td>
+<td>Specs written before code.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why it mattered:</strong> an agent could crash, restart, and pick up from the files. That happened. Twice.</p>
+<hr />
+<h2>4. Models we tested — the headline table</h2>
+<p><strong>All five on an identical 24-video set, same prompt, same policy, Modal A100.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Size</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qwen3-VL-8B-Instruct</strong></td>
+<td>8B</td>
+<td>0.62</td>
+<td>0.40</td>
+<td>0.48</td>
+<td><strong>Shipped — produced our D1 + D2</strong></td>
+</tr>
+<tr>
+<td>Qwen3-VL-4B-Instruct</td>
+<td>4B</td>
+<td>0.77</td>
+<td>0.50</td>
+<td>0.61</td>
+<td>Ties the 8B (differ on 3 of 24)</td>
+</tr>
+<tr>
+<td>Cosmos-Reason2-8B</td>
+<td>8B</td>
+<td>0.57</td>
+<td>0.20</td>
+<td>0.30</td>
+<td>❌ Half the recall</td>
+</tr>
+<tr>
+<td>Qwen3-VL-2B-Instruct</td>
+<td>2B</td>
+<td>0.30</td>
+<td>0.15</td>
+<td>0.20</td>
+<td>❌ Too small</td>
+</tr>
+<tr>
+<td>Qwen2.5-VL-7B-Instruct</td>
+<td>7B</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>❌ Silent on 20 of 24</td>
+</tr>
+<tr>
+<td><strong>SigLIP2 + GRU head</strong></td>
+<td>frozen</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>Shipped — +2.4 marks</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Three findings worth saying out loud:</strong></p>
+<ol>
+<li><strong>Benchmark leadership does not transfer.</strong> Cosmos-Reason2-8B <strong>tops NVIDIA's own Traffic Anomaly Reasoning leaderboard</strong> and got <em>half the recall of a 4B</em> on our task.</li>
+<li><strong>Qwen2.5-VL-7B is ASK-HINT's own published backbone</strong> (89.83% AUC on UCF-Crime in the paper). Here it returned a bare <code>[]</code> on 20 of 24 videos. Instruction-following failure, not blindness.</li>
+<li><strong>We nearly didn't test SigLIP.</strong> It was marked ⛔ <em>rejected</em> in our ledger on the theory that a frozen probe can't use context. Four of the top five leaderboard entries were running it. <strong>The board was evidence; our theory was wrong.</strong></li>
+</ol>
+<p><strong>Also tried and rejected before testing:</strong> hosted models (banned from the runtime path), 72B/90B (too large), Llama-3.2-Vision (accepts <strong>one image per request</strong>; we send 8–32 frames).</p>
+<hr />
+<h2>5. Platforms</h2>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Used for</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Modal</strong></td>
+<td>Every GPU job — A100-40GB and A100-80GB</td>
+<td>✅ The workhorse. ~$12 of $30 credit.</td>
+</tr>
+<tr>
+<td><strong>Google Gemini API</strong></td>
+<td>Reference ceiling, dev-time only</td>
+<td>⚠️ Works, but no trustworthy number — two runs killed by our own bugs</td>
+</tr>
+<tr>
+<td><strong>NVIDIA NIM</strong></td>
+<td>Hosted VLM catalogue</td>
+<td>❌ 4 of 5 models 404 — account entitlement, takes days</td>
+</tr>
+<tr>
+<td><strong>HuggingFace</strong></td>
+<td>Model weights, incl. gated Cosmos</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Kaggle</td>
+<td>Free T4 fallback</td>
+<td>Authenticated, never needed</td>
+</tr>
+<tr>
+<td>Lightning AI</td>
+<td>Considered</td>
+<td>Not used — Modal covered it</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why Modal:</strong> one Python file, <code>@app.function(gpu="A100")</code>, jobs run headless and detached. Persistent volumes held the dataset so nothing re-uploaded. <strong>I could drive it entirely from the terminal</strong>, which is what made three agents on one GPU budget workable.</p>
+<hr />
+<h2>6. The approach — and the two things that actually moved the score</h2>
+<p><strong>+9.8 marks came in the final hour. Fourteen VLM interventions before that moved nothing.</strong></p>
+<h3>The big one: span geometry, +6.1</h3>
+<p>Eight prediction sets — three model sizes, five window configs, a fine-tune, targeted prompts — <strong>all scored exactly 8.0 on D3.</strong></p>
+<p>That invariance was the clue. <strong>If changing the model changes nothing, the failure isn't in the model.</strong></p>
+<p>Our D3 spans were <strong>1–8 seconds inside videos of 327–602 seconds</strong>. A 5-second span can never reach 50% overlap with a 100-second event — <em>geometrically impossible, no matter how right the class is.</em></p>
+<p>We widened spans to 112–138s. <strong>49.9 → 56.0.</strong> No new inference. No changed class. <strong>Our classes had been right all along.</strong></p>
+<blockquote>
+<p>The evidence was in our own notes from that morning: the practice data had a <strong>125-second</strong> congestion event. We wrote down that D3 events are long — then spent hours swapping models instead of spans.</p>
+</blockquote>
+<h3>The second: SigLIP2, +2.4</h3>
+<p>Frozen SigLIP2 → 8 frames → bidirectional GRU head → 12 classes.
+It predicts <strong><code>loitering</code></strong> on two videos — a class we score <strong>0/6</strong> on and <strong>no VLM proposed all day</strong>.</p>
+<hr />
+<h2>7. What we'd say about the failures</h2>
+<p><strong>Ten silent failures in one day. None crashed.</strong> Every one produced a plausible artifact.</p>
+<p>Pick two or three of these to tell:
+- <strong>ffmpeg's <code>-ss</code> is a keyframe seek</strong> — silently returns <em>more</em> than you ask for. A 468s video rendered as 241s and every timestamp after it was wrong.
+- <strong>The fix for one bug caused another.</strong> We added per-video error handling so one bad video couldn't kill a 34-video run. It then converted a loud crash into <strong>10 rows of confident, plausible, wrong output.</strong>
+- <strong>SigLIP reported "validation accuracy 1.000".</strong> Meaningless — 77 embeddings and a 7-sample validation split, because a 13GB upload had died unnoticed.
+- <strong>We deleted 125 synthetic videos we had already rendered</strong> because their timestamps were silently wrong. <em>We threw away a third of our training data rather than train on labels we couldn't verify.</em></p>
+<p><strong>The line to land:</strong></p>
+<blockquote>
+<p><strong>In a seven-hour build, every failure that mattered was silent. So we validated intermediate artifacts, not outputs.</strong></p>
+</blockquote>
+<hr />
+<h2>8. Likely questions</h2>
+<p><strong>"Why not just fine-tune?"</strong>
+We did. LoRA on Qwen3-VL-4B, 300 steps, loss converged. It scored <strong>42.4</strong> replacing the baseline and <strong>49.2</strong> added to it — both <strong>below</strong> the 49.9 zero-shot. It trained on 2,610 rows instead of the full set because an upload failed, and 71% of its targets were empty, teaching it to stay silent when our problem was recall.</p>
+<p><strong>"Is it real-time?"</strong>
+Measured, not asserted. <strong>A window closes every 10 seconds and is scored in 1.83 seconds — 5.5× headroom, 2.8× at p95.</strong> Self-reported latency, instrumented from the first call.</p>
+<p><strong>"What would you do next?"</strong>
+1. <strong>GRPO with a tIoU-shaped reward</strong> — the literature says it beats SFT on temporal grounding, and 75 of the 100 marks are IoU-gated.
+2. <strong>Make SigLIP the cheap always-on stage</strong> and the VLM the verifier. That's the cascade the brief actually asks for, and it's what the leader is running.
+3. <strong>Feed SigLIP the full dataset</strong> — it earned +2.4 marks trained on a fifth of the data.</p>
+<p><strong>"What are you still bad at?"</strong>
+Four classes we never detect: <code>loitering</code> 0/6, <code>fighting</code> 0/3, <code>road_spill</code> 0/3, <code>stalled</code> 0/2. All <strong>context and duration</strong> classes. The VLM is confident on appearance and blind to anything defined by time rather than pixels.</p>
