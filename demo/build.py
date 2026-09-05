@@ -39,14 +39,21 @@ def under_root(path: Path) -> str:
         return str(path)
 
 
-def load_predictions(path: Path) -> tuple[dict[str, dict], list[str]]:
-    """Read <run>.events.jsonl -> {video_id: raw row}, plus a list of complaints.
+def load_predictions(paths: list[Path]) -> tuple[dict[str, dict], list[str]]:
+    """Read one or more <run>.events.jsonl -> {video_id: raw row}, plus a list of complaints.
 
-    Malformed rows are reported, never silently dropped: a demo that quietly hides bad
-    model output is the same failure mode as a scorer that does.
+    Several files because D1 and D2/D3 are usually run separately; passing both gives one page
+    over the whole test set. Malformed rows are reported, never silently dropped: a demo that
+    quietly hides bad model output is the same failure mode as a scorer that does.
     """
     rows: dict[str, dict] = {}
     problems: list[str] = []
+    for path in paths:
+        _read_one(path, rows, problems)
+    return rows, problems
+
+
+def _read_one(path: Path, rows: dict[str, dict], problems: list[str]) -> None:
     for number, line in enumerate(path.read_text().splitlines(), start=1):
         line = line.strip()
         if not line:
@@ -54,16 +61,15 @@ def load_predictions(path: Path) -> tuple[dict[str, dict], list[str]]:
         try:
             row = json.loads(line)
         except json.JSONDecodeError as exc:
-            problems.append(f"line {number}: not JSON ({exc.msg})")
+            problems.append(f"{path.name} line {number}: not JSON ({exc.msg})")
             continue
         video_id = row.get("video_id")
         if not video_id:
-            problems.append(f"line {number}: no video_id")
+            problems.append(f"{path.name} line {number}: no video_id")
             continue
         if video_id in rows:
-            problems.append(f"line {number}: {video_id} appears more than once, keeping the last")
+            problems.append(f"{path.name} line {number}: {video_id} already seen, keeping the last")
         rows[video_id] = row
-    return rows, problems
 
 
 def to_events(raw_events: list[dict], video_id: str, problems: list[str]) -> tuple[list[Event], list[dict]]:
@@ -102,9 +108,28 @@ def to_events(raw_events: list[dict], video_id: str, problems: list[str]) -> tup
     return events, display
 
 
+def apply_top1(row: dict) -> dict:
+    """Keep only the highest-confidence event. Sound at D1, where a video has at most one truth
+    event; at D2/D3 it discards real detections, so the page labels which policy produced it."""
+    events = row.get("events") or []
+    if len(events) <= 1:
+        return row
+    best = max(events, key=lambda e: e.get("confidence") or 0)
+    return {**row, "events": [best]}
+
+
 def build_video(video_id, info, gt_events, prediction, problems):
-    """One video's payload: both lanes, every span already carrying its verdict."""
-    predicted = prediction is not None
+    """One video's payload: both lanes, every span already carrying its verdict.
+
+    Three states, never collapsed: no row at all is `not_run`, a row carrying `failed` is a
+    video the run broke on, and anything else is a real prediction. Only the last is scored --
+    counting a broken video as a correct normal flatters every partial run.
+    """
+    failed = (prediction or {}).get("failed")
+    state = "not_run" if prediction is None else ("failed" if failed else "ok")
+    if failed:
+        problems.append(f"{video_id}: the run failed on this video -- {failed}")
+    predicted = state == "ok"
     pred_events, pred_display = to_events(
         prediction.get("events", []) if predicted else [], video_id, problems
     )
@@ -160,6 +185,8 @@ def build_video(video_id, info, gt_events, prediction, problems):
         "duration": info.duration_sec,
         "src": f"../dataset/test/videos/{video_id}.mp4",
         "predicted": predicted,
+        "state": state,
+        "failed": failed,
         "truth": truth,
         "model": model,
         "runtime": (prediction or {}).get("runtime", {}),
@@ -202,19 +229,28 @@ def summarise(videos):
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", default="gemini", help="run name; reads out/<run>.events.jsonl")
-    parser.add_argument("--events", type=Path, help="explicit events jsonl, overrides --run")
+    parser.add_argument("--events", type=Path, nargs="+",
+                        help="explicit events jsonl files, overrides --run; several are merged")
+    parser.add_argument("--name", help="run label shown in the page header")
+    parser.add_argument("--top1", action="store_true",
+                        help="keep only the highest-confidence event per video, as the D1 scoring "
+                             "policy does. Changes the false-alarm count, so the page says which "
+                             "policy it drew.")
     parser.add_argument("--gt", type=Path, default=ROOT / "dataset/test/ground_truth.csv")
     parser.add_argument("--manifest", type=Path, default=ROOT / "data/manifest.json")
     parser.add_argument("--out", type=Path, default=ROOT / "demo/index.html")
     args = parser.parse_args()
 
-    events_path = args.events or ROOT / "out" / f"{args.run}.events.jsonl"
-    if not events_path.exists():
-        parser.error(f"no events file at {events_path}")
+    events_paths = args.events or [ROOT / "out" / f"{args.run}.events.jsonl"]
+    for path in events_paths:
+        if not path.exists():
+            parser.error(f"no events file at {path}")
 
     manifest = load_manifest(args.manifest)
     ground_truth = load_ground_truth(args.gt)
-    predictions, problems = load_predictions(events_path)
+    predictions, problems = load_predictions(events_paths)
+    if args.top1:
+        predictions = {vid: apply_top1(row) for vid, row in predictions.items()}
 
     unknown = sorted(set(predictions) - set(manifest))
     problems += [f"{video_id}: predicted but not in the manifest, ignored" for video_id in unknown]
@@ -226,10 +262,14 @@ def main() -> int:
 
     payload = {
         "run": {
-            "name": args.run if not args.events else events_path.stem,
-            "events_path": under_root(events_path),
+            "name": args.name or (args.run if not args.events
+                                  else " + ".join(p.stem.replace(".events", "") for p in events_paths)),
+            "events_path": "  +  ".join(under_root(p) for p in events_paths),
             "built_at": datetime.now().astimezone().strftime("%Y-%m-%d %H:%M %Z"),
-            "videos_predicted": sum(1 for v in videos if v["predicted"]),
+            "policy": "top-1 event per video" if args.top1 else "every predicted event",
+            "videos_predicted": sum(1 for v in videos if v["state"] == "ok"),
+            "videos_failed": sum(1 for v in videos if v["state"] == "failed"),
+            "videos_not_run": sum(1 for v in videos if v["state"] == "not_run"),
             "videos_total": len(videos),
         },
         "problems": problems,
@@ -242,8 +282,9 @@ def main() -> int:
     blob = json.dumps(payload, allow_nan=False).replace("</", "<\\/")
     args.out.write_text(template.replace("__DATA__", blob))
 
-    print(f"wrote {under_root(args.out)}  "
-          f"({payload['run']['videos_predicted']}/{payload['run']['videos_total']} videos predicted)")
+    run = payload["run"]
+    print(f"wrote {under_root(args.out)}  ({run['videos_predicted']}/{run['videos_total']} predicted, "
+          f"{run['videos_failed']} failed, {run['videos_not_run']} not run)")
     for problem in problems:
         print(f"  ! {problem}")
     return 0

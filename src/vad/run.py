@@ -44,7 +44,7 @@ def run_video(v, engine, args, timer):
             return []
         span = t1 - t0
         with timer.track(engine.name):
-            text = engine.generate(fr, P.SYSTEM, P.user_prompt(span))
+            text = engine.generate(fr, P.SYSTEM, P.user_prompt(span, args.variant))
         evs = P.parse_response(text, span)
         timer.frames += len(fr)
         if not evs and args.keep_raw:      # so an empty result is distinguishable from a parse failure
@@ -80,6 +80,7 @@ def main():
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--skip", type=int, default=0, help="skip the first N videos")
+    ap.add_argument("--variant", default="default", choices=["default", "recall", "forced"])
     ap.add_argument("--keep-raw", action="store_true", default=True,
                     help="record model text for windows that produced no events")
     args = ap.parse_args()

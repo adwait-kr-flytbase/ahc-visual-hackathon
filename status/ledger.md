@@ -43,7 +43,7 @@ Legend: ✅ done, measured · 🔄 running · ⬜ planned · ⛔ rejected, with 
 
 | # | Technique | Status | Result |
 |---|---|---|---|
-| 3.1 | **CLIP/SigLIP2 embeddings + linear probe** | ⛔ | **This is what most of the field runs** (`siglip2-base + temporal window head` leads the genuine scores at 58.3). We're not doing it — a probe cannot use context, which is the whole premise of the problem. Recorded because it is the field's default and it is beating naive VLM use. |
+| 3.1 | **CLIP/SigLIP2 embeddings + linear probe** | ⬜ **reopened** | **The leading approach on the board — 4 of the top 5, best 65.9, above every fine-tuned VLM.** I originally marked this ⛔ on the theory that a probe cannot use context. The leaderboard is evidence and the theory was wrong. Reopened as the biggest gap in our coverage. It is ~100× cheaper per frame than a 4B VLM, so it is the natural **cheap stage of a cascade**, not a competitor. |
 | 3.2 | **Temporal head (GRU / transformer) over frame embeddings** | ⛔ | Same reasoning. `siglip-gru-stage-a` scores 47.1 on the board. |
 | 3.3 | **Alert-CLIP representation tuning** — widen the normal/abnormal margin from <0.16 to >0.38 | ⛔ | Correct fix for a genuine CLIP defect, but needs region annotations we don't have and a training budget we don't have. |
 
@@ -80,6 +80,8 @@ Legend: ✅ done, measured · 🔄 running · ⬜ planned · ⛔ rejected, with 
 | 7.1 | **Cheap gate → VLM verifier** (Cerberus) | ⬜ | The reference architecture; 57.68 fps at 1% anomaly rate. Its gate is frame-differencing, which assumes a static camera. |
 | 7.2 | **Codec motion vectors + global-motion fit as an ego-motion-robust gate** | ⬜ | **Our original idea.** Motion vectors come free out of the H.264 decoder; a homography fit over the MV field *is* the ego-motion, and the residual is independently-moving objects. Also a D2/D3 temporal proposal generator. Nothing in the field is doing this. |
 | 7.3 | **Multi-model vote** (Qwen + Cosmos) | ⬜ | Both runtime-legal. Precision play. |
+| 7.4 | **Class-routed hybrid** — send each class to whichever mechanism measures better | ⬜ | **The headline idea.** VLM for appearance classes, track/motion state for duration classes. Routing table derived from a controlled experiment, not intuition. **Methodological rule: derive the routing on `synth-dev`, report on `dataset/test`** — routing tuned on the data we report is not a result. |
+| 7.5 | **Track-state layer** (YOLO11n + ByteTrack, 4 fps, ego-compensated speed) | 🔄 | Agent 2-26. `stalled` >8s stationary, `loitering` >12s, `congestion` density↑ + median speed <45% of baseline. `wrong_way` and `blocking` deliberately excluded from v1 — one public test example each, worst marks-per-hour on the board. |
 
 ---
 
@@ -97,18 +99,40 @@ carriageway, people fighting). That is exactly the split the problem statement p
 precisely what fine-tuning on our data should fix, because those classes are well represented in
 train (223 stalled, 151 spill, 148 blocking, 124 fighting).
 
+### ⚠️ Precision about what the six experiments actually falsified
+
+**All five failed interventions were inference-time changes to a *frozen* model.** So what is
+established is:
+
+- ✗ falsified — *"it can't see the event"* (more frames is worse)
+- ✗ falsified — *"it sees it but won't commit"* (both prompt variants are worse)
+- **not tested** — *"the model can learn this"*
+
+The defensible claim is **"zero-shot Qwen3-VL-4B is blind to duration classes"**, NOT "VLMs cannot
+express duration". The sixth intervention — fine-tuning on synthetic long videos with
+window-relative timestamps for sustained classes — is precisely the untested one, and it is the one
+we are about to run. If it moves those four classes, the stronger claim would be something we
+published and then contradicted.
+
+*(Correction raised by agent 2-26, accepted. I had over-generalised from five inference-time
+experiments to a claim about model capability.)*
+
 **Two cheap things to try before the fine-tune finishes:** per-class prompts for the five silent
 classes (1.5), and a lower confidence floor for them specifically (2.2). Neither costs GPU.
 
-## Models evaluated
+## Models evaluated → **see [`models.md`](models.md) for the full selection rationale**
 
-| Model | Where | Runtime-legal | Verdict |
-|---|---|---|---|
-| **Qwen3-VL-4B-Instruct** | Modal A100 | ✅ | **D1 P=0.77 R=0.50.** Our submission model. |
-| Cosmos-Reason2-8B | Modal A100 (queued) | ✅ | Ungated on HF. Tops the Traffic Anomaly Reasoning leaderboard. Untested. |
-| Gemini 3.5 Flash | Google API | ❌ hosted | Reference ceiling only. Two runs invalidated by bugs; no trustworthy number. |
-| Llama-3.2-11B/90B-Vision | NVIDIA NIM | ❌ hosted | Accepts **one image per request**; we send 8–16 frames. Unusable. |
-| nvidia/vila, cosmos-reason2, phi-3-vision | NVIDIA NIM | — | **404 for this account.** See below. |
+| Model | Params | P | R | F1 | Verdict |
+|---|---|---|---|---|---|
+| **Qwen3-VL-4B-Instruct** | 4B | **0.77** | **0.50** | **0.61** | **Chosen.** Beat four alternatives. |
+| Qwen3-VL-8B-Instruct | 8B | 0.62 | 0.40 | 0.48 | ❌ Bigger is worse, same family. |
+| Cosmos-Reason2-8B | 8B | 0.57 | 0.20 | 0.30 | ❌ Tops NVIDIA's Traffic Anomaly Reasoning leaderboard; half the recall of a 4B here. |
+| Qwen3-VL-2B-Instruct | 2B | 0.30 | 0.15 | 0.20 | ❌ Too small. |
+| Qwen2.5-VL-7B-Instruct | 7B | 0.00 | 0.00 | 0.00 | ❌ Silent on 20/24. ASK-HINT's own backbone; does not reproduce here. |
+
+Reference ceilings (dev-time only, never submittable): Gemini 3.5 Flash — works, video-native, but
+no trustworthy number (two runs invalidated by our own bugs). NVIDIA NIM — 4 of 5 models 404 for
+this account; the one that works takes a single image.
 
 **NVIDIA NIM — actionable:** the primer says *"Verify your phone number when prompted — API access
 stays locked until you do."* Only 1 of 5 models we probed responds. **Phone verification at

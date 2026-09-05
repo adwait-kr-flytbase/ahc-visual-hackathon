@@ -52,7 +52,29 @@ BEHAVIOUR
 - loitering_or_suspicious_presence: a person lingering, prowling or trespassing with no clear purpose"""
 
 
-def user_prompt(window_sec: float) -> str:
+# Experiment: the D1 baseline is precision-heavy (P=0.77, R=0.50) and returns NOTHING on
+# 8 of 24 videos, all of them context/duration classes. These variants probe whether the
+# silence is a prompting artifact or a genuine capability limit.
+VARIANTS = {
+    "default": "",
+    "recall": (
+        "\n\nIMPORTANT: subtle events count. A vehicle that has been stationary where it should "
+        "not be, an object lying on the carriageway, people in a physical altercation, a person "
+        "lingering with no purpose, a vehicle obstructing others — these are anomalies even when "
+        "the scene looks otherwise ordinary. Do not require the event to be dramatic. If you see a "
+        "plausible anomaly, report it with a confidence that reflects your certainty rather than "
+        "staying silent."
+    ),
+    "forced": (
+        "\n\nYou must commit to a judgement. First decide: is anything in this segment "
+        "out of the ordinary for this scene? If yes, name the single best-matching class even if "
+        "you are unsure, and set confidence accordingly. Only return an empty list if the scene is "
+        "genuinely routine."
+    ),
+}
+
+
+def user_prompt(window_sec: float, variant: str = "default") -> str:
     return (
         f"{GUIDE}\n\n"
         f"This segment is {window_sec:.1f} seconds long.\n"
@@ -62,6 +84,7 @@ def user_prompt(window_sec: float) -> str:
         'Answer with JSON only, exactly this shape:\n'
         '{"events": [{"class_name": "<one of the classes above>", "start": <float>, '
         '"end": <float>, "confidence": <0.0-1.0>, "explanation": "<one short sentence>"}]}'
+        + VARIANTS.get(variant, "")
     )
 
 

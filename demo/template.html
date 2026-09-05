@@ -57,6 +57,7 @@ body{
 .roster .chips{display:flex;gap:3px;flex:1;flex-wrap:wrap}
 .roster .dot{width:6px;height:6px;border-radius:50%;display:block}
 .roster .unrun{font:10px/1 var(--mono);color:var(--dim);letter-spacing:.04em}
+.roster .broke{font:10px/1 var(--mono);color:var(--fa);letter-spacing:.04em;opacity:.75}
 
 /* ---- stage ---- */
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
@@ -221,7 +222,8 @@ const tcShort = s => {
 $("runName").textContent = DATA.run.name;
 $("runMeta").textContent =
   DATA.run.events_path + "  ·  " + DATA.run.videos_predicted + "/" + DATA.run.videos_total +
-  " videos have a prediction  ·  built " + DATA.run.built_at;
+  " predicted" + (DATA.run.videos_failed ? ", " + DATA.run.videos_failed + " failed" : "") +
+  "  ·  " + DATA.run.policy + "  ·  built " + DATA.run.built_at;
 
 /* ---------- roster ---------- */
 function buildRoster() {
@@ -240,7 +242,9 @@ function buildRoster() {
     b.type = "button";
     b.dataset.id = v.id;
     const chips = [];
-    if (!v.predicted) {
+    if (v.state === "failed") {
+      chips.push('<span class="broke">failed</span>');
+    } else if (v.state === "not_run") {
       chips.push('<span class="unrun">not run</span>');
     } else {
       for (let i = 0; i < v.tally.hits; i++)         chips.push(dot("hit"));
@@ -282,7 +286,8 @@ function drawLanes() {
       e.className = "empty";
       e.textContent = lane === "truth"
         ? "no anomaly in ground truth"
-        : (current.predicted ? "model predicted normal" : "not yet run");
+        : {ok: "model predicted normal", failed: "the run failed on this video",
+           not_run: "not yet run"}[current.state];
       box.appendChild(e);
       return;
     }
@@ -365,7 +370,12 @@ function renderDetail() {
     const lines = [];
     lines.push("<h2>" + current.id + " &middot; D" + current.level + "</h2>");
     lines.push('<p class="placeholder">Pick a segment on either lane to see the class, the timing error, and what the model said.</p>');
-    if (!current.predicted) {
+    if (current.state === "failed") {
+      lines.push('<div class="note warn">The run broke on this video:<br><b>' +
+        escapeHtml(String(current.failed)) +
+        "</b><br><br>It has no prediction, so it is excluded from the tallies. A failed video and a " +
+        "video the model called normal must never be the same thing.</div>");
+    } else if (current.state === "not_run") {
       lines.push('<div class="note warn">No prediction row for ' + current.id +
         " in this run. That is not the same as predicting normal, and it is not scored as a miss.</div>");
     }
@@ -516,9 +526,11 @@ function buildTally() {
   });
   const caveat = document.createElement("div");
   caveat.className = "caveat";
-  caveat.textContent = DATA.run.videos_predicted < DATA.run.videos_total
-    ? "Partial run: " + (DATA.run.videos_total - DATA.run.videos_predicted) +
-      " videos have no prediction and are excluded from these counts, not counted as normal."
+  const excluded = [];
+  if (DATA.run.videos_not_run) excluded.push(DATA.run.videos_not_run + " not yet run");
+  if (DATA.run.videos_failed)  excluded.push(DATA.run.videos_failed + " failed");
+  caveat.textContent = excluded.length
+    ? "Excluded from these counts, not counted as normal: " + excluded.join(", ") + "."
     : "Counts come from the same matcher that scores the run: class match at D1, class match and IoU ≥ 0.5 at D2/D3.";
   foot.appendChild(caveat);
 }

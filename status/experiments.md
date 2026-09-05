@@ -13,11 +13,45 @@ Every model tried, what happened, and the verdict. Newest first within each sect
 | Gemini 3.5 Flash | hosted | **Reference ceiling only** | ❌ no — hosted models are banned from the runtime path |
 | Qwen3.5-4B | 4B | Candidate backbone, much stronger on MMMU-Pro (65.4 vs 52.0) | ✅ if video input confirmed |
 
-## A · Zero-shot, Qwen3-VL-4B — RUNNING
+## A · Zero-shot, Qwen3-VL-4B — SIX CONTROLLED RUNS DONE
 
-Modal A100-40GB. 16 frames/window, 20s window, 10s hop. Frames sampled by timestamp.
-Smoke test on 3 videos passed: model loaded, 0 events on T001–T003, which is correct (all normal).
-**Result pending.** This is the number the fine-tune has to beat.
+Modal A100-40GB, top-1 output policy, scored via `ahc_vad.compat`. Identical 24-video D1 set
+across all six, so the runs are comparable to each other.
+
+| run | frames | prompt | TP | FP | FN | P | R | F1 | silent videos |
+|---|---|---|---|---|---|---|---|---|---|
+| baseline | 16 | default | **10** | 3 | 10 | 0.77 | 0.50 | **0.61** | 8 |
+| f8 | 8 | default | 9 | 4 | 11 | 0.69 | 0.45 | 0.55 | 8 |
+| f24 | 24 | default | 8 | 5 | 12 | 0.62 | 0.40 | 0.48 | 9 |
+| f32 | 32 | default | 9 | 3 | 11 | 0.75 | 0.45 | 0.56 | 9 |
+| v-recall | 16 | recall | 8 | 4 | 12 | 0.67 | 0.40 | 0.50 | 9 |
+| v-forced | 16 | forced | 8 | 6 | 12 | 0.57 | 0.40 | 0.47 | 8 |
+
+**Noise caveat, and it governs every reading of this table.** 24 videos, 20 positives, so ±1 TP
+is about 5 percentage points of recall. Baseline (10 TP) vs f32 (9 TP) is **one video**. That is
+noise, and we are **not** claiming 16 frames is optimal.
+
+What survives the noise is the shape, not the ranking: **five interventions, zero improvements,
+and the silent-video count never dropped below 8.**
+
+### The result of the day: two of three hypotheses falsified
+
+The model returns nothing at all on 8 of 24 videos. Three explanations were on the table:
+
+| hypothesis | verdict |
+|---|---|
+| It cannot see the event — 16 frames is too coarse | **falsified.** More frames does not help; 24 and 32 are *worse* than 16. |
+| It sees it but will not commit | **falsified.** Both prompt variants made precision *and* recall worse. |
+| It lacks the concept | **the only one left standing.** |
+
+The silence is not spread evenly. It lands entirely on classes that need context or duration to
+recognise — `road_spill_or_debris` 0/2, `fighting_or_violence` 0/2,
+`stalled_or_broken_down_vehicle` 0/1, `vehicle_blocking_traffic` 0/1 — while classes that are
+recognisable from appearance alone work: `traffic_accident` 3/3, `smoke` 2/2,
+`waterlogging_or_flood` 2/2.
+
+**Consequence: fine-tuning is not an optimisation here, it is the only remaining lever.**
+Prompt and sampling are exhausted.
 
 ## B · Zero-shot, Gemini 3.5 Flash — RUNNING
 
@@ -56,6 +90,34 @@ frames — it 400s. Dead end either way.
 
 8B in bf16 ≈ 16GB, fits A100-40GB. Purpose-built for physical-AI reasoning and tops the traffic
 anomaly leaderboard. Runtime-legal, unlike Gemini. Runs as soon as the GPU frees up.
+
+## H · Codec motion vectors as an ego-motion-robust gate — DONE, NEGATIVE
+
+Full write-up in [`../mv/README.md`](../mv/README.md). CPU only: all 34 videos, 3391s of footage,
+**1165 CPU-seconds across 6 workers, 0.34x realtime, no GPU.**
+
+H.264 motion vectors come free out of the decoder. Fit a global affine with RANSAC — the fit is the
+camera's own motion, the rejected blocks are independent motion. The hope was a temporal proposal
+generator that survives ego-motion, which frame differencing cannot.
+
+**It does not work.** AUC for "is this second inside an event", scored by residual motion energy:
+**0.556 over 8 timed videos, where chance is 0.500**, ranging 0.384–0.877 — the spread is wider
+than the effect. Spike-vs-event-start survives a 2000-trial permutation null at exactly one of six
+tested thresholds (z=3.0, precision 0.417 vs null 0.309, p=0.010; p≈0.06 Bonferroni-corrected).
+72 proposals for 26 events at that precision would *add* false alarms to the system whose dominant
+failure mode is already false alarms.
+
+**Consequence: the cheap always-on gate in a Cerberus-style cascade cannot be built this way.**
+A real architectural constraint, settled in an hour of CPU time.
+
+**What did survive:** ego-motion itself, which the manifest never gives us — `domain` is empty for
+all 34 videos. Measured per second, 15 videos barely move, 6 move part of the time, 13 move
+throughout, spanning 1.8e-6 to 3.8e-2. It is a continuum, not two classes.
+Must be measured **per second, not per video**: T033 is a dashcam whose *median* falls below any
+sensible threshold because it is composed from several clips and the static stretches dominate.
+
+Recorded and explicitly NOT claimed: AUC splits 0.497 static (n=6) vs 0.732 moving (n=2). n=2, in
+the direction the hypothesis predicted, which is exactly why it is not a result.
 
 ## E · Merge-policy sweep — READY, costs nothing
 

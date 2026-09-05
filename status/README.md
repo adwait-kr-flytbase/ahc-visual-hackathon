@@ -16,7 +16,8 @@ result yet, and nothing uploaded beyond the all-empty file.**
 | A | Zero-shot, 34 public videos | Qwen3-VL-4B-Instruct | Modal A100-40GB | running, output file still empty |
 | D | Self-hosted Cosmos-Reason2-8B | Cosmos-Reason2-8B | Modal A100 | queued |
 | G | LoRA fine-tune | Qwen3-VL-4B | Modal A100-80GB | **blocked** on training-data regeneration |
-| — | Demo review page | — | `demo/index.html` | **working**, rebuilds from any run in one command |
+| — | Demo review page | — | `demo/index.html` | **working**, now on the real 34-video Qwen run |
+| H | Codec motion vectors, ego-motion gate | — | CPU, `mv/` | **done — negative result**, written up |
 
 ## What is actually proven
 
@@ -57,6 +58,19 @@ crashed, scored with `ahc_vad.scoring`:
 Precision 50%, recall 50% **on six videos of thirty-four, all from the easiest difficulty.**
 That is an anecdote with a ratio attached, not a result. False alarms are the dominant failure mode
 on this leaderboard — one entrant lost 26 of 35 marks at D2 to 94 of them.
+
+## Model choice — the short version
+
+**Qwen3-VL-4B-Instruct**, chosen on measurement after beating four alternatives on an identical
+24-video test. Full rationale, alternatives and rejected candidates: [`models.md`](models.md).
+
+| Model | P | R | F1 |
+|---|---|---|---|
+| **Qwen3-VL-4B** | **0.77** | **0.50** | **0.61** |
+| Qwen3-VL-8B | 0.62 | 0.40 | 0.48 |
+| Cosmos-Reason2-8B | 0.57 | 0.20 | 0.30 |
+| Qwen3-VL-2B | 0.30 | 0.15 | 0.20 |
+| Qwen2.5-VL-7B | 0.00 | 0.00 | 0.00 |
 
 ## Blocked on you
 

@@ -205,3 +205,90 @@ def format_report(report: ScoreReport) -> str:
             f"{name:<34}{entry.true_positives:>7}{entry.false_alarms:>5}{entry.misses:>6}"
         )
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Per-video scoring -- the portal's ACTUAL metric.
+#
+# Measured 2026-09-05 from a real upload: an all-empty submission scored
+# D2 = 11.7/35 = 33.3%, and exactly 2 of the 6 D2 videos are normal. 2/6 = 33.3%.
+# So marks are (mean per-video correctness) x (max marks for that difficulty), NOT the
+# global event-level F1 that `score()` above computes.
+#
+# The consequence is large and counter-intuitive:
+#     D1  24 videos / 25 marks  =  1.04 marks per video
+#     D2   6 videos / 35 marks  =  5.83 marks per video
+#     D3   4 videos / 40 marks  = 10.00 marks per video
+# One D3 video is worth ten D1 videos. Optimise accordingly.
+#
+# How partial credit works WITHIN a multi-event video is not yet known -- D1 came back
+# 12.1/25 = 48.4%, which is not a multiple of 1/24, so some partial credit exists.
+# `per_video_credit` is therefore pluggable: probe the portal, then pick the one that matches.
+# ---------------------------------------------------------------------------
+
+
+def credit_f1(result: MatchResult) -> float:
+    """Per-video credit = F1 over that video's events. Partial credit for partial finds."""
+    tp, fa, miss = result.true_positives, result.false_alarms, result.misses
+    if tp == 0:
+        return 1.0 if (fa == 0 and miss == 0) else 0.0
+    precision = tp / (tp + fa)
+    recall = tp / (tp + miss)
+    return 2 * precision * recall / (precision + recall)
+
+
+def credit_exact(result: MatchResult) -> float:
+    """Per-video credit = 1 only if every event matched and nothing was invented."""
+    return 1.0 if (result.false_alarms == 0 and result.misses == 0) else 0.0
+
+
+def credit_recall(result: MatchResult) -> float:
+    """Per-video credit = recall, ignoring false alarms entirely.
+
+    Worth probing: the leaderboard shows entrants ABOVE us at D1 carrying MORE false alarms
+    (14 found / 8 FA beats 10 found / 3 FA), which is what this would predict.
+    """
+    tp, miss = result.true_positives, result.misses
+    if tp + miss == 0:
+        return 1.0 if result.false_alarms == 0 else 0.0
+    return tp / (tp + miss)
+
+
+def score_per_video(
+    gt: dict[str, list[Event]],
+    pred: dict[str, list[Event]],
+    manifest: dict[str, VideoInfo],
+    *,
+    policy_d1: MatchPolicy | None = None,
+    policy_d23: MatchPolicy | None = None,
+    credit=credit_f1,
+) -> dict:
+    """Estimate portal marks: mean per-video credit x max marks, per difficulty."""
+    policy_d1 = policy_d1 or MatchPolicy(require_temporal=False)
+    policy_d23 = policy_d23 or MatchPolicy()
+
+    per_level: dict[int, list[float]] = {level: [] for level in DIFFICULTY_MARKS}
+    per_video: dict[str, float] = {}
+    for video_id, info in manifest.items():
+        result = match_events(
+            gt.get(video_id, []),
+            pred.get(video_id, []),
+            policy_d1 if info.level == 1 else policy_d23,
+        )
+        value = credit(result)
+        per_level[info.level].append(value)
+        per_video[video_id] = value
+
+    marks, total = {}, 0.0
+    for level, values in per_level.items():
+        mean = sum(values) / len(values) if values else 0.0
+        awarded = mean * DIFFICULTY_MARKS[level]
+        marks[level] = {
+            "videos": len(values),
+            "mean_credit": round(mean, 4),
+            "marks": round(awarded, 2),
+            "max": DIFFICULTY_MARKS[level],
+            "marks_per_video": round(DIFFICULTY_MARKS[level] / len(values), 2) if values else 0.0,
+        }
+        total += awarded
+    return {"total": round(total, 2), "by_difficulty": marks, "per_video": per_video}

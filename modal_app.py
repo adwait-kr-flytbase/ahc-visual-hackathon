@@ -87,13 +87,13 @@ def _stream(cmd, cwd, shell):
 
 
 @app.function(image=INFER, gpu="A100-40GB", volumes={"/vol": vol, "/hf": hf_cache},
-              timeout=7200)
+              timeout=7200, secrets=[modal.Secret.from_name("hf-token")])
 def zeroshot(model: str = "Qwen/Qwen3-VL-4B-Instruct",
              videos: str = "/vol/dataset/test/videos",
              manifest: str = "/root/data/manifest.json",
              out: str = "/vol/out/zeroshot",
              frames: int = 16, win: float = 20.0, hop: float = 10.0,
-             limit: int = 0, skip: int = 0, adapter: str = ""):
+             limit: int = 0, skip: int = 0, adapter: str = "", variant: str = "default"):
     import subprocess, sys, os
     os.makedirs(os.path.dirname(out), exist_ok=True)
     print(subprocess.run("nvidia-smi --query-gpu=name,memory.total --format=csv",
@@ -105,6 +105,8 @@ def zeroshot(model: str = "Qwen/Qwen3-VL-4B-Instruct",
         cmd += ["--limit", str(limit)]
     if skip:
         cmd += ["--skip", str(skip)]
+    if variant != "default":
+        cmd += ["--variant", variant]
     if adapter:
         cmd += ["--adapter", adapter]
     print(" ".join(cmd), flush=True)
@@ -112,12 +114,19 @@ def zeroshot(model: str = "Qwen/Qwen3-VL-4B-Instruct",
 
 
 @app.function(image=TRAIN, gpu="A100-80GB", volumes={"/vol": vol, "/hf": hf_cache},
-              timeout=14400)
+              timeout=14400, secrets=[modal.Secret.from_name("hf-token")])
 def sft(cmd: str):
     """Run a swift command verbatim. No hyperparameter second-guessing."""
     import subprocess
     print(subprocess.run("nvidia-smi; which swift || pip show ms-swift | head -3",
                          shell=True, capture_output=True, text=True).stdout, flush=True)
+    import os, subprocess as sp
+    if os.path.exists("/vol/sft/windows.tar") and not os.path.isdir("/vol/sft/windows"):
+        print("untarring window clips...", flush=True)
+        sp.run("tar -xf /vol/sft/windows.tar -C /vol/sft", shell=True, check=True)
+        n = sp.run("ls /vol/sft/windows | wc -l", shell=True, capture_output=True, text=True).stdout.strip()
+        print(f"untarred: {n} window dirs", flush=True)
+        vol.commit()
     print("RUNNING:\n" + cmd, flush=True)
     return _stream(cmd, cwd="/vol", shell=True)
 
@@ -132,10 +141,10 @@ def ls(path: str = "/vol"):
 @app.local_entrypoint()
 def main(action: str = "zeroshot", limit: int = 0, frames: int = 16,
          model: str = "Qwen/Qwen3-VL-4B-Instruct", out: str = "/vol/out/zeroshot",
-         skip: int = 0):
+         skip: int = 0, variant: str = "default", win: float = 20.0, hop: float = 10.0):
     if action == "pull":
         print(pull_dataset.remote())
     elif action == "ls":
         print(ls.remote())
     else:
-        print(zeroshot.remote(model=model, frames=frames, limit=limit, out=out, skip=skip))
+        print(zeroshot.remote(model=model, frames=frames, limit=limit, out=out, skip=skip, variant=variant, win=win, hop=hop))
