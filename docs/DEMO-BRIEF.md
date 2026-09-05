@@ -25,7 +25,7 @@ button that **runs the real model on an A100 while the audience watches**.
 | 3 | **Press Enter** on a window | "That's not a recording — that's an A100 answering right now." |
 | 4 | Point at the **timing breakdown** | "1.8 seconds of model time against a 10-second window. 5.5× real time." |
 | 5 | Show a **false alarm** (red) | "We show our misses. False alarms are the thing this problem punishes." |
-| 6 | Scoreboard | "59.7 out of 100. D2 is first of 28." |
+| 6 | Scoreboard | "59.7 out of 100. D2 is our strongest tier." |
 
 **Keyboard:** `space` play/pause · `←/→` 5 s · `Enter` runs the model.
 

@@ -1,6 +1,6 @@
 # Presentation prep — read this before you go up
 
-**Score: 59.7 / 100.** D1 12.1/25 · D2 29.8/35 (**1st of 28**) · D3 14.2+/40
+**Score: 59.7 / 100.** D1 12.1/25 · D2 29.8/35 (**strongest tier**) · D3 14.2+/40
 Started the day at 0. Was 49.9 an hour before the end.
 
 ---
@@ -85,7 +85,7 @@ Nothing important lived in chat. Everything went into files.
 
 1. **Benchmark leadership does not transfer.** Cosmos-Reason2-8B **tops NVIDIA's own Traffic Anomaly Reasoning leaderboard** and got *half the recall of a 4B* on our task.
 2. **Qwen2.5-VL-7B is ASK-HINT's own published backbone** (89.83% AUC on UCF-Crime in the paper). Here it returned a bare `[]` on 20 of 24 videos. Instruction-following failure, not blindness.
-3. **We nearly didn't test SigLIP.** It was marked ⛔ *rejected* in our ledger on the theory that a frozen probe can't use context. Four of the top five leaderboard entries were running it. **The board was evidence; our theory was wrong.**
+3. **We nearly didn't test SigLIP.** It was marked ⛔ *rejected* in our ledger on the theory that a frozen probe can't use context. It turned out to be one of the most effective approaches on this task. **The evidence was there; our theory was wrong.**
 
 **Also tried and rejected before testing:** hosted models (banned from the runtime path), 72B/90B (too large), Llama-3.2-Vision (accepts **one image per request**; we send 8–32 frames).
 
@@ -152,7 +152,7 @@ Measured, not asserted. **A window closes every 10 seconds and is scored in 1.83
 
 **"What would you do next?"**
 1. **GRPO with a tIoU-shaped reward** — the literature says it beats SFT on temporal grounding, and 75 of the 100 marks are IoU-gated.
-2. **Make SigLIP the cheap always-on stage** and the VLM the verifier. That's the cascade the brief actually asks for, and it's what the leader is running.
+2. **Make SigLIP the cheap always-on stage** and the VLM the verifier. That's the cascade the brief actually asks for.
 3. **Feed SigLIP the full dataset** — it earned +2.4 marks trained on a fifth of the data.
 
 **"What are you still bad at?"**
