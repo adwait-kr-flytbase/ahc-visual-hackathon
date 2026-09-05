@@ -17,7 +17,7 @@ Each step is one spec file. A spec is only safe to implement when its **Status**
 
 | # | Spec | Status | Depends on | Marks at stake |
 |---|---|---|---|---|
-| 1 | [Scoring harness & submission emitter](step-01-scoring-harness.md) | **READY** | — | Unlocks all measurement; ~13.5 floor |
+| 1 | [Scoring harness & submission emitter](step-01-scoring-harness.md) | ✅ **DONE** (Task 7 pending portal) | — | Unlocks all measurement; ~13.5 floor |
 | 2 | [Long-video synthesizer](step-02-long-video-synthesizer.md) | `DRAFT` | 1 | Unlocks 75 |
 | 3 | [Zero-shot VLM baseline](step-03-zero-shot-baseline.md) | `DRAFT` | 1 | Establishes the number to beat |
 | 4 | [SFT on short clips (D1)](step-04-sft-short-clips.md) | `DRAFT` | 1 | 25 |

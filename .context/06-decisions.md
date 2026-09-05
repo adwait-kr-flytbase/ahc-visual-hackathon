@@ -77,3 +77,13 @@ The portal's floor component (the non-zero score two entrants got with 0 found a
 known, so an exact marks replica is impossible. `proxy_score = 25·F1(D1) + 35·F1(D2) + 40·F1(D3)`
 ranks runs faithfully, which is all iteration needs. **Reverses if:** the floor is reverse-engineered
 by probe upload (Step 1 Task 7), at which point the real formula can be implemented.
+
+### 2026-09-05 · Step 1 implemented; two lanes deconflicted
+`src/ahc_vad/` is canonical for data types, IO, submission and scoring (59 tests green).
+`src/vad/` (the other agent's lane) is inference only and imports `ahc_vad` rather than duplicating.
+`ahc_vad/compat.py` matches `src/vad/sweep.py`'s existing `score(pred_jsonl, gt_csv, manifest)` call
+so the stopgap `src/vad/score.py` can be deleted with a one-line change — **not done yet, that file
+belongs to the other lane.** See `HANDOFF.md`.
+
+Cross-check: both scorers agree on Lane B's `out/fake.events.jsonl` — L1 20/0/0, L2 17 found /1 FA
+/1 miss, L3 8/0/0. That submission also passes `validate_submission` with zero schema problems.

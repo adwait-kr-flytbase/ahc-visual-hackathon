@@ -4,7 +4,8 @@
 > (recommended) or `superpowers:executing-plans` to implement task-by-task. Steps use `- [ ]`
 > checkboxes for tracking.
 
-**Status:** `READY` — implement as written.
+**Status:** ✅ **DONE** (2026-09-05) — Tasks 1–6 implemented and committed; Task 7 (upload +
+probe) is outstanding and needs portal access.
 
 **Goal:** Build a local, offline event scorer and a schema-valid submission writer, so every later
 step can be measured in seconds without uploading, and so the first upload can happen today.
@@ -1501,10 +1502,18 @@ git commit -m "docs: record portal floor and the resolved D2/D3 matching rule"
 
 ## Definition of done
 
-- [ ] `pytest -v` is green, including the integration tests, with the dataset present.
-- [ ] `python scripts/make_empty_submission.py` writes a file that `validate_submission` accepts.
-- [ ] `python scripts/score_submission.py out/submission-empty.json` reports 0 false alarms
+- [x] `pytest -v` is green, including the integration tests, with the dataset present. **59 passed.**
+- [x] `python scripts/make_empty_submission.py` writes a file that `validate_submission` accepts.
+- [x] `python scripts/score_submission.py out/submission-empty.json` reports 0 false alarms
       and 20/18/8 misses.
-- [ ] Scoring ground truth against itself yields `proxy_score == 100.0`.
-- [ ] The empty submission has been uploaded and its marks recorded in `.context/`.
-- [ ] The D2/D3 matching rule is resolved and recorded, or explicitly noted as still unknown.
+- [x] Scoring ground truth against itself yields `proxy_score == 100.0`.
+- [ ] **The empty submission has been uploaded and its marks recorded in `.context/`.** ← needs portal
+- [ ] **The D2/D3 matching rule is resolved and recorded.** ← needs portal (Task 7 probe)
+
+### Deviations from the spec as written
+- A `.venv` was needed (system Python had no pytest). Not in the spec; harmless.
+- `scripts/score_submission.py` also runs `validate_submission` before scoring and prints any
+  schema problems — cheap, and it catches portal rejections locally.
+- Added `src/ahc_vad/compat.py`, not in the original spec: exposes
+  `score(pred_jsonl, gt_csv, manifest) -> dict`, the signature `src/vad/sweep.py` already calls,
+  so Lane B's stopgap `src/vad/score.py` can be swapped with a one-line import change.
