@@ -1,0 +1,107 @@
+# ---------------------------------------------------------------------------
+# Dataset media — ~15 GB of video across 3,207 files. Never committed.
+# The label CSVs (748 KB total) ARE tracked: they are the ground truth and
+# make the repo reproducible without the media.
+# Re-download the pack from the Drive mirrors in .context/01-dataset.md
+# ---------------------------------------------------------------------------
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.m4v
+dataset/**/videos/
+
+# Derived media — synthetic long videos (plans/step-02), extracted frames, clips
+synth/
+frames/
+clips/
+*.frames/
+
+# ---------------------------------------------------------------------------
+# Model artifacts — checkpoints, adapters, exports
+# ---------------------------------------------------------------------------
+checkpoints/
+adapters/
+output/
+runs/
+wandb/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.onnx
+
+# Large intermediates. .context/artifacts/videometa.tsv is deliberately tracked
+# (492 KB of measured metadata) — force-add it if a rule here ever catches it.
+*.parquet
+*.npy
+*.npz
+*.tfrecord
+
+# ---------------------------------------------------------------------------
+# Secrets — this repo is a graded, host-accessible deliverable. Keep it clean.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+secrets/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+pipenv/
+
+# ---------------------------------------------------------------------------
+# Local run output — submissions are regenerated, not versioned
+# ---------------------------------------------------------------------------
+out/
+tmp/
+scratch/
+*.log
+
+# ---------------------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ---------------------------------------------------------------------------
+# Node (only if tooling ever needs it)
+# ---------------------------------------------------------------------------
+node_modules/
+
+# ---------------------------------------------------------------------------
+# Claude Code local machine state (agent config is shared via CLAUDE.md)
+# ---------------------------------------------------------------------------
+.claude/settings.local.json
