@@ -105,3 +105,7 @@ node_modules/
 # Claude Code local machine state (agent config is shared via CLAUDE.md)
 # ---------------------------------------------------------------------------
 .claude/settings.local.json
+
+# Private evaluation pack — never commit
+dataset/eval/
+dataset/evals/

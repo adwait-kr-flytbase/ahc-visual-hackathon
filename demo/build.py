@@ -365,13 +365,17 @@ def main() -> int:
         "summary": summarise(videos),
     }
 
-    template = (Path(__file__).parent / "template.html").read_text()
     # </script> inside the JSON would close the tag early.
     blob = json.dumps(payload, allow_nan=False).replace("</", "<\\/")
-    args.out.write_text(template.replace("__DATA__", blob))
+    here = Path(__file__).parent
+    args.out.write_text((here / "template.html").read_text().replace("__DATA__", blob))
+    # the presenter view shares the payload exactly, so the two can never disagree
+    present = here / "present.html"
+    present.write_text((here / "present-template.html").read_text().replace("__DATA__", blob))
 
     run = payload["run"]
-    print(f"wrote {under_root(args.out)}  ({run['videos_predicted']}/{run['videos_total']} predicted, "
+    print(f"wrote {under_root(args.out)} and {under_root(present)}  "
+          f"({run['videos_predicted']}/{run['videos_total']} predicted, "
           f"{run['videos_failed']} failed, {run['videos_not_run']} not run)")
     for problem in problems:
         print(f"  ! {problem}")

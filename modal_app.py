@@ -79,6 +79,7 @@ def _stream(cmd, cwd, shell):
     """
     import subprocess, time
     proc = subprocess.Popen(cmd, cwd=cwd, shell=shell, text=True, bufsize=1,
+                            errors="replace",      # child output is not always valid utf-8
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     lines, last = [], time.time()
     for line in proc.stdout:
@@ -151,10 +152,13 @@ def ls(path: str = "/vol"):
 @app.local_entrypoint()
 def main(action: str = "zeroshot", limit: int = 0, frames: int = 16,
          model: str = "Qwen/Qwen3-VL-4B-Instruct", out: str = "/vol/out/zeroshot",
-         skip: int = 0, variant: str = "default", win: float = 20.0, hop: float = 10.0):
+         skip: int = 0, variant: str = "default", win: float = 20.0, hop: float = 10.0,
+         videos: str = "/vol/dataset/test/videos",
+         manifest: str = "/root/data/manifest.json"):
     if action == "pull":
         print(pull_dataset.remote())
     elif action == "ls":
         print(ls.remote())
     else:
-        print(zeroshot.remote(model=model, frames=frames, limit=limit, out=out, skip=skip, variant=variant, win=win, hop=hop))
+        print(zeroshot.remote(model=model, frames=frames, limit=limit, out=out, skip=skip,
+                             variant=variant, win=win, hop=hop, videos=videos, manifest=manifest))

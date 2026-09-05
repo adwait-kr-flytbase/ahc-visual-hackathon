@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live anomaly monitor — demo</title>
+<style>
+:root{
+  --ink:#06080C; --panel:#111722; --raised:#1A2231; --line:#28313F;
+  --text:#F2F5FA; --muted:#98A2B4; --dim:#5E687A;
+  --hit:#2BE0B7; --miss:#F7B23F; --fa:#FF3D71;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--ink);color:var(--text);font:16px/1.5 var(--sans);overflow:hidden;
+  -webkit-font-smoothing:antialiased;cursor:default}
+:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+
+.stage{position:fixed;inset:0;display:flex;flex-direction:column}
+
+/* ---------- top HUD ---------- */
+.hud{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;gap:26px;
+  padding:20px 30px;background:linear-gradient(#06080Cf2,#06080C00)}
+.hud .brand{font:700 17px/1 var(--sans);letter-spacing:-.01em}
+.hud .brand i{font-style:normal;color:var(--hit)}
+.hud .chip{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 10px;border:1px solid var(--line);border-radius:4px;color:var(--muted)}
+.hud .chip.live{border-color:var(--fa);color:var(--fa)}
+.hud .spacer{flex:1}
+.hud .metric{text-align:right;font:12px/1.55 var(--mono);color:var(--dim)}
+.hud .metric b{color:var(--text);font-weight:600}
+
+/* ---------- video ---------- */
+.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+.screen video{width:100%;height:100%;object-fit:contain;background:#000}
+.state{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;
+  text-align:center;font:14px/1.6 var(--mono);color:var(--dim);pointer-events:none}
+.state b{display:block;font:600 17px/1.4 var(--sans);color:var(--text);margin-bottom:8px}
+.state.bad b{color:var(--fa)}
+.vignette{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(#06080Ccc 0,#06080C00 20%,#06080C00 46%,#06080Cf0 100%)}
+
+/* ---------- caption ---------- */
+.caption{position:absolute;left:0;right:420px;bottom:0;z-index:30;padding:0 40px 40px}
+.caption .step{font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--hit);margin-bottom:14px;display:block}
+.caption h2{margin:0 0 12px;font:700 34px/1.16 var(--sans);letter-spacing:-.022em;max-width:22ch}
+.caption p{margin:0;font:19px/1.5 var(--sans);color:var(--muted);max-width:56ch}
+.caption p b{color:var(--text);font-weight:600}
+
+/* ---------- timeline ---------- */
+.strip{position:absolute;left:40px;right:460px;bottom:190px;z-index:30}
+.strip .row{display:flex;align-items:center;gap:12px;margin-bottom:7px}
+.strip .tag{width:64px;flex:0 0 auto;text-align:right;font:600 10px/1 var(--mono);
+  letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
+.strip .lane{position:relative;flex:1;height:22px;background:#0F1520cc;border-radius:3px;overflow:hidden}
+.strip .lane.grid{height:9px}
+.strip .seg{position:absolute;top:0;bottom:0;border-radius:2px;transition:opacity .25s ease}
+.strip .seg.hidden{opacity:0}
+.strip .win{position:absolute;top:2px;height:5px;border-radius:1px;background:#2B3646}
+.strip .win.done{background:#4C5F7C}
+.strip .head{position:absolute;top:0;bottom:0;width:2px;background:#fff;z-index:4}
+.strip .clock{margin-top:8px;margin-left:76px;font:12px/1 var(--mono);color:var(--dim)}
+
+/* ---------- alerts ---------- */
+.feed{position:absolute;top:78px;right:0;bottom:0;width:420px;z-index:30;padding:0 30px 34px 10px;
+  overflow:hidden;display:flex;flex-direction:column;gap:11px;justify-content:flex-end}
+.alert{background:#141C29f2;border:1px solid var(--line);border-left:4px solid var(--fa);
+  border-radius:7px;padding:14px 16px;animation:slide .4s cubic-bezier(.2,.8,.3,1)}
+@keyframes slide{from{transform:translateX(28px);opacity:0}to{transform:none;opacity:1}}
+.alert .top{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.alert .t{font:700 15px/1 var(--mono)}
+.alert .c{margin-left:auto;font:12px/1 var(--mono);color:var(--muted)}
+.alert .cls{font:700 17px/1.25 var(--mono);margin:0 0 7px;word-break:break-all}
+.alert .why{margin:0;font:14.5px/1.45 var(--sans);color:var(--muted)}
+.alert .v{display:inline-block;margin-top:9px;padding:3px 8px;border-radius:3px;
+  font:700 10px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#06080C}
+.feed .idle{color:var(--dim);font:13px/1.6 var(--mono);text-align:right;padding-right:4px}
+
+/* ---------- title & scoreboard cards ---------- */
+.card{position:absolute;inset:0;z-index:40;background:var(--ink);display:flex;flex-direction:column;
+  justify-content:center;padding:0 90px}
+.card h1{margin:0 0 20px;font:700 62px/1.06 var(--sans);letter-spacing:-.032em;max-width:20ch}
+.card h1 span{color:var(--muted)}
+.card .lead{margin:0;font:23px/1.5 var(--sans);color:var(--muted);max-width:62ch}
+.card .lead b{color:var(--hit);font-weight:600}
+.tiles{display:flex;gap:16px;margin-top:44px}
+.tile{background:var(--panel);border-radius:9px;padding:20px 24px;min-width:172px}
+.tile .v{font:700 40px/1 var(--mono);letter-spacing:-.03em}
+.tile .k{display:block;margin-top:10px;font:11px/1.35 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim)}
+.score{display:flex;gap:16px;margin-top:36px}
+.score .col{flex:1;background:var(--panel);border-radius:9px;padding:20px 24px}
+.score .col h3{margin:0 0 14px;font:700 13px/1 var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim)}
+.score .big{font:700 34px/1 var(--mono)}
+.score .sub{margin-top:9px;font:13.5px/1.45 var(--sans);color:var(--muted)}
+
+/* ---------- footer controls ---------- */
+.foot{position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;gap:16px;
+  padding:14px 30px;font:12px/1 var(--mono);color:var(--dim);
+  background:linear-gradient(#06080C00,#06080Cee)}
+.dots{display:flex;gap:7px}
+.dots i{width:7px;height:7px;border-radius:50%;background:#2B3646;display:block;cursor:pointer}
+.dots i.on{background:var(--text)}
+.dots i.seen{background:#4C5F7C}
+.foot .keys{margin-left:auto}
+.foot kbd{font:11px/1 var(--mono);border:1px solid var(--line);border-radius:3px;padding:3px 6px;
+  color:var(--muted);margin:0 2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<script id="payload" type="application/json">__DATA__</script>
+
+<div class="stage">
+  <div class="screen"><video id="video" playsinline muted preload="auto"></video><div class="state" id="state" hidden></div><div class="vignette"></div></div>
+
+  <div class="hud">
+    <span class="brand">Anomaly monitor <i>·</i> <span id="hudModel"></span></span>
+    <span class="chip live" id="hudLive">replay of recorded inference</span>
+    <span class="spacer"></span>
+    <div class="metric" id="hudMetric"></div>
+  </div>
+
+  <div class="strip" id="strip">
+    <div class="row"><span class="tag">Windows</span><div class="lane grid" id="laneGrid"></div></div>
+    <div class="row"><span class="tag">Truth</span><div class="lane" id="laneTruth"></div></div>
+    <div class="row"><span class="tag">Model</span><div class="lane" id="laneModel"><div class="head" id="head"></div></div></div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+  <div class="caption" id="caption"></div>
+  <div class="feed" id="feed"></div>
+  <div class="card" id="card" hidden></div>
+
+  <div class="foot">
+    <div class="dots" id="dots"></div>
+    <span id="footNote"></span>
+    <span class="keys"><kbd>→</kbd> next <kbd>←</kbd> back <kbd>space</kbd> play/pause
+      <kbd>R</kbd> replay scene <kbd>F</kbd> full screen</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("payload").textContent);
+const T = DATA.throughput || {};
+const HEX = {hit:"#2BE0B7", miss:"#F7B23F", false_alarm:"#FF3D71", pending:"#5E687A"};
+const LABEL = {hit:"matches ground truth", miss:"missed", false_alarm:"false alarm", pending:"not run"};
+const $ = id => document.getElementById(id);
+const byId = id => DATA.videos.find(v => v.id === id);
+const clamp01 = x => Math.max(0, Math.min(1, x));
+const tc = s => { const m = Math.floor(s/60), r = s - m*60; return m + ":" + (r<10?"0":"") + r.toFixed(1); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------------- the demo script ----------------
+   Each scene names a video and says what to watch for. Scenes whose video is missing from the
+   run are dropped, so a partial run still presents. */
+const SCRIPT = [
+  {kind:"title"},
+  {video:"T009", title:"It watches, and it reports.",
+   body:"A 20-second window of frames goes to the model. It answers with a class, a confidence and a sentence of its own reasoning. <b>Congestion, 0.98.</b>"},
+  {video:"T024", title:"Not only the obvious things.",
+   body:"A person lies down on the pavement beside parked cars. The model calls it <b>loitering or suspicious presence</b> — a category that needs context and duration, not just appearance."},
+  {video:"T012", title:"Two answers. Only one of them counts.",
+   body:"It reports <b>fire</b> and <b>smoke</b>. Both are visibly there. The answer key lists only fire, so the second one is scored as a false alarm. <b>Being right is not the same as scoring.</b>"},
+  {video:"T004", title:"And sometimes it is simply wrong.",
+   body:"Ground truth for this clip is empty — nothing is happening. The model reports congestion at 0.95 confidence. <b>This is the failure mode that costs the most marks.</b>"},
+  {video:"T027", title:"On long video it must also say <em>when</em>.",
+   body:"Four separate congestion events in four minutes. An answer only counts if the class is right <b>and</b> it overlaps the truth by at least half. One of four here.", from:30},
+  {video:"T033", title:"This is where we actually are.",
+   body:"Ten minutes of dashcam. Two real collisions. The model raises <b>twelve alerts and catches neither</b> — every one describes a plausible crash at the wrong moment.", from:0},
+  {kind:"score"},
+];
+const scenes = SCRIPT.filter(s => !s.video || byId(s.video));
+
+let i = 0, current = null, shown = new Set(), autoplay = true;
+const video = $("video");
+
+/* ---------------- alerts on the video's own clock ---------------- */
+const latency = v => (((v.timing && v.timing.mean_ms) || T.mean_ms || 0) / 1000);
+const alertsFor = v => v.model
+  .map((e, idx) => ({e, idx, at: (e.from_window ? e.from_window[1] : e.end) + latency(v)}))
+  .sort((a, b) => a.at - b.at);
+
+function alertCard(a, v) {
+  const el = document.createElement("div");
+  el.className = "alert";
+  el.style.borderLeftColor = HEX[a.e.verdict];
+  el.innerHTML =
+    '<div class="top"><span class="t">' + tc(a.e.start) + '</span>' +
+      '<span class="c">' + (a.e.confidence != null ? "confidence " + Number(a.e.confidence).toFixed(2) : "") + '</span></div>' +
+    '<p class="cls">' + esc(a.e.class_name) + '</p>' +
+    (a.e.explanation ? '<p class="why">' + esc(a.e.explanation) + '</p>' : '') +
+    '<span class="v" style="background:' + HEX[a.e.verdict] + '">' + LABEL[a.e.verdict] + '</span>';
+  return el;
+}
+
+function syncFeed(t) {
+  const feed = $("feed");
+  const due = alertsFor(current).filter(a => a.at <= t);
+  const keys = new Set(due.map(a => a.idx));
+  if ([...shown].some(k => !keys.has(k))) { feed.innerHTML = ""; shown = new Set(); }
+  due.forEach(a => {
+    if (shown.has(a.idx)) return;
+    shown.add(a.idx);
+    feed.appendChild(alertCard(a, current));
+    while (feed.children.length > 4) feed.removeChild(feed.firstChild);
+  });
+  if (!feed.children.length) {
+    feed.innerHTML = '<div class="idle">monitoring — no alert raised yet</div>';
+  } else {
+    feed.querySelectorAll(".idle").forEach(n => n.remove());
+  }
+  document.querySelectorAll("#laneModel .seg").forEach(el => {
+    el.classList.toggle("hidden", !keys.has(+el.dataset.i));
+  });
+}
+
+/* ---------------- lanes ---------------- */
+function drawLanes() {
+  const d = current.duration;
+  const pos = (a, b) => "left:" + clamp01(a/d)*100 + "%;width:" + Math.max(.4, clamp01((b-a)/d)*100) + "%";
+  $("laneGrid").innerHTML = (current.grid || [])
+    .map((w, n) => '<div class="win" data-i="' + n + '" style="' + pos(w[0], w[1]) + '"></div>').join("");
+  $("laneTruth").innerHTML = current.truth.length
+    ? current.truth.map(t => '<div class="seg" style="' + pos(t.start, t.end) +
+        ';background:' + HEX[t.verdict === "hit" ? "hit" : "miss"] + '"></div>').join("")
+    : '<div style="position:absolute;inset:0;display:flex;align-items:center;padding-left:10px;' +
+      'font:10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5E687A">' +
+      'nothing is happening in this clip</div>';
+  $("laneModel").innerHTML = '<div class="head" id="head"></div>' + current.model
+    .map((m, n) => '<div class="seg hidden" data-i="' + n + '" style="' + pos(m.start, m.end) +
+      ';background:' + HEX[m.verdict] + '"></div>').join("");
+}
+
+function onTime() {
+  const t = video.currentTime, d = current.duration;
+  $("head").style.left = clamp01(t/d)*100 + "%";
+  $("clock").textContent = tc(t) + "  /  " + tc(d);
+  let done = 0;
+  (current.grid || []).forEach((w, n) => {
+    const el = $("laneGrid").children[n];
+    if (el) { const on = t >= w[1]; el.classList.toggle("done", on); if (on) done++; }
+  });
+  const ms = (current.timing && current.timing.mean_ms) || T.mean_ms || 0;
+  $("hudMetric").innerHTML =
+    "window <b>" + done + "</b> of <b>" + (current.grid || []).length + "</b> scored" +
+    "<br><b>" + ms.toFixed(0) + " ms</b> per window · <b>" +
+    (T.realtime_mean ? T.realtime_mean.toFixed(1) + "×" : "—") + "</b> faster than real time";
+  syncFeed(t);
+}
+function setState(html, bad) {
+  const el = $("state");
+  el.hidden = !html;
+  el.className = "state" + (bad ? " bad" : "");
+  el.innerHTML = html || "";
+}
+video.addEventListener("waiting",  () => setState("<b>buffering</b>" + current.id));
+video.addEventListener("playing",  () => setState(""));
+video.addEventListener("canplay",  () => setState(""));
+video.addEventListener("error", () => {
+  const c = video.error ? video.error.code : 0;
+  setState("<b>could not load " + current.id + "</b>" +
+    "media error " + c + " · check the server is running and dataset/test/videos/" +
+    current.id + ".mp4 exists", true);
+});
+["timeupdate","seeked","loadedmetadata"].forEach(e => video.addEventListener(e, onTime));
+window.addEventListener("resize", onTime);
+video.addEventListener("ended", () => { if (autoplay && i < scenes.length - 1) go(i + 1); });
+
+/* ---------------- cards ---------------- */
+function titleCard() {
+  return '<h1>Can a small model watch video <span>and tell you what just happened?</span></h1>' +
+    '<p class="lead">One <b>4-billion-parameter</b> vision-language model, one GPU, eleven kinds of ' +
+    'incident. It reads the video in overlapping windows and raises an alert the moment a window closes.</p>' +
+    '<div class="tiles">' +
+      tile((T.mean_ms || 0).toFixed(0) + " ms", "to score one window") +
+      tile("10 s", "before the next window closes") +
+      tile((T.realtime_mean ? T.realtime_mean.toFixed(1) : "—") + "×", "faster than real time", "var(--hit)") +
+      tile(T.windows || "—", "windows · " + (T.frames || "—") + " frames") +
+    '</div>';
+}
+const tile = (v, k, colour) => '<div class="tile"><div class="v"' +
+  (colour ? ' style="color:' + colour + '"' : "") + '>' + v + '</div><span class="k">' + k + '</span></div>';
+
+function scoreCard() {
+  const s = DATA.summary;
+  const cell = (x) => '<div class="col"><h3>D' + x.level + ' · ' + x.marks + ' marks</h3>' +
+    '<div class="big" style="color:' + (x.hits ? "var(--hit)" : "var(--fa)") + '">' + x.hits + ' found</div>' +
+    '<div class="sub">' + x.misses + ' missed · <span style="color:var(--fa)">' + x.false_alarms +
+    ' false alarms</span></div></div>';
+  return '<h1>Honest scoreboard. <span>Zero-shot, no fine-tuning yet.</span></h1>' +
+    '<p class="lead">Short clips mostly work. Long video does not — and long video is <b>75 of the 100 marks</b>. ' +
+    'False alarms, not blindness, are what is costing us.</p>' +
+    '<div class="score">' + s.map(cell).join("") + '</div>' +
+    '<p class="lead" style="margin-top:26px;font-size:19px">Measured on 34 public videos with the same ' +
+    'matcher that scores the leaderboard. 24 videos and 20 positives, so ±1 detection moves recall about 5 points.</p>';
+}
+
+/* ---------------- navigation ---------------- */
+function go(n) {
+  i = Math.max(0, Math.min(scenes.length - 1, n));
+  const sc = scenes[i];
+  shown = new Set(); $("feed").innerHTML = "";
+  $("dots").querySelectorAll("i").forEach((d, k) => {
+    d.className = k === i ? "on" : (k < i ? "seen" : "");
+  });
+  const isCard = !!sc.kind;
+  $("card").hidden = !isCard;
+  ["strip","caption","feed"].forEach(id => $(id).style.display = isCard ? "none" : "");
+  $("hudLive").style.display = isCard ? "none" : "";
+  document.querySelector(".hud .metric").style.display = isCard ? "none" : "";
+  if (isCard) {
+    video.pause(); video.removeAttribute("src"); video.load();
+    $("card").innerHTML = sc.kind === "title" ? titleCard() : scoreCard();
+    $("footNote").textContent = sc.kind === "title"
+      ? "press → to start" : "end of demo — press ← to go back";
+    return;
+  }
+  current = byId(sc.video);
+  $("caption").innerHTML = '<span class="step">' + current.id + " · difficulty " + current.level +
+    " · " + Math.round(current.duration) + " seconds</span><h2>" + sc.title + "</h2><p>" + sc.body + "</p>";
+  $("footNote").textContent = "scene " + i + " of " + (scenes.length - 2);
+  setState("<b>loading " + current.id + "</b>" + Math.round(current.duration) + " seconds");
+  video.src = current.src;
+  video.load();
+  video.addEventListener("loadedmetadata", function once() {
+    setState("");
+    video.removeEventListener("loadedmetadata", once);
+    drawLanes();
+    if (sc.from) video.currentTime = sc.from;
+    onTime();
+    if (autoplay) video.play().catch(() => {});
+  });
+}
+
+$("hudModel").textContent = (T.model_name || DATA.run.name || "").replace(/^.*\//, "");
+$("dots").innerHTML = scenes.map((_, k) => '<i data-k="' + k + '"></i>').join("");
+$("dots").addEventListener("click", e => { if (e.target.dataset.k) go(+e.target.dataset.k); });
+
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); go(i + 1); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
+  else if (e.key === " ") { e.preventDefault(); video.paused ? video.play() : video.pause(); }
+  else if (e.key === "r" || e.key === "R") { e.preventDefault(); go(i); }
+  else if (e.key === "f" || e.key === "F") {
+    e.preventDefault();
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  }
+});
+
+go(0);
+</script>
+</body>
+</html>
