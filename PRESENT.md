@@ -83,9 +83,9 @@ Nothing important lived in chat. Everything went into files.
 
 **Three findings worth saying out loud:**
 
-1. **Benchmark leadership does not transfer.** Cosmos-Reason2-8B **tops NVIDIA's own Traffic Anomaly Reasoning leaderboard** and got *half the recall of a 4B* on our task.
+1. **Benchmark leadership does not transfer.** Cosmos-Reason2-8B is **purpose-built for traffic anomaly reasoning** and got *half the recall of a general 4B* on our task.
 2. **Qwen2.5-VL-7B is ASK-HINT's own published backbone** (89.83% AUC on UCF-Crime in the paper). Here it returned a bare `[]` on 20 of 24 videos. Instruction-following failure, not blindness.
-3. **We nearly didn't test SigLIP.** It was marked ⛔ *rejected* in our ledger on the theory that a frozen probe can't use context. It turned out to be one of the most effective approaches on this task. **The evidence was there; our theory was wrong.**
+3. **We nearly didn't test SigLIP.** It was marked ⛔ *rejected* in our ledger on the theory that a frozen probe can't use context. It became one of the two things that actually moved our score. **We had rejected it on theory, without testing it.**
 
 **Also tried and rejected before testing:** hosted models (banned from the runtime path), 72B/90B (too large), Llama-3.2-Vision (accepts **one image per request**; we send 8–32 frames).
 

@@ -1,5 +1,4 @@
-<!doctype html><meta charset=utf-8><title>Presentation prep</title><style>
-@page{size:A4;margin:14mm}
+<!doctype html><meta charset=utf-8><title>Presentation prep</title><style>@page{size:A4;margin:14mm}
 *{box-sizing:border-box}
 body{font:11pt/1.45 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#14171a;margin:0}
 h1{font-size:20pt;margin:0 0 2pt;letter-spacing:-.4pt}
@@ -17,8 +16,7 @@ pre{background:#14171a;color:#e8eef2;padding:8pt 10pt;border-radius:4px;font-siz
 pre code{background:none;color:inherit;padding:0}
 blockquote{margin:7pt 0;padding:7pt 11pt;background:#fff8e1;border-left:3px solid #f0a500;font-size:10.5pt}
 blockquote p{margin:0}
-hr{border:0;border-top:1px solid #dde2e6;margin:12pt 0}
-</style><h1>Presentation prep — read this before you go up</h1>
+hr{border:0;border-top:1px solid #dde2e6;margin:12pt 0}</style><h1>Presentation prep — read this before you go up</h1>
 <p><strong>Score: 59.7 / 100.</strong> D1 12.1/25 · D2 29.8/35 (<strong>strongest tier</strong>) · D3 14.2+/40
 Started the day at 0. Was 49.9 an hour before the end.</p>
 <hr />
@@ -178,9 +176,9 @@ plus a frozen-encoder classifier that catches what the VLM is blind to.</strong>
 </table>
 <p><strong>Three findings worth saying out loud:</strong></p>
 <ol>
-<li><strong>Benchmark leadership does not transfer.</strong> Cosmos-Reason2-8B <strong>tops NVIDIA's own Traffic Anomaly Reasoning leaderboard</strong> and got <em>half the recall of a 4B</em> on our task.</li>
+<li><strong>Benchmark leadership does not transfer.</strong> Cosmos-Reason2-8B is <strong>purpose-built for traffic anomaly reasoning</strong> and got <em>half the recall of a general 4B</em> on our task.</li>
 <li><strong>Qwen2.5-VL-7B is ASK-HINT's own published backbone</strong> (89.83% AUC on UCF-Crime in the paper). Here it returned a bare <code>[]</code> on 20 of 24 videos. Instruction-following failure, not blindness.</li>
-<li><strong>We nearly didn't test SigLIP.</strong> It was marked ⛔ <em>rejected</em> in our ledger on the theory that a frozen probe can't use context. It turned out to be one of the most effective approaches on this task. <strong>The evidence was there; our theory was wrong.</strong></li>
+<li><strong>We nearly didn't test SigLIP.</strong> It was marked ⛔ <em>rejected</em> in our ledger on the theory that a frozen probe can't use context. It became one of the two things that actually moved our score. <strong>We had rejected it on theory, without testing it.</strong></li>
 </ol>
 <p><strong>Also tried and rejected before testing:</strong> hosted models (banned from the runtime path), 72B/90B (too large), Llama-3.2-Vision (accepts <strong>one image per request</strong>; we send 8–32 frames).</p>
 <hr />

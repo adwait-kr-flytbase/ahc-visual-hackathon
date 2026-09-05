@@ -120,7 +120,7 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
     <h2>4 · Evaluation methodology</h2>
     <h3>The practice pack ships its own answer key</h3>
     <p>We found <span class="m">ground_truth.csv</span> in the downloadable pack, and its event
-      counts match the public leaderboard's denominators exactly. We therefore treated the practice
+      counts match the practice pack's own answer key exactly. We therefore treated the practice
       board as <b>a measuring instrument, never a tuning target</b>, and said so — a 100.0 on that
       board is almost certainly the shipped key.</p>
 
@@ -173,7 +173,7 @@ td.n,th.n{text-align:right;font-family:var(--mono);padding-right:0}
     </table>
     <ul>
       <li><b>Benchmark leadership does not transfer.</b> Cosmos-Reason2-8B tops NVIDIA's own Traffic
-        Anomaly Reasoning leaderboard (AI City Challenge 2026, Track 3) and reaches half the recall
+        Anomaly Reasoning task (AI City Challenge 2026, Track 3) and reaches half the recall
         of a 4B here.</li>
       <li><b>Qwen2.5-VL-7B is silent on 20 of 24</b> — and the mechanism is instruction-following,
         not blindness: it returns a bare <span class="m">[]</span> instead of the requested object.
@@ -230,7 +230,7 @@ single 125-second congestion event. We wrote down that D3 events are long, then 
 models instead of spans.</p>
 
 <h3 class="win">Worked — frozen SigLIP2 + trained temporal head, +2.4 marks</h3>
-<p>The approach four of the top five leaderboard entries were running, and the one we nearly did not
+<p>One of the two changes that actually moved our score, and the one we nearly did not
 test. We had it marked <b>rejected</b> on the theory that a frozen probe cannot use context; the
 board was evidence and the theory was wrong. A frozen <span class="m">siglip2-base-patch16-224</span>
 over 8 timestamp-sampled frames feeds a bidirectional GRU head, 12-way output, class-balanced loss.
