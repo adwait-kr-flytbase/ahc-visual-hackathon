@@ -79,6 +79,21 @@ li:last-child{border-bottom:0}
     <div class="card"><b>2 models</b><span>a prompted VLM for appearance, a trained encoder head for duration</span></div>
   </div>
 </section>
+<section class="s">
+  <div class="k">How we worked</div>
+  <h2>Three AI agents, one repository.</h2>
+  <table>
+    <tr><th>Agent</th><th>Role</th><th>Owned</th></tr>
+    <tr><td><b>Coordinator</b></td><td>Research, strategy, every GPU run, every commit</td><td>inference lane, Modal driver</td></tr>
+    <tr><td><b>Builder</b></td><td>Data pipeline, synthetic video generation, training, scoring</td><td>data lane, tests</td></tr>
+    <tr><td><b>Comms</b></td><td>Live demo, slides, process record</td><td>demo, docs</td></tr>
+  </table>
+  <ul style="margin-top:20px">
+    <li><b>Ownership by directory.</b> No agent edits another's files. We learned it the hard way — two agents built the same four modules before the rule existed.</li>
+    <li><b>A written ledger, not chat.</b> Every technique marked done / running / rejected — <b>with the reason</b>. An agent could crash, restart and resume from files. It happened twice.</li>
+    <li><b>They corrected each other.</b> One caught a scorer using the wrong matching rule. One caught a run that exited "successfully" having done 6 of 34 videos.</li>
+  </ul>
+</section>
 
 <section class="s">
   <div class="k">Architecture</div>
@@ -233,21 +248,5 @@ li:last-child{border-bottom:0}
     </div>
   </div>
   <div class="q" style="font-size:27px">The evidence was in our own notes from that morning: the sample data held a <b>125-second</b> event. We wrote down that these events are long — then spent hours swapping models instead of spans.</div>
-</section>
-
-<section class="s">
-  <div class="k">How we worked</div>
-  <h2>Three AI agents, one repository.</h2>
-  <table>
-    <tr><th>Agent</th><th>Role</th><th>Owned</th></tr>
-    <tr><td><b>Coordinator</b></td><td>Research, strategy, every GPU run, every commit</td><td>inference lane, Modal driver</td></tr>
-    <tr><td><b>Builder</b></td><td>Data pipeline, synthetic video generation, training, scoring</td><td>data lane, tests</td></tr>
-    <tr><td><b>Comms</b></td><td>Live demo, slides, process record</td><td>demo, docs</td></tr>
-  </table>
-  <ul style="margin-top:20px">
-    <li><b>Ownership by directory.</b> No agent edits another's files. We learned it the hard way — two agents built the same four modules before the rule existed.</li>
-    <li><b>A written ledger, not chat.</b> Every technique marked done / running / rejected — <b>with the reason</b>. An agent could crash, restart and resume from files. It happened twice.</li>
-    <li><b>They corrected each other.</b> One caught a scorer using the wrong matching rule. One caught a run that exited "successfully" having done 6 of 34 videos.</li>
-  </ul>
 </section>
 
