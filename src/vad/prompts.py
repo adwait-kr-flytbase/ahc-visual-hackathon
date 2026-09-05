@@ -65,6 +65,17 @@ VARIANTS = {
         "plausible anomaly, report it with a confidence that reflects your certainty rather than "
         "staying silent."
     ),
+    "behaviour": (
+        "\n\nFOCUS ONLY on people. Is anyone LINGERING with no clear purpose, loitering, "
+        "prowling or trespassing? Is anyone FIGHTING — pushing, punching, kicking, grappling? "
+        "Report only loitering_or_suspicious_presence or fighting_or_violence, or an empty list."
+    ),
+    "roadstate": (
+        "\n\nFOCUS ONLY on the road surface and stationary objects. Is there DEBRIS, a spilled "
+        "load, or an object lying on the carriageway? Is a vehicle STOPPED where it should not be — "
+        "on a shoulder, in a live lane, blocking others? Report only road_spill_or_debris, "
+        "stalled_or_broken_down_vehicle or vehicle_blocking_traffic, or an empty list."
+    ),
     "forced": (
         "\n\nYou must commit to a judgement. First decide: is anything in this segment "
         "out of the ordinary for this scene? If yes, name the single best-matching class even if "

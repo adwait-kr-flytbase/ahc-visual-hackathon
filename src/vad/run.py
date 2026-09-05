@@ -80,7 +80,7 @@ def main():
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--skip", type=int, default=0, help="skip the first N videos")
-    ap.add_argument("--variant", default="default", choices=["default", "recall", "forced"])
+    ap.add_argument("--variant", default="default", choices=["default","recall","forced","behaviour","roadstate"])
     ap.add_argument("--keep-raw", action="store_true", default=True,
                     help="record model text for windows that produced no events")
     args = ap.parse_args()
